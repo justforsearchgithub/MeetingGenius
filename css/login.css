@@ -319,3 +319,42 @@ html {
     color: #ffffff;
     font-size: 21px;
 }
+
+.input-group-addon{
+    min-width: 120px;
+}
+
+.file {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.file + label {
+    display: inline-block;
+    font-weight: 100;
+    border-radius: 4px;
+    padding: 10px;
+    border: 1px;
+    border-color: #cccccc;
+    border-style: solid;
+    width: 100%;
+    background-color: #ffffff;
+}
+
+.file + label:hover {
+    cursor: pointer;
+}
+
+.file:focus + label {
+    outline: 1px dotted #000;
+    outline: -webkit-focus-ring-color auto 5px;
+}
+
+button {
+    margin-left: 50px;
+    margin-right: 50px;
+}

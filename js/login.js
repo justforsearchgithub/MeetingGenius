@@ -1,14 +1,6 @@
 
 jQuery(document).ready(function() {
 
-    /*
-        Fullscreen background
-    */
-    //$.backstretch("/img/background1.jpg");
-
-    /*
-        Form validation
-    */
     $('.registration-form input[type="text"], .registration-form textarea').on('focus', function() {
         $(this).removeClass('input-error');
     });
@@ -26,6 +18,14 @@ jQuery(document).ready(function() {
         });
 
     });
-
-
 });
+
+function triggerfile() {
+    var file = $('#paper_upload').val();
+    var pos = file.lastIndexOf("\\");
+    var filename = file.substring(pos+1);
+    if(filename.length != 0)
+        $('#file_label').html(filename);
+    else
+        $('#file_label').html('&nbsp;&nbsp;选择文件');
+}

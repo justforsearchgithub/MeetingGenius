@@ -5,16 +5,16 @@
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-theme.css">
     <link rel="stylesheet" href="css/login.css">
-    <title>个体用户注册</title>
+    <title>单位用户注册</title>
 </head>
 <body>
 <div class="top-content">
     <div class="row" style="margin-top: 50px">
-        <div class="col-sm-8 col-sm-offset-2 text">
-            <h1><strong>个体用户注册</strong></h1>
+        <div class="col-sm-8 col-sm-offset-2 text" style="padding-bottom: 0px">
+            <h1><strong>单位用户注册</strong></h1>
             <div class="description">
                 <p>
-                    注册成为个体用户，可以参加会议和投稿
+                    注册成为单位用户，可以发布会议和征稿
                 </p>
             </div>
         </div>
@@ -23,10 +23,10 @@
         <div class="col-sm-5 form-box">
             <div class="form-top">
                 <div class="form-top-left">
-                    <h3>个体用户注册</h3>
+                    <h3>单位用户注册</h3>
                 </div>
             </div>
-            <div class="form-bottom" style="height: 405px">
+            <div class="form-bottom" style="">
                 <form role="form" action="" method="post" class="registration-form">
                     <div class="form-group">
                         <label>邮箱</label>
@@ -40,6 +40,13 @@
                         <label>确认密码</label>
                         <input type="password" placeholder="请确认密码" class="form-control" id="form-passwd-r">
                     </div>
+                    <div class="form-group">
+                        <label>上传文件</label>
+                        <div style="height: 85px">
+                            <input id="paper_upload" type="file" class="file" accept="image/*" onchange="triggerfile()"/>
+                            <label id="file_label" for="paper_upload">&nbsp;&nbsp;选择文件</label>
+                        </div>
+                    </div>
                     <div style="text-align: center"><button type="submit" class="btn" id="register_btn">注册</button></div>
                 </form>
             </div>
@@ -47,15 +54,15 @@
         <div class="col-sm-3 form-box">
             <div class="form-top">
                 <div class="form-top-left">
-                    <h3>单位用户注册</h3>
+                    <h3>个人用户注册</h3>
                 </div>
             </div>
             <div  class="form-bottom" style="height: 405px">
                 <div id="user-info">
-                    申请成为单位用户：<br>
-                    ·发起会议<br>
-                    ·征集论文<br>
-                    <a href="#">单位用户注册</a>
+                    申请成为个人用户：<br>
+                    ·参加会议<br>
+                    ·论文投稿<br>
+                    <a href="#">个人用户注册</a>
                 </div>
             </div>
         </div>
