@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <link rel="stylesheet" href="css/per_center.css">
+
+
+
+    <title>Title</title>
+</head>
+<body>
+<header class="header_Tutorial_style">
+    <div class="container relative">
+        <h2>MeetingGenius</h2>
+        <h4 class="mt20">v 1.0.0</h4>
+    </div>
+</header>
+<div class="Tutorial_style clearfix relative" id="per_info" >
+    <div class="scrollsidebar fl relative" >
+
+        <div class="page_left_style side_content relative">
+
+            <div class="side_list">
+                <div class="title_name">个人中心</div>
+                <ul>
+                    <li>帐号信息</li>
+                    <li>收藏</li>
+                    <li>子帐号列表</li>
+                    <li>修改密码</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--帐号信息-->
+    <div class="panel panel-default" v-if="is_account">
+
+        <div class="panel-heading" style="height: 50px">
+            <h3 class="panel-title" style="text-align: center">
+                帐号信息
+            </h3>
+        </div>
+        <div class="panel-body"  >
+            <div class="text-info">
+                帐号名：{{account_name}}
+            </div>
+            <div class="text-info">
+                邮箱：{{}}
+            </div>
+        </div>
+    </div>
+    <!--收藏-->
+    <div class="panel panel-default" v-if="is_collection">
+        <div class="panel-heading" style="height: 50px">
+            <h3 class="panel-title" style="text-align: center">
+                收藏
+            </h3>
+        </div>
+        <div class="panel-body" >
+            面板内容
+        </div>
+    </div>
+    <!--子帐号列表-->
+    <div class="panel panel-default" v-show="is_childaccout">
+        <div class="panel-heading" style="height: 50px">
+            <h3 class="panel-title" style="text-align: center">
+                子帐号列表
+            </h3>
+        </div>
+        <div class="panel-body"  >
+            面板内容
+        </div>
+    </div>
+    <!--修改密码-->
+    <div class="panel panel-default" v-show="is_password">
+        <div class="panel-heading" style="height: 50px">
+            <h3 class="panel-title" style="text-align: center">
+                修改密码
+            </h3>
+        </div>
+        <div class="panel-body"  >
+            面板内容
+        </div>
+    </div>
+
+</div>
+
+<script src='js/jquery-3.3.1.js'></script>
+<script src="js/bootstrap.js" ></script>
+<script src="js/vue.js"></script>
+<script src="js/person_center.js"></script>
+</body>
+</html>
