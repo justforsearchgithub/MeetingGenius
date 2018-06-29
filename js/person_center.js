@@ -6,7 +6,8 @@ $(document).ready(function () {
             is_collection: false,
             is_childaccount: false,
             is_password: false,
-            account_name:"Tom"
+            account_name:'Tom',
+            account_mail:'123@163.com'
         }
-    });
-}
+    })
+});
