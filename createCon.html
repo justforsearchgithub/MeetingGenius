@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <link rel="stylesheet" href="css/alter.css">
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.css">
+    <link rel="stylesheet" type="text/css" href="css/jquery.eeyellow.Timeline.css"/>
+    <title>会议管理平台</title>
+</head>
+<body>
+<div style="height:60px;">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container" style="width:100%">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">ConferenceMaster</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav" style="float:none;">
+                    <li><a href="#">Home</a></li>
+
+                    <li class="pull-right"><a>免费注册</a></li>
+                    <li class="pull-right"><a>登录</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+</div>
+
+<div class="step-content">
+    <h3>发布您的会议</h3>
+    <div class="step1-title">
+        <span class="num">1</span>填写会议信息
+    </div>
+
+    <div style="margin-top:30px">
+        <label class="input-label">会议名称</label>
+        <div class="input-group" style="width:80%">
+            <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+        </div>
+        <div style="margin-left:120px">Warning</div>
+    </div>
+
+    <div style="margin-top:30px">
+        <label class="input-label">会议简介</label>
+        <div class="input-group" style="width:80%">
+            <textarea style="height:100px; resize:none" class="form-control" placeholder="Username"
+                      aria-describedby="basic-addon1"></textarea>
+        </div>
+        <div style="margin-left:120px">Warning</div>
+    </div>
+
+    <div style="margin-top:30px">
+        <label class="input-label">注册要求</label>
+        <div class="input-group" style="width:80%">
+            <textarea style="height:70px; resize:none" class="form-control" placeholder="Username"
+                      aria-describedby="basic-addon1"></textarea>
+        </div>
+        <div style="margin-left:120px">Warning</div>
+    </div>
+
+    <div class="step1-title">
+        <span class="num">2</span>填写会议相关日期
+    </div>
+    <div style="margin-top:30px">
+        <label class="input-label">截稿日期</label>
+        <div class="input-group" style="display: inline-block">
+            <input size="16" type="text" value="" class="form_datetime">
+        </div>
+        <label class="input-label" style="width:250px;float:none;margin-left:20%">第一次审核结果通知日期</label>
+        <div class="input-group" style="display: inline-block">
+            <input size="16" type="text" value="" class="form_datetime">
+        </div>
+    </div>
+    <div style="margin-left:120px">Warning</div>
+
+    <div style="margin-top:30px">
+        <label class="input-label" style="width:200px">修改稿件截稿日期</label>
+        <div class="input-group" style="display: inline-block">
+            <input size="16" type="text" value="" class="form_datetime">
+
+        </div>
+        <label class="input-label" style="width:250px;float:none;margin-left:20%">第二次审核结果通知日期</label>
+        <div class="input-group" style="display: inline-block">
+            <input size="16" type="text" value="" class="form_datetime">
+        </div>
+    </div>
+    <div style="margin-left:200px">Warning</div>
+
+    <div class="step1-title">
+        <span class="num">3</span>填写征文信息和要求
+    </div>
+
+    <div style="margin-top:30px">
+        <label class="input-label">征文信息</label>
+        <div class="input-group" style="width:80%">
+            <textarea style="height:70px; resize:none" class="form-control" placeholder="Username"
+                      aria-describedby="basic-addon1"></textarea>
+        </div>
+        <div style="margin-left:120px">Warning</div>
+    </div>
+
+    <div style="margin-top:30px">
+        <label class="input-label">论文模板</label>
+        <div class="input-group" style="width:80%">
+            <label for="PaperExample" class=" btn btn-default">选择文件</label>
+            <input id="PaperExample" accept="application/pdf" onchange="PaperExample()" type="file"
+                   style="display:none">
+            <div id="PaperExampleFileName">请选择论文模版pdf文件！</div>
+        </div>
+    </div>
+
+    <div class="step1-title">
+        <span class="num">4</span>填写会议流程
+    </div>
+
+
+    <div class="container" id="TimeLine">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="VivaTimeline">
+                    <dl>
+                        <dd class="pos-left clearfix" v-for="activite in activities">
+                            <div class="circ"></div>
+                            <div class="time">Feb 03</div>
+                            <div class="events">
+                                <div class="events-header">Event Heading</div>
+                                <div class="events-body">
+                                    <div class="row">
+                                        <div class="events-desc timelineDe">
+                                            test1
+                                        </div>
+                                        <div style="float:right;margin-right:20px">
+                                            <button class="btn btn-danger">-</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </dd>
+
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="addTimeLine">
+        <button class="btn btn-primary btn-lg" onclick="showAddTimeLine()">添加会议活动日程安排</button>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+         data-backdrop=”static” data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        添加活动一个会议流程
+                    </h4>
+                </div>
+                <div class="modal-body" style="height:400px; text-align: left">
+
+                    <div style="margin-top:30px">
+                        <label class="input-label" style="width:150px;">活动开始日期</label>
+                        <div class="input-group" style="display: inline-block">
+                            <input id="AddTimeLine_StartTime" type="text" value=""
+                                   class="form-control form_datetimeTimeLine">
+                        </div>
+                    </div>
+
+                    <div style="margin-top:30px">
+                        <label class="input-label" style="width:150px;">活动结束日期</label>
+                        <div class="input-group" style="display: inline-block">
+                            <input id="AddTimeLine_FinishTime" type="text" value=""
+                                   class="form-control form_datetimeTimeLine">
+                        </div>
+                    </div>
+
+                    <div style="margin-top:30px">
+                        <label class="input-label">活动地点</label>
+                        <div class="input-group" style="width:70%">
+                            <input id="AddTimeLine_Location" type="text" class="form-control" placeholder="Username"
+                                   aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+
+                    <div style="margin-top:30px">
+                        <label class="input-label">活动描述</label>
+                        <div class="input-group" style="width:70%">
+                            <textarea id="AddTimeLine_Description" style="height:70px; resize:none" class="form-control"
+                                      placeholder="Username" aria-describedby="basic-addon1"></textarea>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="AddTimeLine()">
+                        提交更改
+                    </button>
+                </div>
+
+            </div>
+
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+
+
+    <div class="step1-title">
+        <span class="num">5</span>填写会议主办方信息
+    </div>
+
+    <div style="margin-top:30px">
+        <label class="input-label">组织名称</label>
+        <div class="input-group" style="width:80%">
+            <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+        </div>
+        <div style="margin-left:120px">Warning</div>
+    </div>
+
+    <div style="margin-top:30px">
+        <label class="input-label">联系人姓名</label>
+        <div class="input-group" style="width:80%">
+            <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+        </div>
+        <div style="margin-left:120px">Warning</div>
+    </div>
+
+    <div style="margin-top:30px">
+        <label class="input-label">联系人电话</label>
+        <div class="input-group" style="width:80%">
+            <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+        </div>
+        <div style="margin-left:120px">Warning</div>
+    </div>
+
+    <div style="margin-top:30px">
+        <label class="input-label">联系人邮箱</label>
+        <div class="input-group" style="width:80%">
+            <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+        </div>
+        <div style="margin-left:120px">Warning</div>
+    </div>
+</div>
+
+
+<script src='js/jquery-3.3.1.js'></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/bootstrap-datetimepicker.js"></script>
+<script src="js/createCon.js"></script>
+<script type="text/javascript" src="js/jquery.eeyellow.Timeline.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.VivaTimeline').vivaTimeline({
+            carousel: true,
+            carouselTime: 3000
+        });
+    });
+</script>
+</body>
+</html>

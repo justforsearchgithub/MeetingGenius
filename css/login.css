@@ -1,12 +1,9 @@
 /* from internet */
 body {
-    font-family: 'Roboto', sans-serif;
-    font-size: 16px;
     font-weight: 300;
-    color: #888;
+    color: #cccccc;
     line-height: 30px;
     text-align: center;
-    background: url("../img/background1.jpg") no-repeat center;
 }
 
 strong { font-weight: 500; }
@@ -78,7 +75,7 @@ img { max-width: 100%; }
 
 /***** Top menu *****/
 
-.navbar {
+/*.navbar {
     padding-top: 10px;
     background: #333;
     background: rgba(51, 51, 51, 0.3);
@@ -107,7 +104,7 @@ ul.navbar-nav {
 }
 .navbar-inverse ul.navbar-nav li .li-social a:hover,
 .navbar-inverse ul.navbar-nav li .li-social a:focus { border: 0; color: #19b9e7; }
-
+*/
 
 /***** Top content *****/
 
@@ -116,9 +113,12 @@ ul.navbar-nav {
 }
 
 .top-content {
-    width: 80%;
+    width: 100%;
+    min-height: 1200px;
+    padding-top: 50px;
     margin-left: auto;
     margin-right: auto;
+    background: url("../img/background1.jpg") center;
 }
 
 .top-content .text {
@@ -312,7 +312,7 @@ button.btn:active:focus, button.btn.active:focus { outline: 0; opacity: 0.6; bac
     background-size:contain;
 }*/
 html {
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 #user-info {
@@ -358,3 +358,13 @@ button {
     margin-left: 50px;
     margin-right: 50px;
 }
+
+.form-page {
+    margin: auto;
+    width: 80%;
+}
+
+label {
+    font-size: 16px;
+}
+
