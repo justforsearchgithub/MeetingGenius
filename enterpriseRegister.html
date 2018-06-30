@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh" style="overflow-y: visible">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/bootstrap.css">
@@ -8,9 +8,30 @@
     <title>单位用户注册</title>
 </head>
 <body>
+<div style="height: 50px">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container" style="width:100%">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand">ConferenceMaster</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav" style="float:none;">
+                    <li><a href="index.html">Home</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+</div>
 <div class="top-content">
-    <div class="row" style="margin-top: 50px">
-        <div class="col-sm-8 col-sm-offset-2 text" style="padding-bottom: 0px">
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2 text" style="padding-bottom: 10px">
             <h1><strong>单位用户注册</strong></h1>
             <div class="description">
                 <p>
@@ -20,7 +41,7 @@
         </div>
     </div>
     <div class="row" style="margin-left: 20%; width: 100%">
-        <div class="col-sm-5 form-box">
+        <div class="col-sm-7 form-box">
             <div class="form-top">
                 <div class="form-top-left">
                     <h3>单位用户注册</h3>
@@ -29,41 +50,51 @@
             <div class="form-bottom" style="">
                 <form role="form" action="" method="post" class="registration-form">
                     <div class="form-group">
-                        <label>邮箱</label>
+                        <label>组织机构名称</label>
+                        <input type="text" placeholder="请输入机构名" class="form-control" id="form-company-name">
+                    </div>
+                    <div class="form-group">
+                        <label>部门</label>
+                        <input type="password" placeholder="请输入部门名" class="form-control" id="form-department-name">
+                    </div>
+                    <div class="form-group">
+                        <label>地址</label>
+                        <input type="password" placeholder="请输入地址" class="form-control" id="form-address">
+                    </div>
+                    <div class="form-group">
+                        <label>联系人邮箱</label>
                         <input type="text" placeholder="请输入邮箱" class="form-control" id="form-email">
                     </div>
                     <div class="form-group">
-                        <label>密码</label>
-                        <input type="password" placeholder="请输入密码" class="form-control" id="form-passwd">
+                        <label>联系人手机</label>
+                        <input type="text" placeholder="请输入手机号" class="form-control" id="form-phone">
                     </div>
                     <div class="form-group">
-                        <label>确认密码</label>
-                        <input type="password" placeholder="请确认密码" class="form-control" id="form-passwd-r">
-                    </div>
-                    <div class="form-group">
-                        <label>上传文件</label>
-                        <div style="height: 85px">
-                            <input id="paper_upload" type="file" class="file" accept="image/*" onchange="triggerfile()"/>
-                            <label id="file_label" for="paper_upload">&nbsp;&nbsp;选择文件</label>
+                        <label>上传营业电子执照</label>
+                        <div style="min-height: 50px">
+                            <input id="license_upload" type="file" class="file" accept="image/*" onchange="triggerfile_l()"/>
+                            <label id="license_label" for="license_upload">&nbsp;&nbsp;选择图片</label>
+                            <a href="javascript:file_upload('license_upload')"><img class="hidden" src="" alt="图片上传失败" id="license_img"></a>
                         </div>
                     </div>
-                    <div style="text-align: center"><button type="submit" class="btn" id="register_btn">注册</button></div>
+                    <div class="form-group">
+                        <label>上传联系人身份证（正面）</label>
+                        <div style="min-height: 50px">
+                            <input id="id_upload_front" type="file" class="file" accept="image/*" onchange="triggerfile_f()"/>
+                            <label id="id_label_front" for="id_upload_front">&nbsp;&nbsp;选择图片</label>
+                            <a href="javascript:file_upload('id_upload_front')"><img class="hidden" src="" alt="图片上传失败" id="id_img_front"></a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>上传联系人身份证（背面）</label>
+                        <div style="min-height: 50px">
+                            <input id="id_upload_back" type="file" class="file" accept="image/*" onchange="triggerfile_b()"/>
+                            <label id="id_label_back" for="id_upload_back">&nbsp;&nbsp;选择图片</label>
+                            <a href="javascript:file_upload('id_upload_back')"><img class="hidden" src="" alt="图片上传失败" id="id_img_back"></a>
+                        </div>
+                    </div>
+                    <div style="text-align: center"><button type="submit" class="btn" id="enterprise_register_btn">注册</button></div>
                 </form>
-            </div>
-        </div>
-        <div class="col-sm-3 form-box">
-            <div class="form-top">
-                <div class="form-top-left">
-                    <h3>个人用户注册</h3>
-                </div>
-            </div>
-            <div  class="form-bottom" style="height: 405px">
-                <div id="user-info">
-                    申请成为个人用户：<br>
-                    ·参加会议<br>
-                    ·论文投稿<br>
-                    <a href="#">个人用户注册</a>
-                </div>
             </div>
         </div>
     </div>
