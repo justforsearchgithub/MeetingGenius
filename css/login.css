@@ -240,7 +240,7 @@ only screen and (                min-resolution: 192dpi),
 only screen and (                min-resolution: 2dppx){}
 
 
-input[type="text"],input[type="password"],
+input[type="text"],input[type="password"],input[type="email"],input[type="number"],
 textarea,
 textarea.form-control {
     height: 50px;
