@@ -1,3 +1,6 @@
+function addChildAccount2(){
+    $('#myModal').modal({backdrop: 'static', keyboard: true});
+}
 $(document).ready(function () {
 
     var vm = new Vue({
@@ -7,10 +10,17 @@ $(document).ready(function () {
             not_normal:true,
             account_name:'Tom',
             account_mail:'123@163.com',
+            addchildaccount_name:'',
+            addchildaccount_password:'',
+            setaccount_password:'请设置新的密码',
             childaccounts:[
                 {
                     name:'456@163.com',
                     password:'1111'
+                },
+                {
+                    name:'789@163.com',
+                    password:'2222'
                 }
             ]
         },
@@ -38,7 +48,13 @@ $(document).ready(function () {
                 document.getElementById("div_collection").style.display="none";
                 document.getElementById("div_childaccount").style.display="none";
                 document.getElementById("div_password").style.display="block";
-           }
+                },
+            addChildAccount:function (event) {
+                $('#myModal').modal({backdrop: 'static', keyboard: true});
+            },
+            addChildAccount2:function (event) {
+
+            }
 
         }
     });
