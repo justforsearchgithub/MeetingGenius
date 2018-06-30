@@ -2,9 +2,21 @@
 new Vue({
     el:"#TimeLine",
     data:{
-
+        Activities:[
+            {
+                StartTime:'2022-02-02 12:00',
+                EndTime:'2023-02-02 12:00',
+                Location:'MainHall',
+                Description:'BalaBala'
+            },
+            {
+                StartTime:'2023-02-02 12:00',
+                EndTime:'2024-02-02 12:00',
+                Location:'NMB',
+                Description:'BalaBalaadss'
+            }
+        ]
     }
-
 })
 
 
@@ -55,5 +67,4 @@ function AddTimeLine(){
     if(StartDate>=EndDate){
         alert("Error!");
     }
-
 }

@@ -1,4 +1,4 @@
-
+var url='';
 jQuery(document).ready(function() {
 
     $('.registration-form input[type="text"], .registration-form textarea').on('focus', function() {
@@ -80,7 +80,7 @@ function Login(){
     formData.append("password", passwd);
     $.ajax({
         type: 'POST',
-        url: 'http://139.199.80.199:811/auth',
+        url: url+'account/login/',
         data: formData,
         contentType: false,
         async: false,
@@ -104,4 +104,31 @@ function Login(){
             return true;
         }
     });
+}
+
+function UserRegister(){
+    var email = $("#form-email").val();
+    var passwd = $("#form-passwd").val();
+    var passwdr = $("#form-passwd-r").val();
+    var formData = new FormData();
+    formData.append("username", email);
+    formData.append("password", passwd);
+    formData.append("confirm_password",passwdr);
+    $.ajax({
+        type: 'POST',
+        url: url+'account/normal_user_register/',
+        data: formData,
+        contentType: false,
+        async: false,
+        cache: false,
+        processData: false,
+        success: function (data) {
+            console.log(data.message);
+            return true;
+        }
+    });
+}
+
+function OrgUserRegister(){
+
 }

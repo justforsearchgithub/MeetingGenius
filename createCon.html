@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="css/bootstrap-theme.css">
     <link rel="stylesheet" href="css/alter.css">
     <link rel="stylesheet" href="css/bootstrap-datetimepicker.css">
-    <link rel="stylesheet" type="text/css" href="css/jquery.eeyellow.Timeline.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery.eeyellow.Timeline.css"/>
     <title>会议管理平台</title>
 </head>
 <body>
@@ -52,7 +52,8 @@
     <div style="margin-top:30px">
         <label class="input-label">会议简介</label>
         <div class="input-group" style="width:80%">
-            <textarea style="height:100px; resize:none" class="form-control" placeholder="Username" aria-describedby="basic-addon1"></textarea>
+            <textarea style="height:100px; resize:none" class="form-control" placeholder="Username"
+                      aria-describedby="basic-addon1"></textarea>
         </div>
         <div style="margin-left:120px">Warning</div>
     </div>
@@ -60,7 +61,8 @@
     <div style="margin-top:30px">
         <label class="input-label">注册要求</label>
         <div class="input-group" style="width:80%">
-            <textarea style="height:70px; resize:none" class="form-control" placeholder="Username" aria-describedby="basic-addon1"></textarea>
+            <textarea style="height:70px; resize:none" class="form-control" placeholder="Username"
+                      aria-describedby="basic-addon1"></textarea>
         </div>
         <div style="margin-left:120px">Warning</div>
     </div>
@@ -100,7 +102,8 @@
     <div style="margin-top:30px">
         <label class="input-label">征文信息</label>
         <div class="input-group" style="width:80%">
-            <textarea style="height:70px; resize:none" class="form-control" placeholder="Username" aria-describedby="basic-addon1"></textarea>
+            <textarea style="height:70px; resize:none" class="form-control" placeholder="Username"
+                      aria-describedby="basic-addon1"></textarea>
         </div>
         <div style="margin-left:120px">Warning</div>
     </div>
@@ -109,7 +112,8 @@
         <label class="input-label">论文模板</label>
         <div class="input-group" style="width:80%">
             <label for="PaperExample" class=" btn btn-default">选择文件</label>
-            <input id="PaperExample" accept="application/pdf" onchange="PaperExample()" type="file" style="display:none">
+            <input id="PaperExample" accept="application/pdf" onchange="PaperExample()" type="file"
+                   style="display:none">
             <div id="PaperExampleFileName">请选择论文模版pdf文件！</div>
         </div>
     </div>
@@ -119,13 +123,12 @@
     </div>
 
 
-
     <div class="container" id="TimeLine">
         <div class="row">
             <div class="col-md-12">
                 <div class="VivaTimeline">
                     <dl>
-                        <dd class="pos-left clearfix">
+                        <dd class="pos-left clearfix" v-for="activite in activities">
                             <div class="circ"></div>
                             <div class="time">Feb 03</div>
                             <div class="events">
@@ -134,44 +137,6 @@
                                     <div class="row">
                                         <div class="events-desc timelineDe">
                                             test1
-                                        </div>
-                                        <div style="float:right;margin-right:20px">
-                                            <button class="btn btn-danger">-</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </dd>
-                        <dd class="pos-right clearfix">
-                            <div class="circ"></div>
-                            <div class="time">Jan 21</div>
-                            <div class="events">
-                                <div class="events-header">A Very Very Looooooooooooooooooooong Event Heading</div>
-                                <div class="events-body">
-                                    <div class="row">
-
-                                        <div class="events-desc timelineDe">
-                                            gest2
-                                        </div>
-                                        <div style="float:right;margin-right:20px">
-                                            <button class="btn btn-danger">-</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="events-footer">
-
-                                </div>
-                            </div>
-                        </dd>
-                        <dd class="pos-left clearfix">
-                            <div class="circ"></div>
-                            <div class="time">Jan 07</div>
-                            <div class="events">
-                                <div class="events-header">Event Heading</div>
-                                <div class="events-body">
-                                    <div class="row">
-                                        <div class="events-desc timelineDe">
-                                            test3
                                         </div>
                                         <div style="float:right;margin-right:20px">
                                             <button class="btn btn-danger">-</button>
@@ -189,10 +154,11 @@
 
 
     <div class="addTimeLine">
-        <button class="btn btn-primary btn-lg"  onclick="showAddTimeLine()">添加会议活动日程安排</button>
+        <button class="btn btn-primary btn-lg" onclick="showAddTimeLine()">添加会议活动日程安排</button>
     </div>
 
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop=”static” data-keyboard="false">
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+         data-backdrop=”static” data-keyboard="false">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -208,28 +174,32 @@
                     <div style="margin-top:30px">
                         <label class="input-label" style="width:150px;">活动开始日期</label>
                         <div class="input-group" style="display: inline-block">
-                            <input id="AddTimeLine_StartTime" type="text" value="" class="form-control form_datetimeTimeLine">
+                            <input id="AddTimeLine_StartTime" type="text" value=""
+                                   class="form-control form_datetimeTimeLine">
                         </div>
                     </div>
 
                     <div style="margin-top:30px">
                         <label class="input-label" style="width:150px;">活动结束日期</label>
                         <div class="input-group" style="display: inline-block">
-                            <input  id="AddTimeLine_FinishTime" type="text" value="" class="form-control form_datetimeTimeLine">
+                            <input id="AddTimeLine_FinishTime" type="text" value=""
+                                   class="form-control form_datetimeTimeLine">
                         </div>
                     </div>
 
                     <div style="margin-top:30px">
-                        <label class="input-label" >活动地点</label>
+                        <label class="input-label">活动地点</label>
                         <div class="input-group" style="width:70%">
-                            <input id="AddTimeLine_Location" type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+                            <input id="AddTimeLine_Location" type="text" class="form-control" placeholder="Username"
+                                   aria-describedby="basic-addon1">
                         </div>
                     </div>
 
                     <div style="margin-top:30px">
-                        <label class="input-label" >活动描述</label>
+                        <label class="input-label">活动描述</label>
                         <div class="input-group" style="width:70%">
-                            <textarea id="AddTimeLine_Description" style="height:70px; resize:none" class="form-control" placeholder="Username" aria-describedby="basic-addon1"></textarea>
+                            <textarea id="AddTimeLine_Description" style="height:70px; resize:none" class="form-control"
+                                      placeholder="Username" aria-describedby="basic-addon1"></textarea>
                         </div>
                     </div>
 
@@ -243,19 +213,11 @@
                     </button>
                 </div>
 
-                </div>
+            </div>
 
 
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-    </div>
-
-
-
-
-
-
-
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
 
 
     <div class="step1-title">
@@ -294,6 +256,7 @@
         <div style="margin-left:120px">Warning</div>
     </div>
 </div>
+
 
 <script src='js/jquery-3.3.1.js'></script>
 <script src="js/bootstrap.js"></script>
