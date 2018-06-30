@@ -1,0 +1,59 @@
+//日期插件
+new Vue({
+    el:"#TimeLine",
+    data:{
+
+    }
+
+})
+
+
+$('.form_datetime').datetimepicker({
+    format: 'yyyy-mm-dd hh:ii'
+});
+$('.form_datetimeTimeLine').datetimepicker({
+    format: 'yyyy-mm-dd hh:ii'
+});
+
+function PaperExample(){
+    var test = $('#PaperExample').val();
+    console.log(test);
+    var pos = test.lastIndexOf("\\");
+    console.log(pos);
+    var Filename = test.substring(pos+1);
+    if(Filename.length != 0)
+        $('#PaperExampleFileName').html(Filename);
+    else
+        $('#PaperExampleFileName').html('&nbsp;&nbsp;选择文件');
+}
+function showAddTimeLine(){
+
+    $('#myModal').modal({backdrop: 'static', keyboard: true});
+}
+function GetTime(Timestr){
+    var ymd = Timestr.split(' ')[0];
+    var hm = Timestr.split(' ')[1];
+    var year = ymd.split('-')[0];
+    var month = ymd.split('-')[1];
+    var day = ymd.split('-')[2];
+    var hour = hm.split(':')[0];
+    var minute = hm.split(':')[1];
+    var date = new Date();
+    date.setFullYear(parseInt(year),parseInt(month),parseInt(day));
+    date.setHours(parseInt(hour));
+    date.setMinutes(parseInt(minute));
+    return date;
+}
+function AddTimeLine(){
+    var StartTime  = $('#AddTimeLine_StartTime').val();
+    var EndTime = $('#AddTimeLine_FinishTime').val();
+    var Location = $('#AddTimeLine_Location').val();
+    var Description = $('#AddTimeLine_Description').val();
+
+    var StartDate = GetTime(StartTime);
+    var EndDate = GetTime(EndTime);
+    if(StartDate>=EndDate){
+        alert("Error!");
+    }
+
+}

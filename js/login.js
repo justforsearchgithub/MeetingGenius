@@ -71,3 +71,37 @@ function triggerfile_b() {
 function file_upload(id) {
     $('#'+id).click();
 }
+
+function Login(){
+    var email = $("#form-email").val();
+    var passwd = $("#form-passwd").val();
+    var formData = new FormData();
+    formData.append("username", email);
+    formData.append("password", passwd);
+    $.ajax({
+        type: 'POST',
+        url: 'http://139.199.80.199:811/auth',
+        data: formData,
+        contentType: false,
+        async: false,
+        cache: false,
+        processData: false,
+        success: function (data) {
+
+            if (data.message == "success") {
+                alert("SUcces.");
+/*
+                var exp = new Date();
+                exp.setHours(exp.getHours()+24*7);
+                document.cookie = 'SmartChainToken' + "=" +  data.SmartChainToken + ";expires="+ exp.toUTCString();
+*/
+                console.log(data);
+
+            }
+            else  {
+                alert(data.message);
+            }
+            return true;
+        }
+    });
+}

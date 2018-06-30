@@ -141,8 +141,18 @@ body a:hover {
     top: -1px
 }
 .step-content .input-label{
-    width:100px;
+    width:120px;
     font-size:20px;
     float:left;
     font-weight: lighter;
+}
+.timelineDe{
+    display: inline-block;
+    margin:10px auto;
+    font-weight: lighter;
+    font-size:15px;
+}
+.addTimeLine{
+    text-align: center;
+    margin-top: 20px;
 }
