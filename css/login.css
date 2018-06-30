@@ -118,7 +118,7 @@ ul.navbar-nav {
     padding-top: 50px;
     margin-left: auto;
     margin-right: auto;
-    background: url("../img/background1.jpg") no-repeat center;
+    background: url("../img/background1.jpg") center;
 }
 
 .top-content .text {
