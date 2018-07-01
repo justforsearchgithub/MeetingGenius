@@ -193,16 +193,20 @@ function enterprise_reg() {
         alert('请输入地址');
         flag = false;
     }
+    else if (name === "" || name === null){
+        alert('请输入联系人姓名');
+        flag = false;
+    }
     else if (email === "" || email === null){
         alert('请输入邮箱');
         flag = false;
     }
-    else if (phone === "" || phone === null){
-        alert('请输入手机号');
-        flag = false;
-    }
     else if(!checkEmail(email)){
         alert('邮箱格式不正确');
+        flag = false;
+    }
+    else if (phone === "" || phone === null){
+        alert('请输入手机号');
         flag = false;
     }
     else if (passwd === "" || passwd === null){
@@ -258,7 +262,6 @@ function enterprise_reg() {
 }
 
 function checkEmail(str) {
-    console.log(str);
     var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
     if(!reg.test(str))
         return false;
