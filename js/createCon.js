@@ -9,25 +9,25 @@ var myActivities = [
     {
         StartTime:'2023-02-02 12:00',
         EndTime:'2024-02-02 12:00',
-        Location:'NMB',
+        Location:'NMB1',
         Description:'BalaBalaadss'
     },
     {
-        StartTime:'2023-02-02 12:00',
-        EndTime:'2024-02-02 12:00',
-        Location:'NMB',
+        StartTime:'2024-02-02 12:00',
+        EndTime:'2025-02-02 12:00',
+        Location:'NMB2',
         Description:'BalaBalaadss'
     },
     {
-        StartTime:'2023-02-02 12:00',
-        EndTime:'2024-02-02 12:00',
-        Location:'NMB',
+        StartTime:'2025-02-02 12:00',
+        EndTime:'2026-02-02 12:00',
+        Location:'NMB3',
         Description:'BalaBalaadss'
     },
     {
-        StartTime:'2023-02-02 12:00',
-        EndTime:'2024-02-02 12:00',
-        Location:'NMB',
+        StartTime:'2026-02-02 12:00',
+        EndTime:'2027-02-02 12:00',
+        Location:'NMB4',
         Description:'BalaBalaadss'
     }
 ];
@@ -79,16 +79,24 @@ function AddTimeLine(){
     var EndTime = $('#AddTimeLine_FinishTime').val();
     var Location = $('#AddTimeLine_Location').val();
     var Description = $('#AddTimeLine_Description').val();
-console.log(Description);
+    console.log(Description);
     var StartDate = GetTime(StartTime);
     var EndDate = GetTime(EndTime);
     if(StartDate>=EndDate){
         alert("Error!");
     }
     myActivities.push({StartTime:StartTime,EndTime:EndTime,Location:Location,Description:Description});
+    myActivities.sort(sortbyTime);
 }
 
 function ReMoveTimeLine(e){
-
-
+    var id = $(e).attr("id");
+    var index = id[id.length-1];
+    console.log(myActivities[index]);
+    myActivities.splice(index,1);
+}
+function sortbyTime(a,b){
+    var date_a = GetTime(a.StartTime);
+    var date_b = GetTime(b.StartTime);
+    return date_a-date_b;
 }
