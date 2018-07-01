@@ -1,4 +1,4 @@
-var url='';
+var url='http://140.143.182.214:8090/';
 jQuery(document).ready(function() {
 
     $('.registration-form input[type="text"], .registration-form textarea').on('focus', function() {
@@ -98,7 +98,7 @@ function Login() {
             processData: false,
             success: function (data) {
                 if (data.message == "success") {
-                    alert("SUcces.");
+                    //lert("SUcces.");
                     /*
                                     var exp = new Date();
                                     exp.setHours(exp.getHours()+24*7);
@@ -106,11 +106,12 @@ function Login() {
                     */
                     console.log(data);
 
+                    //window.location.href = 'index.html';
                 }
                 else {
-                    alert(data.message);
+                    //alert(data.message);
                 }
-                return true;
+                //return true;
             }
         });
     }

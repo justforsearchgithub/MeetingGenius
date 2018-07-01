@@ -128,23 +128,24 @@
             <div class="col-md-12">
                 <div class="VivaTimeline">
                     <dl>
-                        <dd class="pos-left clearfix" v-for="activite in activities">
+                        <dd  v-for="(activity,index) in Activities" class="clearfix" :class="{'pos-right':index%2 != 1}">
                             <div class="circ"></div>
-                            <div class="time">Feb 03</div>
+                            <div class="time">{{activity.StartTime}}</div>
                             <div class="events">
-                                <div class="events-header">Event Heading</div>
+                                <div class="events-header">{{activity.Location}}</div>
                                 <div class="events-body">
                                     <div class="row">
                                         <div class="events-desc timelineDe">
-                                            test1
+                                            {{activity.Description}}
                                         </div>
                                         <div style="float:right;margin-right:20px">
-                                            <button class="btn btn-danger">-</button>
+                                            <button class="btn btn-danger" :id="RemoveTimeLineButton" onclick="ReMoveTimeLine(this)">-</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </dd>
+
 
                     </dl>
                 </div>
