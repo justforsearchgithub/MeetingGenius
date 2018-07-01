@@ -68,7 +68,14 @@
     </div>
 
     <div class="step1-title">
-        <span class="num">2</span>填写会议相关日期
+        <span class="num">2</span>选择您会议学科
+    </div>
+
+
+
+
+    <div class="step1-title">
+        <span class="num">3</span>填写会议相关日期
     </div>
     <div style="margin-top:30px">
         <label class="input-label">截稿日期</label>
@@ -96,7 +103,7 @@
     <div style="margin-left:200px">Warning</div>
 
     <div class="step1-title">
-        <span class="num">3</span>填写征文信息和要求
+        <span class="num">4</span>填写征文信息和要求
     </div>
 
     <div style="margin-top:30px">
@@ -119,7 +126,7 @@
     </div>
 
     <div class="step1-title">
-        <span class="num">4</span>填写会议流程
+        <span class="num">5</span>填写会议流程
     </div>
 
 
@@ -134,12 +141,12 @@
                             <div class="events">
                                 <div class="events-header">{{activity.Location}}</div>
                                 <div class="events-body">
-                                    <div class="row">
+                                    <div class="row" style="display: block">
                                         <div class="events-desc timelineDe">
                                             {{activity.Description}}
                                         </div>
                                         <div style="float:right;margin-right:20px">
-                                            <button class="btn btn-danger" :id="RemoveTimeLineButton" onclick="ReMoveTimeLine(this)">-</button>
+                                            <button class="btn btn-danger" :id="['RemoveTimeLineButton'+index]" onclick="ReMoveTimeLine(this)">-</button>
                                         </div>
                                     </div>
                                 </div>
@@ -222,7 +229,7 @@
 
 
     <div class="step1-title">
-        <span class="num">5</span>填写会议主办方信息
+        <span class="num">6</span>填写会议主办方信息
     </div>
 
     <div style="margin-top:30px">
