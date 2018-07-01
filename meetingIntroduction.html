@@ -8,7 +8,7 @@
     <title>会议介绍</title>
 </head>
 <body  onload="leftTimer()">
-<div>
+<div >
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container" style="width:100%">
             <div class="navbar-header">
@@ -32,10 +32,10 @@
         </div>
     </nav>
 </div>
-
+<div id="meeting">
 <div class="banner">
     <div class="banner-info" style="margin-top:50px" id="meetingName">
-        <h1>{{resource.meetingName}}</h1>
+        <h1>{{meetingName}}</h1>
     </div>
 </div>
 
@@ -49,13 +49,13 @@
                 <div class="panel-body" id="schedulingProgramList">
                     <a v-for="resource in schedulingProgramList">
                         <strong><span style="line-height:2;font-size:18px;">开始时间</span></strong></br>
-                        <p>{{resource.startTime}}</p>
+                        <p>{{startTime}}</p>
                         <strong><span style="line-height:2;font-size:18px;">结束时间</span></strong></br>
-                        <p>{{resource.endTime}}</p>
+                        <p>{{endTime}}</p>
                         <strong><span style="line-height:2;font-size:18px;">活动地点</span></strong></br>
-                        <p>{{resource.activityPlace}}</p>
+                        <p>{{activityPlace}}</p>
                         <strong><span style="line-height:2;font-size:18px;">活动描述</span></strong></br>
-                        <p>{{resource.activityDescription}}</p>
+                        <p>{{activityDescription}}</p>
                     </a>
                 </div>
             </div>
@@ -65,7 +65,7 @@
                     <h3 class="panel-title" >学科</h3>
                 </div>
                 <div class="panel-body" style="height:50px">
-                    <p>{{resource.subject}}</p>
+                    <p>{{subject}}</p>
                 </div>
             </div>
 
@@ -74,7 +74,7 @@
                     <h3 class="panel-title" id="meetingIntroduction">会议简介</h3>
                 </div>
                 <div class="panel-body" style="height:500px">
-                    <p>{{resource.meetingIntroduction}}</p>
+                    <p>{{meetingIntroduction}}</p>
                 </div>
             </div>
                 <div class="panel panel-success">
@@ -82,7 +82,7 @@
                         <h3 class="panel-title" >注册要求</h3>
                     </div>
                     <div class="panel-body" style="height:200px">
-                        <p>{{resource.registerRequest}}</p>
+                        <p>{{registerRequest}}</p>
                     </div>
                 </div>
         </div>
@@ -105,19 +105,19 @@
                 <div class="panel-body">
 
                     <strong><span style="line-height:2;font-size:18px;">截稿日期</span></strong></br>
-                    <p>{{resource.closeDate}}</p>
+                    <p>{{closeDate}}</p>
                     <strong><span style="line-height:2;font-size:18px;">第一次审核通知日期</span></strong></br>
-                    <p>{{resource.firstAuditNoticeDate}}</p>
+                    <p>{{firstAuditNoticeDate}}</p>
                     <strong><span style="line-height:2;font-size:18px;">修改截稿日期</span></strong></br>
-                    <p>{{resource.modifyCloseDate}}</p>
+                    <p>{{modifyCloseDate}}</p>
                     <strong><span style="line-height:2;font-size:18px;">第二次审核通知日期</span></strong></br>
-                    <p>{{resource.secondAuditNoticeDate}}</p>
+                    <p>{{secondAuditNoticeDate}}</p>
                     <strong><span style="line-height:2;font-size:18px;">注册开放日期</span></strong></br>
-                    <p>{{resource.registerOpenDate}}</p>
+                    <p>{{registerOpenDate}}</p>
                     <strong><span style="line-height:2;font-size:18px;">注册结束日期</span></strong></br>
-                    <p>{{resource.registerCloseDate}}</p>
+                    <p>{{registerCloseDate}}</p>
                     <strong><span style="line-height:2;font-size:18px;">会议开始日期</span></strong></br>
-                    <p>{{resource.meetingStartDate}}</p>
+                    <p>{{meetingStartDate}}</p>
                 </div>
             </div>
 
@@ -127,13 +127,13 @@
                 </div>
                 <div class="panel-body">
                     <strong><span style="line-height:2;font-size:18px;">组织名称</span></strong></br>
-                    <p>{{resource.organizationName }}</p>
+                    <p>{{organizationName }}</p>
                     <strong><span style="line-height:2;font-size:18px;">联系人姓名</span></strong></br>
-                    <p>{{resource.contactName }}</p>
+                    <p>{{contactName }}</p>
                     <strong><span style="line-height:2;font-size:18px;">联系人电话</span></strong></br>
-                    <p>{{resource.contactPhone }}</p>
+                    <p>{{contactPhone }}</p>
                     <strong><span style="line-height:2;font-size:18px;">联系人邮箱</span></strong></br>
-                    <p>{{resource.contactEmail }}</p>
+                    <p>{{contactEmail }}</p>
                 </div>
             </div>
 
@@ -142,16 +142,15 @@
                     <h3 class="panel-title">征文信息</h3>
                 </div>
                 <div class="panel-body" style="height:100px">
-                    <p>{{resource.solicitInformation }}</p>
+                    <p>{{solicitInformation }}</p>
                 </div>
             </div>
             <a href="#" target="_self" class="item1" style="line-height:2;font-size:18px;">论文模板</a></br>
         </div>
-
         </div>
     </div>
 </div>
-
+</div>
 
 <script language="javascript" type="text/javascript">
     function leftTimer(year,month,day,hour,minute,second){
@@ -174,36 +173,31 @@
         }
         return i;
     }
-    var myList = [
+    var vm = new Vue(
         {
-            meetingName:'',
-            startTime:2018-9-1,
-            endTime: '2018-9-11',
-            activityPlace: '北京',
-            activityDescription: '描述',
-            meetingIntroduction:'',
-            registerRequest:'',
-            firstAuditNoticeDate:'',
-            closeDate:'',
-            firstAuditNoticeDate:'',
-            modifyCloseDate:'',
-            secondAuditNoticeDate:'',
-            registerOpenDate:'',
-            registerCloseDate:'',
-            meetingStartDate:'',
-            organizationName:'',
-            contactName:'',
-            contactPhone:'',
-            contactEmail:'',
-            solicitInformation:'',
-        },
-    ];
-    new Vue({
-        el: '#meeting',
-        data: {
-            resource: myList
-        },
-    })
+            el: '#meeting',
+            data: {
+                meetingName: '',
+                startTime:'',
+                endTime: '',
+                activityPlace: '',
+                activityDescription: '',
+                meetingIntroduction: '',
+                registerRequest: '',
+                firstAuditNoticeDate: '',
+                closeDate: '',
+                secondAuditNoticeDate: '',
+                modifyCloseDate: '',
+                registerOpenDate: '',
+                registerCloseDate: '',
+                meetingStartDate: '',
+                organizationName: '',
+                contactName: '',
+                contactPhone: '',
+                contactEmail: '',
+                solicitInformation: '',
+            }
+        })
 </script>
 
 <script src='js/jquery-3.3.1.js'></script>
