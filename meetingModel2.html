@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/meetingModel2.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.css">
+    <link rel="stylesheet" type="text/css" href="css/jquery.eeyellow.Timeline.css"/>
+    <title>会议模板2</title>
+</head>
+<body>
+<script src='js/jquery-3.3.1.js'></script>
+<script src="js/vue.js"></script>
+<div>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container" style="width:100%">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand">ConferenceMaster</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav" style="float:none;">
+                    <li><a href="index.html">Home</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+</div>
+<div id="info">
+<!-- header star!-->
+<div class="header" id="title">
+    <!--Time-->
+    <div class="time w-1200 auto">
+        <h1>{{ title }}</h1>
+        <div class="data-show-box mt-40" id="dateShow1">
+            <span class="date-tiem-span d"></span>&nbsp;&nbsp;天&nbsp;
+            <span class="date-tiem-span h"></span>&nbsp;&nbsp;小时&nbsp;
+            <span class="date-tiem-span m"></span>&nbsp;&nbsp;分&nbsp;
+            <span class="date-s-span date-tiem-span s"></span>&nbsp;&nbsp;秒&nbsp;
+        </div>
+    </div>
+    <!-- Time-->
+</div>
+<!--header end!-->
+<!--大会简介 star！-->
+<div class="w-1200 auto mt-70" >
+    <div class="introduction" id="introduction">
+        <div style="text-align: center">
+            <button id="paper_download" onclick="downloadPaper()">论文模板</button>
+            <button id="join_meeting" onclick="checkLogin()" data-toggle="modal" data-target="#join-meeting">参加会议</button>
+            <button id="paper_upload" onclick="checkLogin()" data-toggle="modal" data-target="#paper-upload">我要投稿</button>
+        </div>
+        <h1>会议简介</h1>
+        <div class="col-md-4  col-xs-12  fl " style="font-size: 20px">
+            <div><label>主办方：</label>{{ organization }}</div>
+            <div><label>学科：</label>{{ subject }}</div>
+            <div><label>状态：</label>{{ state }}</div>
+        </div>
+        <div style="width: 65%; float: right; text-align: justify;"><p class="f-18 lh-36">{{ introduction }}</p></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<!--大会简介 end！-->
+<!--Important date star-->
+<div class="Important_date">
+    <div class="w-1200 auto">
+    <h2>重要日期</h2>
+        <dl>
+            <dt>投稿开始:<span>{{ accept_start }}</span></dt>
+            <dd>投稿截止:<span>{{ accept_due }}</span></dd>
+        </dl>
+    <dl class="ml-30">
+        <dt>修改开始:<span>{{ accept_due }}</span></dt>
+        <dd>修改截止:<span>{{ modify_due }}</span></dd>
+    </dl>
+    <dl class="ml-30 mr-30">
+        <dt>注册开始:<span>{{ register_start }}</span></dt>
+        <dd>注册截止:<span>{{ register_due }}</span></dd>
+    </dl>
+    <dl>
+        <dt>会议开始:<span>{{ conference_start }}</span></dt>
+        <dd>会议结束:<span>{{ conference_due }}</span></dd>
+    </dl>
+    </div>
+</div>
+<!--Important date end-->
+<!--activity start-->
+<div class="w-1200 auto" >
+    <div class="introduction">
+        <h1>日程安排</h1>
+    </div>
+    <div class="col-md-12" style="float: none">
+        <div class="VivaTimeline">
+            <dl>
+                <dd  v-for="(act,index) in activities" class="clearfix" :class="{'pos-right':index%2 != 1}">
+                    <div class="circ"></div>
+                    <div class="time">{{act.start_time}}</div>
+                    <div class="events">
+                        <div class="events-header">{{act.place}}</div>
+                        <div class="events-body">
+                            <div class="row" style="display: block">
+                                <div class="events-desc timelineDe">
+                                    {{act.activity}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<!-- activity end-->
+<!-- paper start-->
+<div class="Important_date">
+    <div class="w-1200 auto">
+        <h2>征文要求</h2>
+        <div class="explain-info" style="color: #ffffff">{{ soliciting_requirement }}</div>
+    </div>
+</div>
+<!-- paper end-->
+<!--register  start-->
+<div class="w-1200 auto organization mb-50">
+    <h2>注册要求</h2>
+    <div class="explain-info">{{ register_requirement }}</div>
+</div>
+<!--register  end-->
+<!--footer start-->
+<div class="footer">
+    <div class="w-1200 auto text-left">
+        <div class="width-80 auto">
+            <p class="f-20 pt-40">联系主办方</p>
+            <p class="f-16 pt-20"><label>联系人：</label>{{ contact }}</p>
+            <p class="f-16"><label>电话：</label>{{ phonenum }}</p>
+            <p class="f-16"><label>E-mail：</label>{{ email }}</p>
+        </div>
+    </div>
+</div>
+<!--footer end-->
+</div>
+
+
+
+
+<!--register child window start-->
+<div class="modal fade" id="join-meeting"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">注册参加会议</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="margin-top: 5px">
+                    <label>姓名</label>
+                    <input type="text" class="form-control" id="person_name" placeholder="请输入姓名">
+                </div>
+                <div class="form-group" style="margin-top: 5px">
+                    <label>性别</label>
+                    <div style="height: 46px;font-size: 18px; padding-top: 8px">
+                        <input type="radio" name="sex" id="person_gender_m" value="男" checked> 男
+                        <input type="radio" name="sex" id="person_gender_f" value="女"> 女
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 5px">
+                    <label>是否预订住宿</label>
+                    <div style="height: 46px;font-size: 18px; padding-top: 8px">
+                        <input type="radio" name="hotel" id="hotel_y" value=true checked> 是
+                        <input type="radio" name="hotel" id="hotel_n" value=false> 否
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 5px">
+                    <label>论文编号</label>
+                    <input type="text" class="form-control" id="paper_num"  aria-describedby="sizing-addon1" placeholder="没有投稿请勿填写">
+                </div>
+                <div class="form-group" style="margin-top: 5px">
+                    <label>缴费凭证</label>
+                    <input id="fee_upload" type="file" class="file" accept="image/*" onchange="triggerfile_fee()"/>
+                    <label id="label_fee_upload" for="fee_upload" style="font-size: 14px">选择图片</label>
+                    <a href="javascript:file_upload('fee_upload')"><img style="max-width: 568px" class="hidden" src="" alt="图片上传失败" id="img_fee_upload"></a>
+                </div>
+                <div class="form-group" style="margin-top: 5px">
+                    <label>补充说明</label>
+                    <textarea id="extra_info" class="form-control" rows="8"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="join_register()">提交</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!--register child window end-->
+<!--paper child window start-->
+<div class="modal fade" id="paper-upload"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">论文投稿</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="margin-top: 5px">
+                    <label>名称</label>
+                    <input type="text" class="form-control" id="paper_title">
+                </div>
+                <div class="form-group" style="margin-top: 5px">
+                    <label>作者</label>
+                    <input type="text" class="form-control" id="paper_author">
+                </div>
+                <div class="form-group" style="margin-top: 5px">
+                    <label>单位</label>
+                    <input type="text" class="form-control" id="paper_organization">
+                </div>
+                <div class="form-group" style="margin-top: 5px">
+                    <label>上传论文</label>
+                    <input id="paper_up" type="file" class="file" accept="application/pdf" onchange="triggerfile_paper()"/>
+                    <label id="label_paper_up" for="paper_up" style="font-size: 14px">选择文件</label>
+                </div>
+                <div class="form-group" style="margin-top: 5px">
+                    <label>摘要</label>
+                    <textarea id="paper_outline" class="form-control" rows="8"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="paper_upload()">提交</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!--paper child window end-->
+
+
+
+
+
+
+<style type="text/css">
+    .backToTop {
+        display: none;
+        width: 18px;
+        line-height: 1.2;
+        padding: 5px 0;
+        background-color: #000;
+        color: #fff;
+        font-size: 12px;
+        text-align: center;
+        position: fixed;
+        _position: absolute;
+        right: 10px;
+        bottom: 100px;
+        _bottom: auto;
+        cursor: pointer;
+        opacity: .6;
+        filter: Alpha(opacity=60);
+    }
+</style>
+<script type="text/javascript">
+    (function() {
+        var $backToTopTxt = "返回顶部", $backToTopEle = $('<div class="backToTop"></div>').appendTo($("body"))
+            .text($backToTopTxt).attr("title", $backToTopTxt).click(function() {
+                $("html, body").animate({ scrollTop: 0 }, 120);
+            }), $backToTopFun = function() {
+            var st = $(document).scrollTop(), winh = $(window).height();
+            (st > 0)? $backToTopEle.show(): $backToTopEle.hide();
+            //IE6下的定位
+            if (!window.XMLHttpRequest) {
+                $backToTopEle.css("top", st + winh - 166);
+            }
+        };
+        $(window).bind("scroll", $backToTopFun);
+        $(function() { $backToTopFun(); });
+    })();
+</script>
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?b366c32c16eadcb09dc433c6c791b215";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+<script src="js/meetingModel2.js"></script>
+<script src="js/bootstrap.js" ></script>
+<script src="js/leftTime.min.js" ></script>
+<script src="js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="js/jquery.eeyellow.Timeline.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.VivaTimeline').vivaTimeline({
+            carousel: true,
+            carouselTime: 3000
+        });
+    });
+</script>
+</body>
+</html>
