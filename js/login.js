@@ -24,6 +24,7 @@ function triggerfile_l() {
     var file = $('#license_upload').val();
     var pos = file.lastIndexOf("\\");
     var filename = file.substring(pos+1);
+    console.log(filename);
     if(filename.length != 0) {
         $('#license_img').removeClass('hidden');
         $('#license_label').addClass("hidden");
@@ -73,6 +74,15 @@ function file_upload(id) {
 }
 
 function Login() {
+    var Token;
+    $.ajax({
+        type:'GET',
+        url:url+'account/csrf_token',
+        success:function(data){
+        console.log(data);
+        Token = data.token;
+        }
+    });
     var flag =true;
     var email = $("#form-email").val();
     var passwd = $("#form-passwd").val();
@@ -88,23 +98,21 @@ function Login() {
         var formData = new FormData();
         formData.append("username", email);
         formData.append("password", passwd);
+        formData.append("csrfmiddlewaretoken",_token);
         $.ajax({
             type: 'POST',
+
             url: url + 'account/login/',
             data: formData,
             contentType: false,
             async: false,
             cache: false,
             processData: false,
+            headers:{'X-CSRFToken',Token},
             success: function (data) {
                 if (data.message == "success") {
                     //lert("SUcces.");
-                    /*
-                                    var exp = new Date();
-                                    exp.setHours(exp.getHours()+24*7);
-                                    document.cookie = 'SmartChainToken' + "=" +  data.SmartChainToken + ";expires="+ exp.toUTCString();
-                    */
-                    console.log(data);
+                   console.log(data);
 
                     //window.location.href = 'index.html';
                 }
@@ -193,20 +201,16 @@ function enterprise_reg() {
         alert('请输入地址');
         flag = false;
     }
-    else if (name === "" || name === null){
-        alert('请输入联系人姓名');
-        flag = false;
-    }
     else if (email === "" || email === null){
         alert('请输入邮箱');
         flag = false;
     }
-    else if(!checkEmail(email)){
-        alert('邮箱格式不正确');
-        flag = false;
-    }
     else if (phone === "" || phone === null){
         alert('请输入手机号');
+        flag = false;
+    }
+    else if(!checkEmail(email)){
+        alert('邮箱格式不正确');
         flag = false;
     }
     else if (passwd === "" || passwd === null){
@@ -239,30 +243,66 @@ function enterprise_reg() {
         formData.append("contacts", name);
         formData.append("phone_number", phone);
         formData.append("address", address);
-        formData.append("business_license", license_img);
-        formData.append("id_card_fornt", id_img_f);
+        formData.append("bussiness_license", license_img);
+        formData.append("id_card_front", id_img_f);
         formData.append("id_card_reverse", id_img_b);
+        console.log(formData);
         var settings = {
+            "data":formData,
             "async": false,
             "crossDomain": true,
             "url": url + "account/organization_user_register/",
             "method": "POST",
-            "headers": {},
             "processData": false,
-            "contentType": false,
-            "mimeType": "multipart/form-data",
-            "data": formData
+            "contentType":"multipart/form-data"
         };
 
-        $.ajax(settings).done(function (response) {
+        /*$.ajax(settings).done(function (response) {
             console.log(response);
-            alert(response);
-        });
+        });*/
+        var xmlHttp = new XMLHttpRequest();
+        function CommentAll() {
+            //第二步，注册回调函数
+            xmlHttp.onreadystatechange = callback1;
+            //{
+            //    if (xmlHttp.readyState == 4)
+            //        if (xmlHttp.status == 200) {
+            //            var responseText = xmlHttp.responseText;
+
+            //        }
+            //}
+            //第三步，配置请求信息，open(),get
+            //get请求下参数加在url后，.ashx?methodName = GetAllComment&str1=str1&str2=str2
+            xmlHttp.open("post", url+"account/organization_user_register/", true);
+
+            //post请求下需要配置请求头信息
+            xmlHttp.setRequestHeader("Content-Type", "multipart/form-data");
+
+            //第四步，发送请求,post请求下，要传递的参数放这
+            xmlHttp.send(formData);//"
+        }
+//第五步，创建回调函数
+        function callback1() {
+            if (xmlHttp.readyState == 4)
+                if (xmlHttp.status == 200) {
+                    //取得返回的数据
+                    var data = xmlHttp.responseText;
+                    //json字符串转为json格式
+                    data = eval(data);
+                    console.log(data);
+                    $.each(data,
+                        function(i, v) {
+                            alert(v);
+                        });
+                }
+        }
+        CommentAll();
     }
 }
 
 function checkEmail(str) {
-    var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
+    console.log(str);
+    var reg = new RegExp("^[a-zA-Z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
     if(!reg.test(str))
         return false;
     return true;
