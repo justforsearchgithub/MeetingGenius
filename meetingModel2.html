@@ -53,9 +53,9 @@
 <div class="w-1200 auto mt-70" >
     <div class="introduction" id="introduction">
         <div style="text-align: center">
-            <button id="paper_download" onclick="window.open('http://www.baidu.com')">论文模板</button>
-            <button id="join_meeting" data-toggle="modal" data-target="#join-meeting">参加会议</button>
-            <button id="paper_upload" data-toggle="modal" data-target="#paper-upload">我要投稿</button>
+            <button id="paper_download" onclick="downloadPaper()">论文模板</button>
+            <button id="join_meeting" onclick="checkLogin()" data-toggle="modal" data-target="#join-meeting">参加会议</button>
+            <button id="paper_upload" onclick="checkLogin()" data-toggle="modal" data-target="#paper-upload">我要投稿</button>
         </div>
         <h1>会议简介</h1>
         <div class="col-md-4  col-xs-12  fl " style="font-size: 20px">
@@ -72,9 +72,13 @@
 <div class="Important_date">
     <div class="w-1200 auto">
     <h2>重要日期</h2>
-    <dl>
-        <dt>投稿截止:<span>{{ accept_due }}</span></dt>
-        <dd>修改截止:<span>{{ change_due }}</span></dd>
+        <dl>
+            <dt>投稿开始:<span>{{ accept_start }}</span></dt>
+            <dd>投稿截止:<span>{{ accept_due }}</span></dd>
+        </dl>
+    <dl class="ml-30">
+        <dt>修改开始:<span>{{ accept_due }}</span></dt>
+        <dd>修改截止:<span>{{ modify_due }}</span></dd>
     </dl>
     <dl class="ml-30 mr-30">
         <dt>注册开始:<span>{{ register_start }}</span></dt>
@@ -118,7 +122,7 @@
 <div class="Important_date">
     <div class="w-1200 auto">
         <h2>征文要求</h2>
-        <div class="explain-info">{{ soliciting_requirement }}</div>
+        <div class="explain-info" style="color: #ffffff">{{ soliciting_requirement }}</div>
     </div>
 </div>
 <!-- paper end-->
@@ -155,25 +159,25 @@
             <div class="modal-body">
                 <div class="form-group" style="margin-top: 5px">
                     <label>姓名</label>
-                    <input type="text" class="form-control" id="person_name">
+                    <input type="text" class="form-control" id="person_name" placeholder="请输入姓名">
                 </div>
                 <div class="form-group" style="margin-top: 5px">
                     <label>性别</label>
                     <div style="height: 46px;font-size: 18px; padding-top: 8px">
-                        <input type="radio" name="sex" id="person_gender_m" value="男"> 男
+                        <input type="radio" name="sex" id="person_gender_m" value="男" checked> 男
                         <input type="radio" name="sex" id="person_gender_f" value="女"> 女
                     </div>
                 </div>
                 <div class="form-group" style="margin-top: 5px">
                     <label>是否预订住宿</label>
                     <div style="height: 46px;font-size: 18px; padding-top: 8px">
-                        <input type="radio" name="hotel" id="hotel_y" value="是"> 是
-                        <input type="radio" name="hotel" id="hotel_n" value="否"> 否
+                        <input type="radio" name="hotel" id="hotel_y" value=true checked> 是
+                        <input type="radio" name="hotel" id="hotel_n" value=false> 否
                     </div>
                 </div>
                 <div class="form-group" style="margin-top: 5px">
                     <label>论文编号</label>
-                    <input type="text" class="form-control" id="paper_num"  aria-describedby="sizing-addon1" placeholder="没有投稿可以不填">
+                    <input type="text" class="form-control" id="paper_num"  aria-describedby="sizing-addon1" placeholder="没有投稿请勿填写">
                 </div>
                 <div class="form-group" style="margin-top: 5px">
                     <label>缴费凭证</label>
