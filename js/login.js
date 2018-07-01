@@ -6,7 +6,6 @@ jQuery(document).ready(function() {
     });
 
     $('.registration-form').on('submit', function(e) {
-
         $(this).find('input[type="text"], textarea').each(function(){
             if( $(this).val() == "" ) {
                 e.preventDefault();

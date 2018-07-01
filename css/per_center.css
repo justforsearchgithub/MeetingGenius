@@ -11,7 +11,7 @@ body {
 body,
 html {
     height: 100%;
-    background-color: #583e7e;
+    background-color: #ffffff;
 }
 
 .nav .open > a {
@@ -192,7 +192,7 @@ html {
 .hamburger.is-closed:before {
     -webkit-transform: translate3d(0, 0, 0);
     -webkit-transition: all 0.35s ease-in-out;
-    color: #ffffff;
+    color: #002a80;
     content: '';
     display: block;
     font-size: 14px;
@@ -217,17 +217,17 @@ html {
 }
 .hamburger.is-closed .hamb-top {
     -webkit-transition: all 0.35s ease-in-out;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(0, 0, 255, 0.7);
     top: 5px;
 }
 .hamburger.is-closed .hamb-middle {
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(0, 0, 255, 0.7);
     margin-top: -2px;
     top: 50%;
 }
 .hamburger.is-closed .hamb-bottom {
     -webkit-transition: all 0.35s ease-in-out;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(0, 0, 255, 0.7);
     bottom: 5px;
 }
 .hamburger.is-closed .hamb-top,
@@ -295,7 +295,7 @@ html {
 /* SOME DEMO STYLES - NOT REQUIRED */
 body,
 html {
-    background-color: #583e7e;
+    background-color: #ffffff;
 }
 body h1,
 body h2,
