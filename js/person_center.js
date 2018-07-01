@@ -1,3 +1,4 @@
+var url='http://140.143.182.214:8090/';
 function addChildAccount2(){
     $('#myModal').modal({backdrop: 'static', keyboard: true});
 }
@@ -7,12 +8,18 @@ $(document).ready(function () {
         el: '#per_info',
         data: {
             is_normal:false,
+            is_unit:true,
             not_normal:true,
-            account_name:'Tom',
-            account_mail:'123@163.com',
+            account_name:'123@163.com',
             addchildaccount_name:'',
             addchildaccount_password:'',
             setaccount_password:'请设置新的密码',
+            currentindex:1,
+
+            temp_name:'',
+            temp_password:'',
+            temp_password2:'',
+
             childaccounts:[
                 {
                     name:'456@163.com',
@@ -22,6 +29,35 @@ $(document).ready(function () {
                     name:'789@163.com',
                     password:'2222'
                 }
+            ],
+            temp:{
+                name:'',
+                description:'',
+                requirement:'',
+                starttime:'',
+                endtime:'',
+                firsttime:'',
+                secondtime:'',
+                paperinfo:'',
+                contactname:'',
+                contactphone:'',
+                contactmail:''
+            },
+            meetings:[
+                {
+                    id:1,
+                    name:'混合现实区块链社交研讨会',
+                    description:'123',
+                    requirement:'456',
+                    starttime:'2018-10-10 12:30',
+                    endtime:'2018-11-10 12:30',
+                    firsttime:'2018-10-25 12:30',
+                    secondtime:'2018-11-20 12:30',
+                    paperinfo:'789',
+                    contactname:'联系人',
+                    contactphone:'123456',
+                    contactmail:'1@126.com'
+                }
             ]
         },
         methods:{
@@ -29,30 +65,168 @@ $(document).ready(function () {
                 document.getElementById("div_account").style.display="block";
                 document.getElementById("div_collection").style.display="none";
                 document.getElementById("div_childaccount").style.display="none";
+                document.getElementById("div_meeting").style.display="none";
                 document.getElementById("div_password").style.display="none";
+
+                document.getElementById("div_meeting_info").style.display="none";
+                document.getElementById("div_paper_info").style.display="none";
             },
             click_collection: function (event) {
                 document.getElementById("div_account").style.display="none";
                 document.getElementById("div_collection").style.display="block";
                 document.getElementById("div_childaccount").style.display="none";
+                document.getElementById("div_meeting").style.display="none";
                 document.getElementById("div_password").style.display="none";
+
+                document.getElementById("div_meeting_info").style.display="none";
+                document.getElementById("div_paper_info").style.display="none";
             },
             click_childaccount: function (event) {
                 document.getElementById("div_account").style.display="none";
                 document.getElementById("div_collection").style.display="none";
                 document.getElementById("div_childaccount").style.display="block";
+                document.getElementById("div_meeting").style.display="none";
                 document.getElementById("div_password").style.display="none";
+
+                document.getElementById("div_meeting_info").style.display="none";
+                document.getElementById("div_paper_info").style.display="none";
              },
+            click_meeting: function (event) {
+                $.ajax({
+                    type: 'GET',
+                    url: url + 'display/my_conference',
+
+                    contentType: false,
+                    async: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        if (data.message == "success") {
+                            for(var ptr=0;ptr<data.length;ptr++)
+                            {
+                                this.$data.meetings[ptr].id=data[ptr].id;
+                                this.$data.meetings[ptr].name=data[ptr].name;
+                                Vue.set(vm.$data.meetings,ptr,vm.$data.meetings[ptr]);
+                            }
+                        }
+                    }
+                });
+                document.getElementById("div_account").style.display="none";
+                document.getElementById("div_collection").style.display="none";
+                document.getElementById("div_childaccount").style.display="none";
+                document.getElementById("div_meeting").style.display="block";
+                document.getElementById("div_password").style.display="none";
+
+                document.getElementById("div_meeting_info").style.display="none";
+                document.getElementById("div_paper_info").style.display="none";
+            },
             click_password: function (event) {
                 document.getElementById("div_account").style.display="none";
                 document.getElementById("div_collection").style.display="none";
                 document.getElementById("div_childaccount").style.display="none";
+                document.getElementById("div_meeting").style.display="none";
                 document.getElementById("div_password").style.display="block";
+
+                document.getElementById("div_meeting_info").style.display="none";
+                document.getElementById("div_paper_info").style.display="none";
                 },
+            click_meeting_info: function (no) {
+                var formData = new FormData();
+                formData.append("id",this.$data.meetings[no].id);
+                $.ajax({
+                    type: 'GET',
+                    url: url + 'conference/conference/'+this.$data.meetings[no].id+'/information/',
+                    contentType: false,
+                    async: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        if (data.message == "success") {
+                            this.$data.temp.name=data.title;
+                            this.$data.temp.description=data.introduction;
+
+                            this.$data.temp.requirement=data.register_requirement;
+                            this.$data.temp.paperinfo=data.soliciting_requirement;
+
+                        }
+                    }
+                });
+
+                document.getElementById("div_meeting").style.display="none";
+                document.getElementById("div_meeting_info").style.display="block";
+                this.$data.currentindex=no;
+                this.$data.temp=this.$data.meetings[this.$data.currrentindex];
+            },
+            click_paper_info: function (no) {
+                this.$data.currentindex.no;
+                document.getElementById("div_meeting").style.display="none";
+                document.getElementById("div_paper_info").style.display="block";
+            },
+            click_meeting_cancal: function (event) {
+                document.getElementById("div_meeting").style.display="block";
+                document.getElementById("div_meeting_info").style.display="none";
+            },
+            click_meeting_set: function (event) {
+                document.getElementById("div_meeting").style.display="block";
+                document.getElementById("div_meeting_info").style.display="none";
+                Vue.set(vm.$data.meetings,currentindex,vm.$data.temp);
+            },
+            click_paper_end: function (event) {
+                document.getElementById("div_meeting").style.display="block";
+                document.getElementById("div_paper_info").style.display="none";
+            },
             addChildAccount:function (event) {
                 $('#myModal').modal({backdrop: 'static', keyboard: true});
             },
             addChildAccount2:function (event) {
+                $('#myModal2').modal({backdrop: 'static', keyboard: true});
+            },
+            addChildAccount: function (event) {
+                var formData = new FormData();
+                formData.append("username", this.$data.addchildaccount_name);
+                formData.append("password", this.$data.addchildaccount_password);
+                formData.append("confirm_password", this.$data.addchildaccount_password);
+                $.ajax({
+                    type: 'POST',
+                    url: url + 'account/organization_sub_user_register/',
+                    data: formData,
+                    contentType: false,
+                    async: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        if (data.message == "success") {
+                            alert("添加成功");
+
+                        }
+                    }
+                });
+            },
+            setcapassword: function (no) {
+                this.$data.currentindex=no;
+                this.$data.temp_name=this.$data.childaccounts[this.$data.currentindex].name;
+                $('#myModal3').modal({backdrop: 'static', keyboard: true});
+            },
+            complete_ac_password: function (event) {
+                  if(this.$data.temp_password===this.$data.temp_password2)
+                  {
+                      //上传修改密码
+                      //修改本地
+                        var temp_object={
+                            name:this.$data.temp_name,
+                            password:this.$data.temp_password
+                        }
+                      Vue.set(vm.$data.childaccounts,vm.$data.currentindex,temp_object);
+                  }
+                  else{
+                      alert("密码不一致！");
+                  }
+            },
+            deleteca: function (no) {
+                this.$data.childaccounts.splice(no,1);
+
+                //document.getElementById("div_childaccount").style.display="none";
+                //document.getElementById("div_childaccount").style.display="block";
 
             }
 

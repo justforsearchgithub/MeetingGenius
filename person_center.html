@@ -5,11 +5,10 @@
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-theme.css">
     <link rel="stylesheet" href="css/per_center.css">
-    <link rel="stylesheet" href="css/per_center.css">
     <link rel="stylesheet" href="css/alter.css">
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.css">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-
-
+    <link rel="stylesheet" type="text/css" href="css/jquery.eeyellow.Timeline.css"/>
 
     <title>Title</title>
 </head>
@@ -61,8 +60,11 @@
             <li v-if="is_normal" v-on:click="click_collection" >
                 <a href="#" ><i class="fa fa-fw fa-folder"></i> 收藏</a>
             </li>
-            <li v-if="not_normal" v-on:click="click_childaccount">
+            <li v-if="is_unit" v-on:click="click_childaccount">
                 <a href="#" ><i class="fa fa-fw fa-file-o"></i> 子帐号列表</a>
+            </li>
+            <li v-on:click="click_meeting">
+                <a href="#"><i class="fa fa-fw fa-cog"></i> 会议管理</a>
             </li>
             <li v-on:click="click_password">
                 <a href="#"><i class="fa fa-fw fa-cog"></i> 修改密码</a>
@@ -105,9 +107,6 @@
                             <div class="text-info">
                                 帐号名：{{account_name}}
                             </div>
-                            <div class="text-info">
-                                邮箱：{{account_mail}}
-                            </div>
                         </div>
                     </div>
             </div>
@@ -141,19 +140,287 @@
                         </h3>
                     </div>
                     <div class="panel-body" align="center" >
-                        <ul class="list-group" v-for="childaccount in childaccounts" >
+                        <ul class="list-group" v-for="(childaccount,index) in childaccounts" >
                             <li class="list-group-item">子账户名：{{childaccount.name}} &nbsp;&nbsp; 子账户密码:{{childaccount.password}}&nbsp;&nbsp;&nbsp;&nbsp;
-                                <a class="material-icons"  >build</a>
-                                <a class="material-icons" >delete_foreve</a>
+                                <a class="material-icons" v-on:click="setcapassword(index)" >build</a>     <!--model3-->
+                                <a class="material-icons" v-on:click="deleteca(index)">delete_foreve</a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="addTimeLine" >
-                <button class="btn btn-primary btn-lg" v-on:click="addChildAccount">添加子账户</button>
+                <button class="btn btn-primary btn-lg" v-on:click="addChildAccount2">添加子账户</button>
             </div>
         </div>
+
+        <div class="container" style="display:none" id="div_meeting">
+            <div class="row" style="width: 85%">
+                <!--<div class="col-lg-8 col-lg-offset-2">-->
+                <!--会议管理-->
+                <div class="panel panel-default" >
+                    <div class="panel-heading" style="height: 50px">
+                        <h3 class="panel-title" style="text-align: center">
+                            会议管理
+                        </h3>
+                    </div>
+                    <div class="panel-body" >
+                        <ul class="list-group" v-for="(meeting,index) in meetings" >
+                            <li class="list-group-item">会议名称：{{meeting.name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                                <button type="button" class="btn btn-primary" v-on:click="click_meeting_info(index)">修改会议信息</button>
+                                <button type="button" class="btn btn-success" v-on:click="click_paper_info(index)">投稿情况</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" style="display:none" id="div_meeting_info">
+            <div class="row" style="width: 85%">
+                <!--<div class="col-lg-8 col-lg-offset-2">-->
+
+                <div class="step-content">
+                    <h3>会议详细信息</h3>
+                    <div class="step1-title">
+                        <span class="num">1</span>修改会议信息
+                    </div>
+
+                    <div style="margin-top:30px">
+                        <label class="input-label">会议名称</label>
+                        <div class="input-group" style="width:80%">
+                            <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1" v-model="temp.name">
+                        </div>
+
+                    </div>
+
+                    <div style="margin-top:30px">
+                        <label class="input-label">会议简介</label>
+                        <div class="input-group" style="width:80%">
+            <textarea style="height:100px; resize:none" class="form-control" placeholder="Username"
+                      aria-describedby="basic-addon1" v-model="temp.description"></textarea>
+                        </div>
+
+                    </div>
+
+                    <div style="margin-top:30px">
+                        <label class="input-label">注册要求</label>
+                        <div class="input-group" style="width:80%">
+            <textarea style="height:70px; resize:none" class="form-control" placeholder="Username"
+                      aria-describedby="basic-addon1" v-model="temp.requirement"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="step1-title">
+                        <span class="num">2</span>填写会议相关日期
+                    </div>
+                    <div style="margin-top:30px">
+                        <label class="input-label">截稿日期</label>
+                        <div class="input-group" style="display: inline-block">
+                            <input size="10" type="text" value="" class="form_datetime">
+                        </div>
+                        <label class="input-label" style="width:250px;float:none;margin-left:20%">第一次审核结果通知日期</label>
+                        <div class="input-group" style="display: inline-block">
+                            <input size="10" type="text" value="" class="form_datetime">
+                        </div>
+                    </div>
+
+
+                    <div style="margin-top:30px">
+                        <label class="input-label" style="width:200px">修改稿件截稿日期</label>
+                        <div class="input-group" style="display: inline-block">
+                            <input size="10" type="text" value="" class="form_datetime">
+
+                        </div>
+                        <label class="input-label" style="width:250px;float:none;margin-left:20%">第二次审核结果通知日期</label>
+                        <div class="input-group" style="display: inline-block">
+                            <input size="10" type="text" value="" class="form_datetime">
+                        </div>
+                    </div>
+
+
+                    <div class="step1-title">
+                        <span class="num">3</span>填写征文信息和要求
+                    </div>
+
+                    <div style="margin-top:30px">
+                        <label class="input-label">征文信息</label>
+                        <div class="input-group" style="width:80%">
+            <textarea style="height:70px; resize:none" class="form-control" placeholder="Username"
+                      aria-describedby="basic-addon1" v-model="temp.paperinfo"></textarea>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="step1-title">
+                        <span class="num">4</span>填写会议流程
+                    </div>
+
+
+                    <div class="container" id="TimeLine">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="VivaTimeline">
+                                    <dl>
+                                        <dd class="pos-left clearfix" v-for="activite in activities">
+                                            <div class="circ"></div>
+                                            <div class="time">Feb 03</div>
+                                            <div class="events">
+                                                <div class="events-header">Event Heading</div>
+                                                <div class="events-body">
+                                                    <div class="row">
+                                                        <div class="events-desc timelineDe">
+                                                            test1
+                                                        </div>
+                                                        <div style="float:right;margin-right:20px">
+                                                            <button class="btn btn-danger">-</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </dd>
+
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="addTimeLine">
+                        <button class="btn btn-primary btn-lg" onclick="showAddTimeLine()">添加会议活动日程安排</button>
+                    </div>
+
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+                         data-backdrop=”static” data-keyboard="false">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                        &times;
+                                    </button>
+                                    <h4 class="modal-title" id="myModalLabel">
+                                        添加活动一个会议流程
+                                    </h4>
+                                </div>
+                                <div class="modal-body" style="height:400px; text-align: left">
+
+                                    <div style="margin-top:30px">
+                                        <label class="input-label" style="width:150px;">活动开始日期</label>
+                                        <div class="input-group" style="display: inline-block">
+                                            <input id="AddTimeLine_StartTime" type="text" value=""
+                                                   class="form-control form_datetimeTimeLine">
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-top:30px">
+                                        <label class="input-label" style="width:150px;">活动结束日期</label>
+                                        <div class="input-group" style="display: inline-block">
+                                            <input id="AddTimeLine_FinishTime" type="text" value=""
+                                                   class="form-control form_datetimeTimeLine">
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-top:30px">
+                                        <label class="input-label">活动地点</label>
+                                        <div class="input-group" style="width:70%">
+                                            <input id="AddTimeLine_Location" type="text" class="form-control" placeholder="Username"
+                                                   aria-describedby="basic-addon1">
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-top:30px">
+                                        <label class="input-label">活动描述</label>
+                                        <div class="input-group" style="width:70%">
+                            <textarea id="AddTimeLine_Description" style="height:70px; resize:none" class="form-control"
+                                      placeholder="Username" aria-describedby="basic-addon1"></textarea>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                    </button>
+                                    <button type="button" class="btn btn-primary" onclick="AddTimeLine()">
+                                        提交更改
+                                    </button>
+                                </div>
+
+                            </div>
+
+
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal -->
+
+
+                    <div class="step1-title">
+                        <span class="num">5</span>填写会议主办方信息
+                    </div>
+
+                    <div style="margin-top:30px">
+                        <label class="input-label">联系人姓名</label>
+                        <div class="input-group" style="width:80%">
+                            <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1" v-model="temp.contactname">
+                        </div>
+
+                    </div>
+
+                    <div style="margin-top:30px">
+                        <label class="input-label">联系人电话</label>
+                        <div class="input-group" style="width:80%">
+                            <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1" v-model="temp.contactphone">
+                        </div>
+
+                    </div>
+
+                    <div style="margin-top:30px">
+                        <label class="input-label">联系人邮箱</label>
+                        <div class="input-group" style="width:80%">
+                            <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1" v-model="temp.contactmail">
+                        </div>
+
+                    </div>
+                </div>
+                <div align="center">
+                    <button type="button" class="btn btn-primary" v-on:click="click_meeting_cancal">取消</button>
+
+                    <button type="button" class="btn btn-success" v-on:click="click_meeting_set">确定</button>
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+        <div class="container" style="display:none" id="div_paper_info">
+            <div class="row" style="width: 85%">
+                <!--<div class="col-lg-8 col-lg-offset-2">-->
+                <!--收藏-->
+                <div class="panel panel-default" >
+                    <div class="panel-heading" style="height: 50px">
+                        <h3 class="panel-title" style="text-align: center">
+                            投稿情况
+                        </h3>
+                    </div>
+                    <div class="panel-body" >
+                        <ul class="list-group" v-for="(paper,index) in papers" >
+                            <li class="list-group-item">论文题目：{{paper.name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文作者：{{paper.author}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{paper.status}}
+                                <button type="button" class="btn btn-primary" v-on:click="click_meeting_info(index)">填写审核意见</button>
+                                <button type="button" class="btn btn-success" v-on:click="click_paper_info(index)">下载</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div align="center">
+                    <button type="button" class="btn btn-primary" v-on:click="click_paper_end">返回</button>
+                </div>
+            </div>
+        </div>
+
 
         <div class="container" style="display:none" id="div_password">
             <div class="row" style="width: 85%">
@@ -182,8 +449,8 @@
     </div>
 
 
-
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+    <!--添加子账户-->
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
          data-backdrop=”static” data-keyboard="false">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -191,7 +458,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                         &times;
                     </button>
-                    <h4 class="modal-title" id="myModalLabel">
+                    <h4 class="modal-title" >
                         添加一个子账户
                     </h4>
                 </div>
@@ -218,8 +485,55 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭
                     </button>
-                    <button type="button" class="btn btn-primary" v-on:click="addChildAccount2()">
+                    <button type="button" class="btn btn-primary" v-on:click="addChildAccount3">
                         提交添加
+                    </button>
+                </div>
+
+            </div>
+
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+
+    <!--修改子账户密码-->
+    <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+         data-backdrop=”static” data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" >
+                        修改子账户{{temp_name}}密码
+                    </h4>
+                </div>
+                <div class="modal-body" style="height:400px; text-align: left">
+
+                    <div style="margin-top:30px">
+                        <label class="input-label" style="width:150px;">输入密码</label>
+                        <div class="input-group" style="display: inline-block">
+                            <input v-model="temp_password" type="text" value=""
+                                   class="form-control form_datetimeTimeLine">
+                        </div>
+                    </div>
+
+                    <div style="margin-top:30px">
+                        <label class="input-label" style="width:150px;">确认密码密码</label>
+                        <div class="input-group" style="display: inline-block">
+                            <input v-model="temp_password2" type="text" value=""
+                                   class="form-control form_datetimeTimeLine">
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" v-on:click="complete_ac_password">
+                        确认更改
                     </button>
                 </div>
 
