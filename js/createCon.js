@@ -58,7 +58,6 @@ function PaperExample(){
         $('#PaperExampleFileName').html('&nbsp;&nbsp;选择文件');
 }
 function showAddTimeLine(){
-
     $('#myModal').modal({backdrop: 'static', keyboard: true});
 }
 function GetTime(Timestr){
