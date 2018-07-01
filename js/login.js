@@ -1,4 +1,4 @@
-var url='http://140.143.182.214:8090/';
+var url='http://139.199.24.235:80/';
 jQuery(document).ready(function() {
 
     $('.registration-form input[type="text"], .registration-form textarea').on('focus', function() {
@@ -74,7 +74,7 @@ function file_upload(id) {
 }
 
 function Login() {
-    var Token;
+    /*var Token;
     $.ajax({
         type:'GET',
         url:url+'account/csrf_token',
@@ -82,7 +82,7 @@ function Login() {
         console.log(data);
         Token = data.token;
         }
-    });
+    });*/
     var flag =true;
     var email = $("#form-email").val();
     var passwd = $("#form-passwd").val();
@@ -98,7 +98,6 @@ function Login() {
         var formData = new FormData();
         formData.append("username", email);
         formData.append("password", passwd);
-        formData.append("csrfmiddlewaretoken",_token);
         $.ajax({
             type: 'POST',
 
@@ -108,8 +107,9 @@ function Login() {
             async: false,
             cache: false,
             processData: false,
-            headers:{'X-CSRFToken',Token},
+            //headers:{'X-CSRFToken',Token},
             success: function (data) {
+                console.log(data);
                 if (data.message == "success") {
                     //lert("SUcces.");
                    console.log(data);
@@ -171,7 +171,7 @@ function user_reg() {
 
         $.ajax(settings).done(function (response) {
             console.log(response);
-            alert(response);
+            //alert(response);
         });
     }
 }
