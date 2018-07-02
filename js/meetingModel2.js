@@ -1,4 +1,5 @@
 var url = '';
+var loggedIn = true;
 var meeting = new Vue({
     el: '#info',
     data: {
@@ -7,7 +8,7 @@ var meeting = new Vue({
         organization: '会议主办方XXX',
         contact: '联系人ABC',
         phonenum: '1234567890',
-        address: '甲省乙市丙县1234号',
+        email: '123456@789.com',
         introduction: '这里是会议简介部分',
         soliciting_requirement: '这里是投稿要求',
         register_requirement: '这里是注册会议要求',
@@ -98,8 +99,7 @@ $(document).ready(function () {
             meeting.conference_due = response.data.conference_due;
             meeting.contact = response.data.organization.contacts;
             meeting.phonenum = response.data.organization.phone_number;
-            meeting.address = response.data.organization.address;
-            /*TODO:contact info*/
+            meeting.email = response.data.organization.email;
         })
     }
     //日期倒计时
@@ -127,7 +127,16 @@ $(document).ready(function () {
             }
         });
     });
-})
+
+    var username = GetCurrentUser();
+    if(username === ""){
+        loggedIn = false;
+    }
+    else{
+        loggedIn = true;
+
+    }
+});
 
 function triggerfile_fee() {
     var file = $('#fee_upload').val();
@@ -167,20 +176,46 @@ function join_register() {
     var reservation = $("input[name='hotel']:checked").val();
     var information = $("textarea[id='extra_info']").val();
     var paper_id = $("input[id='paper_num']").val();
-    var pay_vouvher = $('#fee_upload')[0].files[0];
+    var pay_voucher = $('#fee_upload')[0].files[0];
     var listen_only = false;
     if (name === null || name === ''){
         alert('请填写姓名');
         return;
     }
-    else if (pay_vouvher === null || pay_vouvher === undefined){
+    else if (pay_voucher === null || pay_voucher === undefined){
         alert('请上传缴费凭证图');
         return;
     }
     if (paper_id === null || paper_id === ""){
         listen_only = true;
     }
-    /*TODO:ajax with file*/
+    /*TODO:check ajax with file*/
+    var temp_json = [
+        {'name': name},
+        {'gender': gender},
+        {'reservation': reservation},
+        {'information': information}
+    ];
+    var formData = new FormData();
+    formData.append('listen_only', listen_only);
+    formData.append('paper_id', paper_id);
+    formData.append('participants', temp_json);
+    formData.append('pay_voucher', pay_voucher);
+    var settings = {
+        "async": false,
+        "crossDomain": true,
+        "url": url + "conference/" + url + "/conference_register",
+        "method": "POST",
+        "headers": {},
+        "processData": false,
+        "contentType": false,
+        "mimeType": "multipart/form-data",
+        "data": formData
+    };
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+        alert(response);
+    });
     /*
     url: conference/<会议的主键id>/conference_register
     post: listen_only  仅仅聆听会议  传字符串 true 或者 false 就好
@@ -205,7 +240,28 @@ function paper_upload() {
         alert('未上传论文');
         return;
     }
-    /*TODO:ajax with file*/
+    /*TODO:check ajax with file*/
+    var formData = new FormData();
+    formData.append('authors', authors);
+    formData.append('institute', institute);
+    formData.append('paper_name', paper_name);
+    formData.append('paper_abstract', paper_abstract);
+    formData.append('paper' ,paper);
+    var settings = {
+        "async": false,
+        "crossDomain": true,
+        "url": url + "conference/" + url + "/paper_submit",
+        "method": "POST",
+        "headers": {},
+        "processData": false,
+        "contentType": false,
+        "mimeType": "multipart/form-data",
+        "data": formData
+    };
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+        alert(response);
+    });
     /*
 url: conference/<会议的主键id>/paper_submit
 说明：普通用户提交论文
@@ -215,8 +271,7 @@ from 前端：
 }
 
 function checkLogin() {
-    var cookie = document.cookie;
-    if(false){
+    if(loggedIn === false){
         alert('您尚未登陆！');
         $('#join-meeting').addClass('hidden');
         $('#paper-upload').addClass('hidden');
@@ -260,3 +315,20 @@ var getCookie = function (name) {
     else
         return null;
 };
+
+function add_favorite() {
+    checkLogin();
+}
+
+function GetCurrentUser(){
+    var user;
+    $.ajax({
+        type: 'GET',
+        url: url + 'account/username/',
+        success: function (data) {
+            console.log(data);
+            user = data.username;
+        }
+    });
+    return user;
+}
