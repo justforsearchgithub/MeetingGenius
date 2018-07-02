@@ -1,20 +1,43 @@
 var url='http://139.199.24.235:80/';
-$( document ).ready(function(){
 
+function GetCurrentUser(){
+    var user;
+    var type;
+    $.ajax({
+        type: 'GET',
+        url: url + 'account/username/',
+        //headers:{'X-CSRFToken',Token},
+        success: function (data) {
+            console.log(data);
+            user = data.username;
+            if(user =="anonymous user"){
+                console.log(0);
+                type =0;
+                $('#NavText1').attr('href','userRegister.html');
+                $('#NavText1').text('免费注册');
+                $('#NavText2').remove('onclick','LogOut()');
+                $('#NavText2').attr('href','login.html');
+                $('#NavText2').text('登录');
+            }
+            else{
+                console.log(1);
+                type = 1;
+                $('#NavText1').attr('href','person_center.html');
+                $('#NavText2').removeAttr('href');
+                $('#NavText1').text ('个人中心');
+                $('#NavText2').text('登出');
+                $('#NavText2').attr('onclick','LogOut()');
+            }
+        }
+    });
+    return type;
+}
+
+$( document ).ready(function(){
     console.log("testtttewtawercawfheiafuhoicawbiuhfouiaw");
 
-    var username = GetCurrentUser();
-    if(username != "anonymous user"){
-        $('#NavText1').attr('href','person_center.html');
-        $('#NavText2').removeAttr('href');
-        $('#NavText1').text ('个人中心');
-        $('#NavText2').text('登出');
-        $('#NavText2').attr('onclick','LogOut()');
-    }else{
-        $('#NavText1').attr('href','userRegister.html');
-        $('#NavText1').text('免费注册');
+    GetCurrentUser();
 
-    }
     $('.registration-form input[type="text"], .registration-form textarea').on('focus', function() {
         $(this).removeClass('input-error');
     });
@@ -318,19 +341,6 @@ function checkEmail(str) {
     return true;
 }
 
-function GetCurrentUser(){
-    var user;
-    $.ajax({
-        type: 'GET',
-        url: url + 'account/username/',
-        //headers:{'X-CSRFToken',Token},
-        success: function (data) {
-            console.log(data);
-            user = data.username;
-        }
-    });
-    return user;
-}
 function LogOut(){
     $.ajax({
         type: 'GET',
@@ -340,7 +350,6 @@ function LogOut(){
             console.log(data);
             if(data.message=='success'){
                 alert('登出成功');
-                window.location.href='index.html';
                 window.location.reload();
             }
         }
