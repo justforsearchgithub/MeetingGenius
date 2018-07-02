@@ -5,6 +5,7 @@ function GetCurrentUser(){
     var type;
     $.ajax({
         type: 'GET',
+        async:false,
         url: url + 'account/username/',
         //headers:{'X-CSRFToken',Token},
         success: function (data) {
@@ -52,6 +53,7 @@ $( document ).ready(function(){
                 $(this).removeClass('input-error');
             }
         });
+
     });
 });
 
@@ -196,7 +198,6 @@ function user_reg() {
             "crossDomain": true,
             "url": url + "account/normal_user_register/",
             "method": "POST",
-            "headers": {},
             "processData": false,
             "contentType": false,
             "data": formData
@@ -295,6 +296,10 @@ function enterprise_reg() {
         $.ajax(settings).done(function (response) {
             console.log(response);
             alert(response);
+            if(response.message =="success"){
+                alert('success');
+                window.location.href='index.html';
+            }
         });
     }
 }
@@ -310,6 +315,7 @@ function checkEmail(str) {
 function LogOut(){
     $.ajax({
         type: 'GET',
+        async:false,
         url: url + 'account/logout/',
         //headers:{'X-CSRFToken',Token},
         success: function (data) {
@@ -318,6 +324,21 @@ function LogOut(){
                 alert('登出成功');
                 window.location.reload();
             }
+        }
+    });
+}
+
+function GoToCreateCon(){
+    $.ajax({
+        type: 'GET',
+        async:false,
+        url: url + 'account/user_type/',
+        //headers:{'X-CSRFToken',Token},
+        success: function (data) {
+           console.log(data);
+           if(data.data.user_type == "organization_user"){
+               window.location.href = "createCon.html";
+           }
         }
     });
 }
