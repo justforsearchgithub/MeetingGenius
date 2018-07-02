@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
     <link rel="stylesheet" type="text/css" href="css/jquery.eeyellow.Timeline.css"/>
 
-    <title>Title</title>
+    <title>会议管理平台</title>
 </head>
 <body>
 <!--顶端导航栏-->
@@ -63,7 +63,7 @@
             <li v-if="is_unit" v-on:click="click_childaccount">
                 <a href="#" ><i class="fa fa-fw fa-file-o"></i> 子帐号列表</a>
             </li>
-            <li v-on:click="click_meeting">
+            <li v-if="not_normal"  v-on:click="click_meeting">
                 <a href="#"><i class="fa fa-fw fa-cog"></i> 会议管理</a>
             </li>
             <li v-on:click="click_password">
@@ -434,11 +434,18 @@
                     </div>
                     <div class="panel-body"  >
                         <div class="input-group" style="display: inline-block">
-                            <input v-model="setaccount_password" type="text" value=""
+                            请输入密码<input v-model="setaccount_password" type="text" value=""
                                    class="form-control form_datetimeTimeLine" >
-                            <button type="button" class="btn btn-success" >确定</button>
-
                         </div>
+                        <div class="input-group" style="display: inline-block">
+                            新密码<input v-model="temp_password" type="text" value=""
+                                   class="form-control form_datetimeTimeLine" >
+                        </div>
+                        <div class="input-group" style="display: inline-block">
+                            确认密码<input v-model="temp_password2" type="text" value=""
+                                   class="form-control form_datetimeTimeLine" >
+                        </div>
+                        <button type="button" class="btn btn-success" v-on:click="set_password">确定</button>
                     </div>
                 </div>
 
@@ -533,6 +540,53 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭
                     </button>
                     <button type="button" class="btn btn-primary" v-on:click="complete_ac_password">
+                        确认更改
+                    </button>
+                </div>
+
+            </div>
+
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+
+    <!--修改账户密码-->
+    <div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+         data-backdrop=”static” data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" >
+                        修改账户密码
+                    </h4>
+                </div>
+                <div class="modal-body" style="height:400px; text-align: left">
+
+                    <div style="margin-top:30px">
+                        <label class="input-label" style="width:150px;">输入密码</label>
+                        <div class="input-group" style="display: inline-block">
+                            <input v-model="temp_password" type="text" value=""
+                                   class="form-control form_datetimeTimeLine">
+                        </div>
+                    </div>
+
+                    <div style="margin-top:30px">
+                        <label class="input-label" style="width:150px;">确认密码</label>
+                        <div class="input-group" style="display: inline-block">
+                            <input v-model="temp_password2" type="text" value=""
+                                   class="form-control form_datetimeTimeLine">
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" v-on:click="complete_password">
                         确认更改
                     </button>
                 </div>

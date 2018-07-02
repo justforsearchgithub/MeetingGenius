@@ -4,15 +4,19 @@ function addChildAccount2(){
 }
 $(document).ready(function () {
     var username;
+    var oldpassword;
     $.ajax({
         type: 'GET',
+        async:false,
         url: url + 'account/username/',
         //headers:{'X-CSRFToken',Token},
         success: function (data) {
-            console.log(data);
-            var username = data.username;
+          //  console.log(data);
+            username = data.username;
         }
     });
+    console.log(username);
+
 
     var vm = new Vue({
         el: '#per_info',
@@ -23,7 +27,7 @@ $(document).ready(function () {
             account_name:'123@163.com',
             addchildaccount_name:'',
             addchildaccount_password:'',
-            setaccount_password:'请设置新的密码',
+            setaccount_password:'',
             currentindex:1,
 
             temp_name:'',
@@ -71,6 +75,12 @@ $(document).ready(function () {
                     contactname:'联系人',
                     contactphone:'123456',
                     contactmail:'1@126.com'
+                }
+            ],
+            papers:[
+                {
+                    name:'123',
+                    author:'456',
                 }
             ]
         },
@@ -195,7 +205,7 @@ $(document).ready(function () {
             addChildAccount2:function (event) {
                 $('#myModal2').modal({backdrop: 'static', keyboard: true});
             },
-            addChildAccount: function (event) {
+            addChildAccount3: function (event) {
                 var formData = new FormData();
                 formData.append("username", this.$data.addchildaccount_name);
                 formData.append("password", this.$data.addchildaccount_password);
@@ -263,6 +273,71 @@ $(document).ready(function () {
                 //document.getElementById("div_childaccount").style.display="none";
                 //document.getElementById("div_childaccount").style.display="block";
 
+            },
+            set_password: function (event) {
+                if(this.$data.temp_password===this.$data.temp_password2)
+                {
+                    var formData = new FormData();
+                    formData.append("username", this.$data.account_name);
+                    formData.append("old_password",this.$data.setaccount_password);
+                    formData.append("new_password", this.$data.temp_password);
+                    formData.append("confirm_password", this.$data.temp_password);
+                    $.ajax({
+                        type: 'POST',
+                        url: url + 'account/change_password/',
+                        data: formData,
+                        contentType: false,
+                        async: false,
+                        cache: false,
+                        processData: false,
+                        success: function (data) {
+                            if (data.message == "success") {
+                                alert('修改成功');
+
+                            }
+                            else if(data.message==="old_password error")
+                            {
+                                console.log(data.message);
+                                alert('旧密码错误！');
+                            }
+                        }
+                    });
+
+                }
+                else{
+                    alert('密码不一致！');
+                }
+
+            },
+            complete_password: function (event) {
+                if(this.$data.temp_password===this.$data.temp_password2)
+                {
+                    var formData = new FormData();
+                    formData.append("username", this.$data.account_name);
+                    formData.append("old_password", oldpassword);
+                    formData.append("new_password", this.$data.temp_password);
+                    formData.append("confirm_password", this.$data.temp_password);
+                    $.ajax({
+                        type: 'POST',
+                        url: url + 'account/change_password/',
+                        data: formData,
+                        contentType: false,
+                        async: false,
+                        cache: false,
+                        processData: false,
+                        success: function (data) {
+                            if (data.message == "success") {
+                                alert('修改成功');
+
+                            }
+                        }
+                    });
+
+                }
+                else{
+                    alert('密码不一致！');
+                }
+
             }
 
         }
@@ -270,33 +345,49 @@ $(document).ready(function () {
 
     $.ajax({
         type: 'GET',
+        async:false,
         url: url + 'account/user_type/',
         //headers:{'X-CSRFToken',Token},
         success: function (data) {
-            if(data.message==='success'){
-                vm.$data.account_name=data.username;
-                if(data.user_type==='normal_user')
+            console.log(data);
+            console.log(1);
+            if(data.message==="success"){
+                vm.$data.account_name=username;
+
+                console.log(6);
+                console.log(data.data.user_type);
+                if(data.data.user_type==="normal_user")
                 {
-                    vm.$data.is_nomal=true;
+                    console.log(2);
+                    vm.$data.is_normal=true;
                     vm.$data.is_unit=false;
                     vm.$data.not_normal=false;
                 }
-                else if(data.user_type==='organization_user')
+                else if(data.data.user_type==='organization_user')
                 {
+                    console.log(3);
                     vm.$data.is_nomal=false;
                     vm.$data.is_unit=true;
                     vm.$data.not_normal=false;
                 }
-                else if(data.user_type==='organization_sub_user')
+                else if(data.data.user_type==='organization_sub_user')
                 {
+                    console.log(4);
                     vm.$data.is_nomal=false;
                     vm.$data.is_unit=false;
                     vm.$data.not_normal=true;
                 }
             }
+            else
+            {
+                console.log(5);
+            }
+            console.log(123);
 
         }
+
     });
+
 
     var trigger = $('.hamburger'),
         overlay = $('.overlay'),
