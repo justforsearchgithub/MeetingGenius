@@ -5,6 +5,7 @@ function GetCurrentUser(){
     var type;
     $.ajax({
         type: 'GET',
+        async:false,
         url: url + 'account/username/',
         //headers:{'X-CSRFToken',Token},
         success: function (data) {
@@ -344,6 +345,7 @@ function checkEmail(str) {
 function LogOut(){
     $.ajax({
         type: 'GET',
+        async:false,
         url: url + 'account/logout/',
         //headers:{'X-CSRFToken',Token},
         success: function (data) {
@@ -352,6 +354,18 @@ function LogOut(){
                 alert('登出成功');
                 window.location.reload();
             }
+        }
+    });
+}
+
+function GoToCreateCon(){
+    $.ajax({
+        type: 'GET',
+        async:false,
+        url: url + 'account/user_type/',
+        //headers:{'X-CSRFToken',Token},
+        success: function (data) {
+           console.log(data);
         }
     });
 }

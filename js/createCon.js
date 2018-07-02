@@ -132,7 +132,7 @@ function AddConference() {
     var register_due = $('#register_due').val();
     var conference_start = $('#conference_start').val();
     var conference_due = $('#conference_due').val();
-    var paper_template = $('#PaperExample')[0].fles[0];
+    var paper_template = $('#PaperExample')[0].files[0];
     var activities = myActivities.stringify();
     var template_no = 1;
     formdata.append('title', title);
@@ -151,7 +151,7 @@ function AddConference() {
 
     $.ajax({
         type: 'POST',
-        url: url + 'conference/add_conference',
+        url: url + 'conference/add_conference/',
         data: formdata,
         contentType: false,
         async: false,
