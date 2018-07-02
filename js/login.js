@@ -5,6 +5,15 @@ $( document ).ready(function(){
 
     var username = GetCurrentUser();
     if(username != "anonymous user"){
+        $('#NavText1').attr('href','person_center.html');
+        $('#NavText2').removeAttr('href');
+        $('#NavText1').text ('个人中心');
+        $('#NavText2').text('登出');
+        $('#NavText2').attr('onclick','LogOut()');
+    }else{
+        $('#NavText1').attr('href','userRegister.html');
+        $('#NavText1').text('免费注册');
+
     }
     $('.registration-form input[type="text"], .registration-form textarea').on('focus', function() {
         $(this).removeClass('input-error');
@@ -321,4 +330,19 @@ function GetCurrentUser(){
         }
     });
     return user;
+}
+function LogOut(){
+    $.ajax({
+        type: 'GET',
+        url: url + 'account/logout/',
+        //headers:{'X-CSRFToken',Token},
+        success: function (data) {
+            console.log(data);
+            if(data.message=='success'){
+                alert('登出成功');
+                window.location.href='index.html';
+                window.location.reload();
+            }
+        }
+    });
 }
