@@ -58,8 +58,8 @@
     <div class="introduction" id="introduction">
         <div style="text-align: center">
             <button id="paper_download" onclick="downloadPaper()">论文模板</button>
-            <button id="join_meeting" onclick="checkLogin()" data-toggle="modal" data-target="#join-meeting">参加会议</button>
-            <button id="paper_upload" onclick="checkLogin()" data-toggle="modal" data-target="#paper-upload">我要投稿</button>
+            <button id="join_meeting" onclick="checkState_r()" data-target="#join-meeting">参加会议</button>
+            <button id="paper_upload" onclick="checkState_p()" data-target="#paper-upload">我要投稿</button>
         </div>
         <h1>会议简介</h1>
         <div class="col-md-4  col-xs-12  fl " style="font-size: 20px">
@@ -80,18 +80,14 @@
             <dt>投稿开始:<span>{{ accept_start }}</span></dt>
             <dd>投稿截止:<span>{{ accept_due }}</span></dd>
         </dl>
-    <dl class="ml-30">
-        <dt>修改开始:<span>{{ accept_due }}</span></dt>
-        <dd>修改截止:<span>{{ modify_due }}</span></dd>
-    </dl>
-    <dl class="ml-30 mr-30">
-        <dt>注册开始:<span>{{ register_start }}</span></dt>
-        <dd>注册截止:<span>{{ register_due }}</span></dd>
-    </dl>
-    <dl>
-        <dt>会议开始:<span>{{ conference_start }}</span></dt>
-        <dd>会议结束:<span>{{ conference_due }}</span></dd>
-    </dl>
+        <dl class="ml-30 mr-30">
+            <dt>注册开始:<span>{{ register_start }}</span></dt>
+            <dd>注册截止:<span>{{ register_due }}</span></dd>
+        </dl>
+        <dl>
+            <dt>会议开始:<span>{{ conference_start }}</span></dt>
+            <dd>会议结束:<span>{{ conference_due }}</span></dd>
+        </dl>
     </div>
 </div>
 <!--Important date end-->
@@ -111,7 +107,7 @@
                         <div class="events-body">
                             <div class="row" style="display: block">
                                 <div class="events-desc timelineDe">
-                                    {{act.activity}}
+                                    {{act.activity_name}}
                                 </div>
                             </div>
                         </div>
@@ -143,7 +139,7 @@
             <p class="f-20 pt-40">联系主办方</p>
             <p class="f-16 pt-20"><label>联系人：</label>{{ contact }}</p>
             <p class="f-16"><label>电话：</label>{{ phonenum }}</p>
-            <p class="f-16"><label>地址：</label>{{ address }}</p>
+            <p class="f-16"><label>邮箱：</label>{{ email }}</p>
         </div>
     </div>
 </div>

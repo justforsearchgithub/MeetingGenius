@@ -1,4 +1,6 @@
-var url = '';
+var url = 'http://139.199.24.235:80/';
+var loggedIn = true;
+var conference_id = 0;
 var meeting = new Vue({
     el: '#info',
     data: {
@@ -7,13 +9,12 @@ var meeting = new Vue({
         organization: '会议主办方XXX',
         contact: '联系人ABC',
         phonenum: '1234567890',
-        address: '甲省乙市丙县1234号',
+        email: '123456@789.com',
         introduction: '这里是会议简介部分',
         soliciting_requirement: '这里是投稿要求',
         register_requirement: '这里是注册会议要求',
         accept_start: '2018-5-15 12:00:00',
-        accept_due: '2018-10-01 12:00:00',
-        modify_due: '2018-10-08 12:00:00',
+        accept_due: '2018-10-0112:00:00',
         register_start: '2018-10-10 12:00:00',
         register_due: '2018-10-20 12:00:00',
         conference_start: '2018-10-25 12:00:00',
@@ -23,19 +24,19 @@ var meeting = new Vue({
                 start_time: '2018-12-25 12:00:00',
                 end_time: '2018-12-25 18:00:00',
                 place: '地点A',
-                activity: '会议开始'
+                activity_name: '会议开始'
             },
             {
                 start_time: '2018-12-27 12:00:00',
                 end_time: '2018-12-27 18:00:00',
                 place: '地点B',
-                activity: '会议进行'
+                activity_name: '会议进行'
             },
             {
                 start_time: '2018-12-30 12:00:00',
                 end_time: '2018-12-30 18:00:00',
                 place: '地点C',
-                activity: '会议结束'
+                activity_name: '会议结束'
             }
         ],
         paper_template: null
@@ -45,7 +46,6 @@ var meeting = new Vue({
             var today = new Date();
             var date0 = new Date(this.accept_start);
             var date1 = new Date(this.accept_due);
-            var date2 = new Date(this.modify_due);
             var date3 = new Date(this.register_start);
             var date4 = new Date(this.register_due);
             var date5 = new Date(this.conference_start);
@@ -54,8 +54,6 @@ var meeting = new Vue({
                 return '征稿未开始';
             else if (today < date1)
                 return '征稿中';
-            else if (today < date2)
-                return '已截稿，征稿修改中';
             else if (today <date3)
                 return '已截稿';
             else if (today <date4)
@@ -70,17 +68,51 @@ var meeting = new Vue({
     }
 });
 
+function GetCurrentUser(){
+    var user;
+    var type;
+    $.ajax({
+        type: 'GET',
+        async:false,
+        url: url + 'account/username/',
+        //headers:{'X-CSRFToken',Token},
+        success: function (data) {
+            console.log(data);
+            user = data.username;
+            if(user =="anonymous user"){
+                console.log(0);
+                type =0;
+                $('#NavText1').attr('href','userRegister.html');
+                $('#NavText1').text('免费注册');
+                $('#NavText2').remove('onclick','LogOut()');
+                $('#NavText2').attr('href','login.html');
+                $('#NavText2').text('登录');
+            }
+            else{
+                console.log(1);
+                type = 1;
+                $('#NavText1').attr('href','person_center.html');
+                $('#NavText2').removeAttr('href');
+                $('#NavText1').text ('个人中心');
+                $('#NavText2').text('登出');
+                $('#NavText2').attr('onclick','LogOut()');
+            }
+        }
+    });
+    return type;
+}
+
 $(document).ready(function () {
-    var id = getParam('id');
-    if(id != 0 && id != null && id != undefined)
+    conference_id = getParam('id');
+    if(conference_id != 0 && conference_id != null && conference_id != undefined)
     {
         var conference_settings = {
             "async": false,
             "crossDomain": true,
-            "url": url + "conference/conference/" + id + "/information/",
+            "url": url + "conference/conference/" + conference_id + "/information/",
             "method": "GET",
             "headers": {}
-        }
+        };
         $.ajax(conference_settings).done(function (response) {
             console.log(response.message);
             meeting.organization = response.data.organization.org_name;
@@ -89,18 +121,28 @@ $(document).ready(function () {
             meeting.soliciting_requirement = response.data.soliciting_requirement;
             meeting.paper_template = response.data.paper_template;
             meeting.register_requirement = response.data.register_requirement;
-            meeting.accept_start = response.data.accept_start;
-            meeting.accept_due = response.data.accept_due;
-            meeting.modify_due = response.data.modify_due;
-            meeting.register_start = response.data.register_start;
-            meeting.register_due = response.data.register_due;
-            meeting.conference_start = response.data.conference_start;
-            meeting.conference_due = response.data.conference_due;
+            meeting.accept_start = format_time(response.data.accept_start);
+            meeting.accept_due = format_time(response.data.accept_due);
+            meeting.register_start = format_time(response.data.register_start);
+            meeting.register_due = format_time(response.data.register_due);
+            meeting.conference_start = format_time(response.data.conference_start);
+            meeting.conference_due = format_time(response.data.conference_due);
             meeting.contact = response.data.organization.contacts;
             meeting.phonenum = response.data.organization.phone_number;
-            meeting.address = response.data.organization.address;
-            /*TODO:contact info*/
-        })
+            meeting.email = response.data.organization.email;
+        });
+        //取活动
+        var activity_settings = {
+            "async": false,
+            "crossDomain": true,
+            "url": url + "display/conference/" + conference_id + "/activities",
+            "method": "GET",
+            "headers": {}
+        };
+        $.ajax(activity_settings).done(function (ac_response) {
+            console.log(ac_response.message);
+            meeting.activities = ac_response.data;
+        });
     }
     //日期倒计时
     $(function(){
@@ -127,7 +169,17 @@ $(document).ready(function () {
             }
         });
     });
-})
+
+    var username = GetCurrentUser();
+    console.log(username);
+    if(username === 0){
+        loggedIn = false;
+    }
+    else{
+        loggedIn = true;
+
+    }
+});
 
 function triggerfile_fee() {
     var file = $('#fee_upload').val();
@@ -167,20 +219,46 @@ function join_register() {
     var reservation = $("input[name='hotel']:checked").val();
     var information = $("textarea[id='extra_info']").val();
     var paper_id = $("input[id='paper_num']").val();
-    var pay_vouvher = $('#fee_upload')[0].files[0];
+    var pay_voucher = $('#fee_upload')[0].files[0];
     var listen_only = false;
     if (name === null || name === ''){
         alert('请填写姓名');
         return;
     }
-    else if (pay_vouvher === null || pay_vouvher === undefined){
+    else if (pay_voucher === null || pay_voucher === undefined){
         alert('请上传缴费凭证图');
         return;
     }
     if (paper_id === null || paper_id === ""){
         listen_only = true;
     }
-    /*TODO:ajax with file*/
+    /*TODO:check ajax with file*/
+    var temp_json = [
+        {'name': name},
+        {'gender': gender},
+        {'reservation': reservation},
+        {'information': information}
+    ];
+    var formData = new FormData();
+    formData.append('listen_only', listen_only);
+    formData.append('paper_id', paper_id);
+    formData.append('participants', temp_json);
+    formData.append('pay_voucher', pay_voucher);
+    var settings = {
+        "async": false,
+        "crossDomain": true,
+        "url": url + "conference/conference/" + conference_id + "/register/",
+        "method": "POST",
+        "headers": {},
+        "processData": false,
+        "contentType": false,
+        "mimeType": "multipart/form-data",
+        "data": formData
+    };
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+        alert(response);
+    });
     /*
     url: conference/<会议的主键id>/conference_register
     post: listen_only  仅仅聆听会议  传字符串 true 或者 false 就好
@@ -205,7 +283,28 @@ function paper_upload() {
         alert('未上传论文');
         return;
     }
-    /*TODO:ajax with file*/
+    /*TODO:check ajax with file*/
+    var formData = new FormData();
+    formData.append('authors', authors);
+    formData.append('institute', institute);
+    formData.append('paper_name', paper_name);
+    formData.append('paper_abstract', paper_abstract);
+    formData.append('paper' ,paper);
+    var settings = {
+        "async": false,
+        "crossDomain": true,
+        "url": url + "conference/conference/" + conference_id + "/paper_submit/",
+        "method": "POST",
+        "headers": {},
+        "processData": false,
+        "contentType": false,
+        "mimeType": "multipart/form-data",
+        "data": formData
+    };
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+        alert(response);
+    });
     /*
 url: conference/<会议的主键id>/paper_submit
 说明：普通用户提交论文
@@ -215,12 +314,32 @@ from 前端：
 }
 
 function checkLogin() {
-    var cookie = document.cookie;
-    if(false){
+    if(loggedIn === false){
         alert('您尚未登陆！');
-        $('#join-meeting').addClass('hidden');
-        $('#paper-upload').addClass('hidden');
-        window.location.href = 'login.html';
+        return false;
+    }
+    return true;
+}
+
+function checkState_r() {
+    if(checkLogin()){
+        if(meeting.state != '注册中'){
+            alert('现在不在注册期间！');
+        }
+        else{
+            $('#join-meeting').modal('show');
+        }
+    }
+}
+
+function checkState_p() {
+    if(checkLogin()){
+        if(meeting.state != '征稿中'){
+            alert('现在不在投稿期间！');
+        }
+        else{
+            $('#paper-upload').modal('show');
+        }
     }
 }
 
@@ -247,16 +366,34 @@ var getParam = function (name) {
     }
     return items;
 };
-/**
- * 获取对应名称的cookie
- * @param name cookie的名称
- * @returns {null} 不存在时，返回null
- */
-var getCookie = function (name) {
-    var arr;
-    var reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-    if (arr = document.cookie.match(reg))
-        return unescape(arr[2]);
-    else
-        return null;
-};
+
+function add_favorite() {
+    if(checkLogin()){
+
+    }
+}
+
+function LogOut(){
+    $.ajax({
+        type: 'GET',
+        async:false,
+        url: url + 'account/logout/',
+        //headers:{'X-CSRFToken',Token},
+        success: function (data) {
+            console.log(data);
+            if(data.message=='success'){
+                alert('登出成功');
+                window.location.reload();
+            }
+        }
+    });
+}
+function format_time(date) {
+    if(date === undefined)
+        return '未定';
+    var str = '' + date;
+    var temp = str.split(':', 2);
+    str = temp[0] + ':' + temp[1] + ':00';
+    str = str.replace('T', ' ');
+    return str;
+}
