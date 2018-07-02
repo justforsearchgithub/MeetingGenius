@@ -323,7 +323,7 @@ function LogOut(){
             console.log(data);
             if(data.message=='success'){
                 alert('登出成功');
-                window.location.reload();
+                window.location.href="index.html";
             }
         }
     });
