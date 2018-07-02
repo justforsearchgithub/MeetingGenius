@@ -1,5 +1,5 @@
 var url='http://139.199.24.235:80/';
-jQuery(document).ready(function() {
+$( document ).ready(function(){
 
     $('.registration-form input[type="text"], .registration-form textarea').on('focus', function() {
         $(this).removeClass('input-error');
@@ -15,7 +15,6 @@ jQuery(document).ready(function() {
                 $(this).removeClass('input-error');
             }
         });
-
     });
 });
 
@@ -112,8 +111,7 @@ function Login() {
                 if (data.message == "success") {
                     //lert("SUcces.");
                    console.log(data);
-
-                    //window.location.href = 'index.html';
+                   window.location.href = 'index.html';
                 }
                 else {
                     //alert(data.message);
@@ -166,10 +164,11 @@ function user_reg() {
             "contentType": false,
             "mimeType": "multipart/form-data",
             "data": formData
-        }
+        };
 
         $.ajax(settings).done(function (response) {
             console.log(response);
+            window.location.href = "index.html";
             //alert(response);
         });
     }
@@ -270,4 +269,18 @@ function checkEmail(str) {
     if(!reg.test(str))
         return false;
     return true;
+}
+
+function GetCurrentUser(){
+    var user;
+    $.ajax({
+        type: 'GET',
+        url: url + 'account/username/',
+        //headers:{'X-CSRFToken',Token},
+        success: function (data) {
+            console.log(data);
+            user = data.username;
+        }
+    });
+    return user;
 }
