@@ -114,6 +114,7 @@
     background: #00a0e3;
     text-align: center;
     margin: 0px 50px 0px 50px;
+    border: none;
 }
 .introduction button:hover{
     background: #fb2b4e;
@@ -1097,4 +1098,21 @@ h1,h2,h3,h4,h5,h6{margin: 0;padding: 0;}
 
 .modal-body input {
     height: 42px;
+}
+
+#favorite {
+    width: 240px;
+    height: 60px;
+    line-height: 60px;
+    font-size: 30px;
+    color: #FFFFFF;
+    background: #ff6060;
+    text-align: center;
+    margin-top: 50px;
+    border-radius: 15px;
+    border: none;
+}
+
+#favorite:hover {
+    background: #f0ad4e;
 }

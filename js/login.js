@@ -53,6 +53,7 @@ $( document ).ready(function(){
                 $(this).removeClass('input-error');
             }
         });
+
     });
 });
 
@@ -282,55 +283,20 @@ function enterprise_reg() {
         formData.append("id_card_reverse", id_img_b);
         console.log(formData);
         var settings = {
-            "data":formData,
             "async": false,
             "crossDomain": true,
             "url": url + "account/organization_user_register/",
             "method": "POST",
+            "headers": {},
             "processData": false,
-            "contentType":"multipart/form-data"
+            "contentType": false,
+            "mimeType": "multipart/form-data",
+            "data": formData
         };
-
-        /*$.ajax(settings).done(function (response) {
+        $.ajax(settings).done(function (response) {
             console.log(response);
-        });*/
-        var xmlHttp = new XMLHttpRequest();
-        function CommentAll() {
-            //第二步，注册回调函数
-            xmlHttp.onreadystatechange = callback1;
-            //{
-            //    if (xmlHttp.readyState == 4)
-            //        if (xmlHttp.status == 200) {
-            //            var responseText = xmlHttp.responseText;
-
-            //        }
-            //}
-            //第三步，配置请求信息，open(),get
-            //get请求下参数加在url后，.ashx?methodName = GetAllComment&str1=str1&str2=str2
-            xmlHttp.open("post", url+"account/organization_user_register/", true);
-
-            //post请求下需要配置请求头信息
-            xmlHttp.setRequestHeader("Content-Type", "multipart/form-data");
-
-            //第四步，发送请求,post请求下，要传递的参数放这
-            xmlHttp.send(formData);//"
-        }
-//第五步，创建回调函数
-        function callback1() {
-            if (xmlHttp.readyState == 4)
-                if (xmlHttp.status == 200) {
-                    //取得返回的数据
-                    var data = xmlHttp.responseText;
-                    //json字符串转为json格式
-                    data = eval(data);
-                    console.log(data);
-                    $.each(data,
-                        function(i, v) {
-                            alert(v);
-                        });
-                }
-        }
-        CommentAll();
+            alert(response);
+        });
     }
 }
 
