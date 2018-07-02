@@ -7,7 +7,7 @@ var meeting = new Vue({
         organization: '会议主办方XXX',
         contact: '联系人ABC',
         phonenum: '1234567890',
-        email: '123456@789.com',
+        address: '甲省乙市丙县1234号',
         introduction: '这里是会议简介部分',
         soliciting_requirement: '这里是投稿要求',
         register_requirement: '这里是注册会议要求',
@@ -83,7 +83,7 @@ $(document).ready(function () {
         }
         $.ajax(conference_settings).done(function (response) {
             console.log(response.message);
-            meeting.organization = response.data.organization;
+            meeting.organization = response.data.organization.org_name;
             meeting.title = response.data.title;
             meeting.subject = response.data.subject;
             meeting.soliciting_requirement = response.data.soliciting_requirement;
@@ -96,6 +96,9 @@ $(document).ready(function () {
             meeting.register_due = response.data.register_due;
             meeting.conference_start = response.data.conference_start;
             meeting.conference_due = response.data.conference_due;
+            meeting.contact = response.data.organization.contacts;
+            meeting.phonenum = response.data.organization.phone_number;
+            meeting.address = response.data.organization.address;
             /*TODO:contact info*/
         })
     }
