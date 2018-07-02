@@ -127,7 +127,7 @@ $(document).ready(function () {
                         if (data.message == "success") {
                             console.log('meeting');
                             console.log(data.data);
-                           
+
                             for(var ptr=0;ptr<data.data.length;ptr++)
                             {
                                 console.log(666);
@@ -355,7 +355,6 @@ $(document).ready(function () {
         //headers:{'X-CSRFToken',Token},
         success: function (data) {
             console.log(data);
-            console.log(1);
             if(data.message==="success"){
                 vm.$data.account_name=username;
 

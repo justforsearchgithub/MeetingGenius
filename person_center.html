@@ -69,6 +69,9 @@
             <li v-on:click="click_password">
                 <a href="#"><i class="fa fa-fw fa-cog"></i> 修改密码</a>
             </li>
+            <li v-if="is_normal" v-on:click="click_paper">
+                <a href="#"><i class="fa fa-fw fa-cog"></i>论文信息 </a>
+            </li>
             <!--<li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-plus"></i> Dropdown <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
@@ -166,7 +169,7 @@
                     </div>
                     <div class="panel-body" >
                         <ul class="list-group" v-for="(meeting,index) in meetings" >
-                            <li class="list-group-item">会议名称：{{meeting.name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                            <li class="list-group-item"><a :href="['meetingModel2.html?id='+meeting.id]">会议名称：{{meeting.name}} </a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                                 <button type="button" class="btn btn-primary" v-on:click="click_meeting_info(index)">修改会议信息</button>
                                 <button type="button" class="btn btn-success" v-on:click="click_paper_info(index)">投稿情况</button>
                             </li>
