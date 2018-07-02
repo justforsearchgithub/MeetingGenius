@@ -125,17 +125,21 @@ $(document).ready(function () {
                     processData: false,
                     success: function (data) {
                         if (data.message == "success") {
-                            console.log('meeting');
-                            console.log(data.data);
-                           
+                            vm.$data.meetings.pop();
                             for(var ptr=0;ptr<data.data.length;ptr++)
                             {
-                                console.log(666);
-                                console.log(data.data[ptr].conference_id);
-                                vm.$data.meetings[ptr].id=data.data[ptr].conference_id;
-                                vm.$data.meetings[ptr].name=data.data[ptr].conference_title;
-                                Vue.set(vm.$data.meetings,ptr,vm.$data.meetings[ptr]);
+                                console.log('ptr'+ptr);
+                                var abc={
+                                    id:data.data[ptr].conference_id,
+                                    name:data.data[ptr].conference_title
+                                }
+                                vm.$data.meetings.push(abc);
+                                //vm.$data.meetings[ptr].id=data.data[ptr].conference_id;
+                                //vm.$data.meetings[ptr].name=data.data[ptr].conference_title;
+
+                                //Vue.set(vm.$data.meetings,ptr,vm.$data.meetings[ptr]);
                                 console.log('vm'+vm.$data.meetings[ptr].id);
+
                             }
                         }
                     }
@@ -355,7 +359,6 @@ $(document).ready(function () {
         //headers:{'X-CSRFToken',Token},
         success: function (data) {
             console.log(data);
-            console.log(1);
             if(data.message==="success"){
                 vm.$data.account_name=username;
 
