@@ -3,8 +3,9 @@ $( document ).ready(function(){
 
     console.log("testtttewtawercawfheiafuhoicawbiuhfouiaw");
 
-
-
+    var username = GetCurrentUser();
+    if(username != "anonymous user"){
+    }
     $('.registration-form input[type="text"], .registration-form textarea').on('focus', function() {
         $(this).removeClass('input-error');
     });
