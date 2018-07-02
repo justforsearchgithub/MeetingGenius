@@ -244,18 +244,18 @@ html {
 .hamburger.is-open .hamb-top {
     -webkit-transform: rotate(45deg);
     -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.73, 1, 0.28, 0.08);
-    background-color: #ffffff;
+    background-color: #0000FF;
     margin-top: -2px;
     top: 50%;
 }
 .hamburger.is-open .hamb-middle {
-    background-color: #ffffff;
+    background-color: #0000FF;
     display: none;
 }
 .hamburger.is-open .hamb-bottom {
     -webkit-transform: rotate(-45deg);
     -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.73, 1, 0.28, 0.08);
-    background-color: #ffffff;
+    background-color: #0000FF;
     margin-top: -2px;
     top: 50%;
 }
