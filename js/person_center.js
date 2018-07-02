@@ -1,8 +1,18 @@
-var url='http://140.143.182.214:8090/';
+var url='http://139.199.24.235:80/';
 function addChildAccount2(){
     $('#myModal').modal({backdrop: 'static', keyboard: true});
 }
 $(document).ready(function () {
+    var username;
+    $.ajax({
+        type: 'GET',
+        url: url + 'account/username/',
+        //headers:{'X-CSRFToken',Token},
+        success: function (data) {
+            console.log(data);
+            var username = data.username;
+        }
+    });
 
     var vm = new Vue({
         el: '#per_info',
@@ -28,6 +38,10 @@ $(document).ready(function () {
                 {
                     name:'789@163.com',
                     password:'2222'
+                },
+                {
+                    name:'123@126.com',
+                    password:'333'
                 }
             ],
             temp:{
@@ -211,6 +225,8 @@ $(document).ready(function () {
                   if(this.$data.temp_password===this.$data.temp_password2)
                   {
                       //上传修改密码
+
+
                       //修改本地
                         var temp_object={
                             name:this.$data.temp_name,
@@ -223,11 +239,60 @@ $(document).ready(function () {
                   }
             },
             deleteca: function (no) {
+
+                /*var formData = new FormData();
+                formData.append("sub_user_username", this.$data.childaccounts[no].name);
+                $.ajax({
+                    type: 'POST',
+                    url: url + 'account/delete_sub_user/',
+                    data: formData,
+                    contentType: false,
+                    async: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        if (data.message == "success") {
+                            删除成功
+
+                        }
+                    }
+                });*/
+
                 this.$data.childaccounts.splice(no,1);
 
                 //document.getElementById("div_childaccount").style.display="none";
                 //document.getElementById("div_childaccount").style.display="block";
 
+            }
+
+        }
+    });
+
+    $.ajax({
+        type: 'GET',
+        url: url + 'account/user_type/',
+        //headers:{'X-CSRFToken',Token},
+        success: function (data) {
+            if(data.message==='success'){
+                vm.$data.account_name=data.username;
+                if(data.user_type==='normal_user')
+                {
+                    vm.$data.is_nomal=true;
+                    vm.$data.is_unit=false;
+                    vm.$data.not_normal=false;
+                }
+                else if(data.user_type==='organization_user')
+                {
+                    vm.$data.is_nomal=false;
+                    vm.$data.is_unit=true;
+                    vm.$data.not_normal=false;
+                }
+                else if(data.user_type==='organization_sub_user')
+                {
+                    vm.$data.is_nomal=false;
+                    vm.$data.is_unit=false;
+                    vm.$data.not_normal=true;
+                }
             }
 
         }
