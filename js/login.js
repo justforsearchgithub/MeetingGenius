@@ -296,6 +296,10 @@ function enterprise_reg() {
         $.ajax(settings).done(function (response) {
             console.log(response);
             alert(response);
+            if(response.message =="success"){
+                alert('success');
+                window.location.href='index.html';
+            }
         });
     }
 }
@@ -332,6 +336,9 @@ function GoToCreateCon(){
         //headers:{'X-CSRFToken',Token},
         success: function (data) {
            console.log(data);
+           if(data.data.user_type == "organization_user"){
+               window.location.href = "createCon.html";
+           }
         }
     });
 }

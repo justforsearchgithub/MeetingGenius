@@ -133,7 +133,7 @@ function AddConference() {
     var conference_start = $('#conference_start').val();
     var conference_due = $('#conference_due').val();
     var paper_template = $('#PaperExample')[0].files[0];
-    var activities = myActivities.stringify();
+    var activities = JSON.stringify(myActivities);
     var template_no = 1;
     formdata.append('title', title);
     formdata.append('introduction', introduction);
