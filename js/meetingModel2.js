@@ -104,6 +104,21 @@ function GetCurrentUser(){
 
 $(document).ready(function () {
     conference_id = getParam('id');
+    var usertype_settings = {
+        "async": false,
+        "crossDomain": true,
+        "url": url + "account/user_type/",
+        "method": "GET",
+        "headers": {}
+    };
+    $.ajax(usertype_settings).done(function (responce) {
+        console.log(responce);
+        var type = responce.data.user_type;
+        if(type === 'organization_user' || type === 'organization_sub_user'){
+            $('#join_meeting').addClass('hidden');
+            $('#paper_upload').addClass('hidden');
+        }
+    });
     if(conference_id != 0 && conference_id != null && conference_id != undefined)
     {
         var conference_settings = {
@@ -118,6 +133,7 @@ $(document).ready(function () {
             meeting.organization = response.data.organization.org_name;
             meeting.title = response.data.title;
             meeting.subject = response.data.subject;
+            meeting.introduction = response.data.introduction;
             meeting.soliciting_requirement = response.data.soliciting_requirement;
             meeting.paper_template = response.data.paper_template;
             meeting.register_requirement = response.data.register_requirement;
