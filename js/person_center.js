@@ -63,7 +63,7 @@ $(document).ready(function () {
             },
             meetings:[
                 {
-                    id:1,
+                    id:'1',
                     name:'混合现实区块链社交研讨会',
                     description:'123',
                     requirement:'456',
@@ -119,18 +119,23 @@ $(document).ready(function () {
                 $.ajax({
                     type: 'GET',
                     url: url + 'display/my_conference',
-
                     contentType: false,
                     async: false,
                     cache: false,
                     processData: false,
                     success: function (data) {
                         if (data.message == "success") {
-                            for(var ptr=0;ptr<data.length;ptr++)
+                            console.log('meeting');
+                            console.log(data.data);
+                           
+                            for(var ptr=0;ptr<data.data.length;ptr++)
                             {
-                                this.$data.meetings[ptr].id=data[ptr].id;
-                                this.$data.meetings[ptr].name=data[ptr].name;
+                                console.log(666);
+                                console.log(data.data[ptr].conference_id);
+                                vm.$data.meetings[ptr].id=data.data[ptr].conference_id;
+                                vm.$data.meetings[ptr].name=data.data[ptr].conference_title;
                                 Vue.set(vm.$data.meetings,ptr,vm.$data.meetings[ptr]);
+                                console.log('vm'+vm.$data.meetings[ptr].id);
                             }
                         }
                     }
@@ -166,11 +171,11 @@ $(document).ready(function () {
                     processData: false,
                     success: function (data) {
                         if (data.message == "success") {
-                            this.$data.temp.name=data.title;
-                            this.$data.temp.description=data.introduction;
+                            this.$data.temp.name=data.data.title;
+                            this.$data.temp.description=data.data.introduction;
 
-                            this.$data.temp.requirement=data.register_requirement;
-                            this.$data.temp.paperinfo=data.soliciting_requirement;
+                            this.$data.temp.requirement=data.data.register_requirement;
+                            this.$data.temp.paperinfo=data.data. soliciting_requirement;
 
                         }
                     }
@@ -368,7 +373,7 @@ $(document).ready(function () {
                     console.log(3);
                     vm.$data.is_nomal=false;
                     vm.$data.is_unit=true;
-                    vm.$data.not_normal=false;
+                    vm.$data.not_normal=true;
                 }
                 else if(data.data.user_type==='organization_sub_user')
                 {
