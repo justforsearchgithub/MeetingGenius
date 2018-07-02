@@ -28,6 +28,7 @@ function GetCurrentUser(){
                 $('#NavText1').text ('个人中心');
                 $('#NavText2').text('登出');
                 $('#NavText2').attr('onclick','LogOut()');
+                var str = "";
             }
         }
     });
@@ -322,7 +323,7 @@ function LogOut(){
             console.log(data);
             if(data.message=='success'){
                 alert('登出成功');
-                window.location.reload();
+                window.location.href="index.html";
             }
         }
     });
