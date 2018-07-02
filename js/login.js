@@ -161,12 +161,10 @@ function user_reg() {
             "crossDomain": true,
             "url": url + "account/normal_user_register/",
             "method": "POST",
-            "headers": {},
             "processData": false,
             "contentType": false,
-            "mimeType": "multipart/form-data",
             "data": formData
-        }
+        };
 
         $.ajax(settings).done(function (response) {
             console.log(response);
@@ -305,4 +303,16 @@ function checkEmail(str) {
     if(!reg.test(str))
         return false;
     return true;
+}
+
+function GetCurrentUser(){
+    $.ajax({
+        type: 'GET',
+        url: url + 'account/username/',
+        //headers:{'X-CSRFToken',Token},
+        success: function (data) {
+            console.log(data);
+            var username = data.username;
+        }
+    });
 }
