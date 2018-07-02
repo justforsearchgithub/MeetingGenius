@@ -1,11 +1,8 @@
 var url='http://139.199.24.235:80/';
-$( document ).ready(function(){
+jQuery(document).ready(function() {
 
-    console.log("testtttewtawercawfheiafuhoicawbiuhfouiaw");
 
-    var username = GetCurrentUser();
-    if(username != "anonymous user"){
-    }
+
     $('.registration-form input[type="text"], .registration-form textarea').on('focus', function() {
         $(this).removeClass('input-error');
     });
@@ -20,6 +17,7 @@ $( document ).ready(function(){
                 $(this).removeClass('input-error');
             }
         });
+
     });
 });
 
@@ -116,7 +114,8 @@ function Login() {
                 if (data.message == "success") {
                     //lert("SUcces.");
                    console.log(data);
-                   window.location.href = 'index.html';
+
+                    //window.location.href = 'index.html';
                 }
                 else {
                     //alert(data.message);
@@ -171,7 +170,6 @@ function user_reg() {
 
         $.ajax(settings).done(function (response) {
             console.log(response);
-            window.location.href = "index.html";
             //alert(response);
         });
     }
@@ -310,15 +308,14 @@ function checkEmail(str) {
 }
 
 function GetCurrentUser(){
-    var user;
     $.ajax({
         type: 'GET',
         url: url + 'account/username/',
         //headers:{'X-CSRFToken',Token},
         success: function (data) {
             console.log(data);
-            user = data.username;
+            return data.username;
+
         }
     });
-    return user;
 }
