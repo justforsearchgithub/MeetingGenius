@@ -1116,3 +1116,7 @@ h1,h2,h3,h4,h5,h6{margin: 0;padding: 0;}
 #favorite:hover {
     background: #f0ad4e;
 }
+
+#NavText2:hover {
+    cursor: pointer;
+}
