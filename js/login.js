@@ -28,6 +28,7 @@ function GetCurrentUser(){
                 $('#NavText1').text ('个人中心');
                 $('#NavText2').text('登出');
                 $('#NavText2').attr('onclick','LogOut()');
+                var str = "";
             }
         }
     });
