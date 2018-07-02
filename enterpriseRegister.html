@@ -48,7 +48,7 @@
                 </div>
             </div>
             <div class="form-bottom" style="">
-                <form role="form" action="http://140.143.182.214:8090/account/organization_user_register/" method="post" class="registration-form" enctype="multipart/form-data">
+                <form role="form" action="" method="post" class="registration-form">
                     <div class="form-group">
                         <label>组织机构名称</label>
                         <input type="text" name="org_name" placeholder="请输入机构名" class="form-control" id="form-company-name">
@@ -83,8 +83,8 @@
                     <div class="form-group">
                         <label>上传营业电子执照</label>
                         <div style="min-height: 50px">
-                            <!--<input id="license_upload" type="file" class="file" accept="image/*" onchange="triggerfile_l()"/>-->
-                            <input name="bussiness_license" id="license_upload" type="file" class="file"  onchange="triggerfile_l()"/>
+                            <input id="license_upload" type="file" class="file" accept="image/*" onchange="triggerfile_l()"/>
+                            <!--<input name="bussiness_license" id="license_upload" type="file" class="file"  onchange="triggerfile_l()"/>-->
                             <label id="license_label" for="license_upload">&nbsp;&nbsp;选择图片</label>
                             <a href="javascript:file_upload('license_upload')"><img class="hidden" src="" alt="图片上传失败" id="license_img"></a>
                         </div>
@@ -92,8 +92,8 @@
                     <div class="form-group">
                         <label>上传联系人身份证（正面）</label>
                         <div style="min-height: 50px">
-                            <input name="id_card_front" id="id_upload_front" type="file" class="file"  onchange="triggerfile_f()"/>
-                            <!--<input id="id_upload_front" type="file" class="file" accept="image/*" onchange="triggerfile_f()"/>-->
+                            <!--<input name="id_card_front" id="id_upload_front" type="file" class="file"  onchange="triggerfile_f()"/>-->
+                            <input id="id_upload_front" type="file" class="file" accept="image/*" onchange="triggerfile_f()"/>
                             <label id="id_label_front" for="id_upload_front">&nbsp;&nbsp;选择图片</label>
                             <a href="javascript:file_upload('id_upload_front')"><img class="hidden" src="" alt="图片上传失败" id="id_img_front"></a>
                         </div>
@@ -101,14 +101,13 @@
                     <div class="form-group">
                         <label>上传联系人身份证（背面）</label>
                         <div style="min-height: 50px">
-                            <input name="id_card_reverse" id="id_upload_back" type="file" class="file"  onchange="triggerfile_b()"/>
-                            <!--<input id="id_upload_front" type="file" class="file" accept="image/*" onchange="triggerfile_f()"/>-->
+                            <input id="id_upload_back" type="file" class="file" accept="image/*" onchange="triggerfile_f()"/>
                             <label id="id_label_back" for="id_upload_back">&nbsp;&nbsp;选择图片</label>
                             <a href="javascript:file_upload('id_upload_back')"><img class="hidden" src="" alt="图片上传失败" id="id_img_back"></a>
                         </div>
                     </div>
-                    <div style="text-align: center"><button type="submit" class="btn" id="enterprise_register_btn">注册</button></div>
-                    <!--<div style="text-align: center"><button type="submit" class="btn" id="enterprise_register_btn" onclick="enterprise_reg()">注册</button></div>-->
+                    <!--<div style="text-align: center"><button type="submit" class="btn" id="enterprise_register_btn">注册</button></div-->
+                    <div style="text-align: center"><button type="button" class="btn" id="enterprise_register_btn" onclick="enterprise_reg()">注册</button></div>
                 </form>
             </div>
         </div>

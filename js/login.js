@@ -1,20 +1,44 @@
 var url='http://139.199.24.235:80/';
-$( document ).ready(function(){
 
+function GetCurrentUser(){
+    var user;
+    var type;
+    $.ajax({
+        type: 'GET',
+        async:false,
+        url: url + 'account/username/',
+        //headers:{'X-CSRFToken',Token},
+        success: function (data) {
+            console.log(data);
+            user = data.username;
+            if(user =="anonymous user"){
+                console.log(0);
+                type =0;
+                $('#NavText1').attr('href','userRegister.html');
+                $('#NavText1').text('免费注册');
+                $('#NavText2').remove('onclick','LogOut()');
+                $('#NavText2').attr('href','login.html');
+                $('#NavText2').text('登录');
+            }
+            else{
+                console.log(1);
+                type = 1;
+                $('#NavText1').attr('href','person_center.html');
+                $('#NavText2').removeAttr('href');
+                $('#NavText1').text ('个人中心');
+                $('#NavText2').text('登出');
+                $('#NavText2').attr('onclick','LogOut()');
+            }
+        }
+    });
+    return type;
+}
+
+$( document ).ready(function(){
     console.log("testtttewtawercawfheiafuhoicawbiuhfouiaw");
 
-    var username = GetCurrentUser();
-    if(username != "anonymous user"){
-        $('#NavText1').attr('href','person_center.html');
-        $('#NavText2').removeAttr('href');
-        $('#NavText1').text ('个人中心');
-        $('#NavText2').text('登出');
-        $('#NavText2').attr('onclick','LogOut()');
-    }else{
-        $('#NavText1').attr('href','userRegister.html');
-        $('#NavText1').text('免费注册');
+    GetCurrentUser();
 
-    }
     $('.registration-form input[type="text"], .registration-form textarea').on('focus', function() {
         $(this).removeClass('input-error');
     });
@@ -29,6 +53,7 @@ $( document ).ready(function(){
                 $(this).removeClass('input-error');
             }
         });
+
     });
 });
 
@@ -258,55 +283,24 @@ function enterprise_reg() {
         formData.append("id_card_reverse", id_img_b);
         console.log(formData);
         var settings = {
-            "data":formData,
             "async": false,
             "crossDomain": true,
             "url": url + "account/organization_user_register/",
             "method": "POST",
+            "headers": {},
             "processData": false,
-            "contentType":"multipart/form-data"
+            "contentType": false,
+            "mimeType": "multipart/form-data",
+            "data": formData
         };
-
-        /*$.ajax(settings).done(function (response) {
+        $.ajax(settings).done(function (response) {
             console.log(response);
-        });*/
-        var xmlHttp = new XMLHttpRequest();
-        function CommentAll() {
-            //第二步，注册回调函数
-            xmlHttp.onreadystatechange = callback1;
-            //{
-            //    if (xmlHttp.readyState == 4)
-            //        if (xmlHttp.status == 200) {
-            //            var responseText = xmlHttp.responseText;
-
-            //        }
-            //}
-            //第三步，配置请求信息，open(),get
-            //get请求下参数加在url后，.ashx?methodName = GetAllComment&str1=str1&str2=str2
-            xmlHttp.open("post", url+"account/organization_user_register/", true);
-
-            //post请求下需要配置请求头信息
-            xmlHttp.setRequestHeader("Content-Type", "multipart/form-data");
-
-            //第四步，发送请求,post请求下，要传递的参数放这
-            xmlHttp.send(formData);//"
-        }
-//第五步，创建回调函数
-        function callback1() {
-            if (xmlHttp.readyState == 4)
-                if (xmlHttp.status == 200) {
-                    //取得返回的数据
-                    var data = xmlHttp.responseText;
-                    //json字符串转为json格式
-                    data = eval(data);
-                    console.log(data);
-                    $.each(data,
-                        function(i, v) {
-                            alert(v);
-                        });
-                }
-        }
-        CommentAll();
+            alert(response);
+            if(response.message =="success"){
+                alert('success');
+                window.location.href='index.html';
+            }
+        });
     }
 }
 
@@ -318,31 +312,33 @@ function checkEmail(str) {
     return true;
 }
 
-function GetCurrentUser(){
-    var user;
-    $.ajax({
-        type: 'GET',
-        url: url + 'account/username/',
-        //headers:{'X-CSRFToken',Token},
-        success: function (data) {
-            console.log(data);
-            user = data.username;
-        }
-    });
-    return user;
-}
 function LogOut(){
     $.ajax({
         type: 'GET',
+        async:false,
         url: url + 'account/logout/',
         //headers:{'X-CSRFToken',Token},
         success: function (data) {
             console.log(data);
             if(data.message=='success'){
                 alert('登出成功');
-                window.location.href='index.html';
                 window.location.reload();
             }
+        }
+    });
+}
+
+function GoToCreateCon(){
+    $.ajax({
+        type: 'GET',
+        async:false,
+        url: url + 'account/user_type/',
+        //headers:{'X-CSRFToken',Token},
+        success: function (data) {
+           console.log(data);
+           if(data.data.user_type == "organization_user"){
+               window.location.href = "createCon.html";
+           }
         }
     });
 }
