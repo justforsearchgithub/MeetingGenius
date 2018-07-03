@@ -14,21 +14,21 @@ var meeting = new Vue({
         soliciting_requirement: '这里是投稿要求',
         register_requirement: '这里是注册会议要求',
         accept_start: '2018-5-15 12:00:00',
-        accept_due: '2018-10-0112:00:00',
+        accept_due: '2018-10-01 12:00:00',
         register_start: '2018-10-10 12:00:00',
         register_due: '2018-10-20 12:00:00',
         conference_start: '2018-10-25 12:00:00',
         conference_due: '2018-10-30 12:00:00',
         activities: [
             {
-                start_time: '2018-12-25 12:00:00',
-                end_time: '2018-12-25 18:00:00',
+                start_time: '2018-10-25 12:00:00',
+                end_time: '2018-10-25 18:00:00',
                 place: '地点A',
                 activity_name: '会议开始'
             },
             {
-                start_time: '2018-12-27 12:00:00',
-                end_time: '2018-12-27 18:00:00',
+                start_time: '2018-10-27 12:00:00',
+                end_time: '2018-10-27 18:00:00',
                 place: '地点B',
                 activity_name: '会议进行'
             },
