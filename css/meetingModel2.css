@@ -1120,3 +1120,105 @@ h1,h2,h3,h4,h5,h6{margin: 0;padding: 0;}
 #NavText2:hover {
     cursor: pointer;
 }
+
+.site-title{
+    text-align:center;
+    font-size:66px;
+    font-family:'Pacifico';
+    margin:0 0 50px 0;
+    padding-bottom:50px;
+    position:relative;
+}
+.site-title:before,
+.site-title:after{
+    content:"";
+    width:100px;
+    height:10px;
+    left:50%;
+    margin-left:-50px;
+    border-bottom:1px double #fff;
+    position:absolute;
+}
+.site-title:before{
+    bottom:0;
+}
+.site-title:after{
+    bottom:2px;
+}
+#page-top .section-name span:before,
+#page-top .section-name span:after{
+    content:none;
+}
+.time-count-container{
+    min-height:300px;
+    margin-top:50px;
+}
+.time-box{
+    width:150px;
+    height:150px;
+    display:table;
+    border:1px solid #fff;
+    margin:50px auto;
+
+    -webkit-border-radius:15px;
+    -moz-border-radius:15px;
+    -ms-border-radius:15px;
+    -o-border-radius:15px;
+    border-radius:15px;
+
+    -webkit-transform:rotate(45deg);
+    -moz-transform:rotate(45deg);
+    -ms-transform:rotate(45deg);
+    -o-transform:rotate(45deg);
+    transform:rotate(45deg);
+}
+.time-box-inner{
+    width:150px;
+    height:150px;
+    display:table;
+    text-align:center;
+
+    -webkit-transform:rotate(-45deg);
+    -moz-transform:rotate(-45deg);
+    -ms-transform:rotate(-45deg);
+    -o-transform:rotate(-45deg);
+    transform:rotate(-45deg);
+}
+.time-number{
+    font-size:65px;
+    width:100%;
+    display:inline-block;
+    font-weight:300;
+    padding-top: 15%;
+
+    -webkit-transition:all .25s;
+    -moz-transition:all .25s;
+    -ms-transition:all .25s;
+    -o-transition:all .25s;
+    transition:all .25s;
+}
+.time-number .digit{
+
+    line-height: 60px;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.time-name{
+    font-size:15px;
+    text-transform:uppercase;
+    font-weight:700;
+}
+.time-until{
+    text-align:center;
+    margin:0;
+}
+.time-until span{
+    color: #fff;
+    font-size:18px;
+    line-height:40px;
+    display:inline-block;
+    background-color:#3498db;
+    text-transform:uppercase;
+    padding:0px 25px;
+}

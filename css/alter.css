@@ -208,3 +208,43 @@ body a:hover {
     border: 1px solid #d43f3a;
     background: url(../img/cancelSubjects.png) no-repeat bottom right;
 }
+.Search-Wrapper{
+    background-color:#cceffd;
+    color:#FFFFFF;
+    text-align:center;
+    padding-top:40px;
+    padding-bottom:40px;
+}
+.SearchBar{
+    width:80%;
+    padding:6px 12px;
+    color:#000000;
+    border-radius: 10px;
+    border:1px solid #CCCCCC;
+    line-height: 45px;
+    font-size:20px;
+    font-weight:lighter;
+    outline:none;
+    transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+.SearchBar:focus{
+    border-color:#66afe9;
+    outline:none;
+    box-shadow:inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+}
+.Search-Wrapper .btn{
+    color:#FFFFFF;
+    width:70px;
+    height:50px;
+    background-color: #008fa1;
+    border-color: #008fa1;
+    margin-bottom:9px;
+    transition:color 1s;
+    border-radius:10px;
+}
+.Search-Wrapper .btn:hover{
+    color: #000000;
+}
+.Search-Wrapper .btn:focus{
+    outline:none;
+}

@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-theme.css">
     <link rel="stylesheet" href="css/alter.css">
+    <link rel="stylesheet" href="css/animate.min.css">
     <title>会议管理平台</title>
 </head>
 <body>
@@ -38,15 +39,69 @@
     <div class="banner-info">
         <h1>这是一个专业的会议管理平台</h1>
         <p>这是一个面向会议组织机构和参会人员的通用学术会议管理平台，为会议主办方和学者之间搭建一个沟通的渠道。</p>
-        <a class="hvr-shutter-in-vertical" onclick="GoToCreateCon()"><h3 style="margin-bottom:20px">发布您的会议</h3>
+        <a id="CreateConButton" class="hvr-shutter-in-vertical hidden" onclick="GoToCreateCon()"><h3 style="margin-bottom:20px;font-weight:lighter">发布您的会议</h3>
             <!--<span class="glyphicon glyphicon-arrow-right"></span>-->
         </a>
+
+        <div style="text-align: center;" id="CountNumBar" class="hidden">
+            <h1  style="font-weight: lighter;font-size:80px;display: inline-block;margin-right:40px" class="animated bounceInLeft">[</h1>
+            <h2 id="CountConNumBar" style="font-weight: lighter;display: inline-block;">有20个会议正等待您的参与</h2>
+            <h1  style="font-weight: lighter;font-size:80px;display: inline-block;margin-left:40px" class="animated bounceInRight">]</h1>
+        </div>
     </div>
 </div>
+
+<div class="Search-Wrapper">
+    <div class="container" style="display: inline-block">
+        <!--<h4>Search your Conference</h4>-->
+        <input type="text" class="SearchBar" placeholder="会议名称/机构/分类">
+        <button type="button" class="btn SearchBarBtn">
+            <i class="glyphicon glyphicon-search">
+            </i>
+        </button>
+</div>
+</div>
+
+
+<div class="container" style="width:100%">
+<div style="width:63%;margin:40px auto;padding-left:40px;float:left">
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            <h3>热点会议</h3>
+        </li>
+        <li class="list-group-item">Dapibus ac facilisis in</li>
+        <li class="list-group-item">Morbi leo risus</li>
+        <li class="list-group-item">Porta ac consectetur ac</li>
+        <li class="list-group-item">Vestibulum at eros</li>
+    </ul>
+
+
+</div>
+
+<div style="width:33%;margin:40px auto;padding-right:40px;float:right">
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            <h3>已经入驻的机构</h3>
+        </li>
+        <li class="list-group-item">Dapibus ac facilisis in</li>
+        <li class="list-group-item">Morbi leo risus</li>
+        <li class="list-group-item">Porta ac consectetur ac</li>
+        <li class="list-group-item">Vestibulum at eros</li>
+    </ul>
+
+
+</div>
+</div>
+
+
+
 
 <script src='js/jquery-3.3.1.js'></script>
 <script src="js/bootstrap.js"></script>
 <script src="js/vue.js"></script>
 <script src="js/login.js"></script>
+<script src="js/index.js"></script>
 </body>
 </html>
