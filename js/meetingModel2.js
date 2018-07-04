@@ -14,7 +14,7 @@ var meeting = new Vue({
         introduction: '这里是会议简介部分',
         soliciting_requirement: '这里是投稿要求',
         register_requirement: '这里是注册会议要求',
-        accept_start: '2018-5-15 12:00:00',
+        accept_start: '2018-05-15 12:00:00',
         accept_due: '2018-10-01 12:00:00',
         register_start: '2018-10-10 12:00:00',
         register_due: '2018-10-20 12:00:00',
@@ -85,12 +85,12 @@ function GetCurrentUser(){
                 $('#NavText2').text('登录');
             }
             else{
-                //TODO: check favorite
                 usertype = data.data.user_type;
                 if(usertype === 'organization_user' || usertype === 'organization_sub_user'){
                     $('#join_meeting').addClass('hidden');
                     $('#paper_upload').addClass('hidden');
                     $('#favorite').addClass('hidden');
+                    $('button[id="favorite"]').addClass('hidden');
                 }
                 $('#NavText1').attr('href','person_center.html');
                 $('#NavText2').removeAttr('href');
@@ -105,8 +105,11 @@ function GetCurrentUser(){
 $(document).ready(function () {
     conference_id = getParam('id');
     GetCurrentUser();
-    if(conference_id != 0 && conference_id != null && conference_id != undefined)
+    if(conference_id === 0 || conference_id === null || conference_id === undefined)
     {
+        $('button').attr("disabled",true);
+    }
+    else {
         var conference_settings = {
             "async": false,
             "crossDomain": true,
@@ -250,7 +253,15 @@ function join_register() {
     };
     $.ajax(settings).done(function (response) {
         console.log(response);
-        alert(response);
+        if(response.message === 'success'){
+            alert('注册成功');
+        }
+        else if (response.message === 'reduplicate register'){
+            alert('您已经注册了该会议');
+        }
+        else{
+            alert('注册失败：错误的论文编号');
+        }
     });
     /*
     url: conference/<会议的主键id>/conference_register
@@ -261,44 +272,6 @@ function join_register() {
     pay_voucher 缴费凭证的照片或者pdf文件
     */
 }
-
-function paper_upload() {
-    var paper_name = $("input[id='paper_title']").val();
-    var authors = $("input[id='paper_author']").val();
-    var institute = $("input[id='paper_organization']").val();
-    var paper_abstract = $("textarea[id='paper_outline']").val();
-    var paper = $('#paper_up')[0].files[0];
-    if (paper_name === '' || authors === '' || institute === '' || paper_abstract === ''){
-        alert('信息填写不完全');
-        return;
-    }
-    else if(paper === null || paper === undefined){
-        alert('未上传论文');
-        return;
-    }
-    var formData = new FormData();
-    formData.append('authors', authors);
-    formData.append('institute', institute);
-    formData.append('paper_name', paper_name);
-    formData.append('paper_abstract', paper_abstract);
-    formData.append('paper' ,paper);
-    var settings = {
-        "async": false,
-        "crossDomain": true,
-        "url": url + "conference/conference/" + conference_id + "/paper_submit/",
-        "method": "POST",
-        "headers": {},
-        "processData": false,
-        "contentType": false,
-        "mimeType": "multipart/form-data",
-        "data": formData
-    };
-    $.ajax(settings).done(function (response) {
-        console.log(response);
-        alert(response);
-    });
-}
-
 
 function checkState_r() {
     if(usertype != 'anonymous user' && usertype != null && usertype != undefined){
@@ -400,6 +373,7 @@ function add_favorite() {
             $.ajax(settings).done(function (response) {
                console.log(response.message);
                if(response.message === 'success'){
+                   is_collected = false;
                    $('#favorite').text('❤收藏会议');
                    $('#favorite').hover(function () {
                        $('#favorite').text('❤收藏会议');
@@ -425,6 +399,7 @@ function add_favorite() {
             $.ajax(settings).done(function (response) {
                 console.log(response.message);
                 if(response.message === 'success'){
+                    is_collected = true;
                     $('#favorite').text('✔已收藏');
                     $('#favorite').hover(function () {
                         $('#favorite').text('取消收藏');
