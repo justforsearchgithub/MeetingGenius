@@ -312,7 +312,7 @@ button.btn:active:focus, button.btn.active:focus { outline: 0; opacity: 0.6; bac
     background-size:contain;
 }*/
 html {
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 #user-info {
