@@ -4,6 +4,13 @@ function addChildAccount2(){
 }
 
 $(document).ready(function () {
+    $('.form_datetime').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii'
+    });
+    $('.form_datetimeTimeLine').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii'
+    });
+    console.log('goodend');
     var username;
     var oldpassword;
     var currentindex;
@@ -88,7 +95,7 @@ $(document).ready(function () {
                 soliciting_requirement:'投稿要求',//投稿要求
                 paper_template:'论文模版',//论文模板，返回的是路径/media/xxx，加到ip地址后可访问
                 register_requirement:'注册要求',//注册要求
-                //accept_start:'',//开始投稿时间
+                accept_start:'',//开始投稿时间
                 accept_due:'',//投稿截止时间
                 modify_due:'',//修改截止日期
                 register_start:'',//注册开始时间
@@ -321,12 +328,22 @@ $(document).ready(function () {
                     processData: false,
                     success: function (data) {
                         if (data.message == "success") {
-                            this.$data.temp.name=data.data.title;
-                            this.$data.temp.description=data.data.introduction;
-
-                            this.$data.temp.requirement=data.data.register_requirement;
-                            this.$data.temp.paperinfo=data.data. soliciting_requirement;
-
+                            vm.$data.temp.title=data.data.title;
+                            vm.$data.temp.subject=data.data.subject,
+                            vm.$data.temp.introduction=data.data.introduction;
+                            vm.$data.temp.paper_template=data.data.paper_template;
+                            vm.$data.temp.register_requirement=data.data.register_requirement;
+                            vm.$data.temp.soliciting_requirement=data.data. soliciting_requirement;
+                            vm.$data.temp.accept_start=data.data.accept_due;
+                            vm.$data.temp.accept_due=data.data.accept_due;
+                            vm.$data.temp.modify_due=data.data.modify_due;
+                            vm.$data.temp.register_start=data.data.register_start;
+                            vm.$data.temp.register_due=data.data.register_due;
+                            vm.$data.temp.conference_start=data.data.conference_start;
+                            vm.$data.temp.conference_due=data.data.conference_due;
+                            vm.$data.AlreadySelectedSubjectList.length=0;
+                            vm.$data.AlreadySelectedSubjectList.push(data.data.subject);
+                            console.log(vm.$data.temp);
                         }
                     }
                 });
@@ -334,7 +351,7 @@ $(document).ready(function () {
                 document.getElementById("div_meeting").style.display="none";
                 document.getElementById("div_meeting_info").style.display="block";
                 currentindex=no;
-                this.$data.temp=this.$data.meetings[this.$data.currrentindex];
+                //this.$data.temp=this.$data.meetings[this.$data.currrentindex];
             },
 
             //论文审核信息
@@ -654,14 +671,17 @@ $(document).ready(function () {
 
             },
 
+            AddSubject: function (event) {
+                if($('#txt_ide').val()!='')
+                {
+                    vm.$data.AlreadySelectedSubjectList.length=0;
 
-            AddSubjectsToAlreadySelected: function (e) {
+                    vm.$data.AlreadySelectedSubjectList.push($('#txt_ide').val());
+                    console.log($('#txt_ide').val());
+                }
 
 
             },
-            DeleteAlreadySelectedSubject: function (e) {
-                
-            }
 
         }
     });

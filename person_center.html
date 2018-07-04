@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-theme.css">
-    <link rel="stylesheet" href="css/per_center.css">
     <link rel="stylesheet" href="css/alter.css">
     <link rel="stylesheet" href="css/bootstrap-datetimepicker.css">
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
     <link rel="stylesheet" type="text/css" href="css/jquery.eeyellow.Timeline.css"/>
+    <link rel="stylesheet" href="css/per_center.css">
+
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+
 
     <title>会议管理平台</title>
 </head>
@@ -227,7 +229,8 @@
 
                         <div class="select-input select-category" id="CreatConSubjectList">
                             <input type="text" id="txt_ide" list="optionList" />
-                            <span class="glyphicon glyphicon-plus" aria-hidden="true"  onclick="AddSubjects()"></span>
+                            <a class="material-icons" v-on:click="AddSubject" >cached</a>
+
                         </div>
 
                         <datalist id="optionList">
@@ -239,12 +242,15 @@
                         <label class="input-label" style="margin-top:20px;bottom-bottom:40px">已选分类</label>
 
                         <div class="select-input select-category" style="margin-top:15px" id="AlreadySelectedSubjectList">
-                            <span v-for="(subject,index) in AlreadySelectedSubjectList" style="margin-left:5px" class="Alreadycategory-list selected" index="1" :id="['AlreadySelectedSubjectOptionList_'+index]" onclick="DeleteAlreadySelectedSubject(this)">{{subject}}</span>
+                            <span v-for="(subject,index) in AlreadySelectedSubjectList" style="margin-left:5px" class="Alreadycategory-list selected" index="1" :id="['AlreadySelectedSubjectOptionList_'+index]" >{{AlreadySelectedSubjectList[0]}}</span>
                         </div>
                     </div>
 
 
-
+                    <label class="input-label">测试</label>
+                    <div class="input-group" style="display: inline-block">
+                        <input id="accept_due" type="text" value="" class="form_datetime">
+                    </div>
 
                     <div class="step1-title">
                         <span class="num">3</span>填写会议相关日期
@@ -252,7 +258,7 @@
                     <div style="margin-top:30px">
                         <label class="input-label">截稿日期</label>
                         <div class="input-group" style="display: inline-block">
-                            <input size="10" type="text" value="" class="form_datetime" v-model="temp.accept_due">
+                            <input size="10" placeholder="yyyy-mm-dd hh:ii" type="text" value="" class="date form_datetime" >
                         </div>
                     </div>
 
@@ -272,7 +278,7 @@
                     <div style="margin-top:30px">
                         <label class="input-label" style="width:150px">会议开始时间</label>
                         <div class="input-group" style="display: inline-block">
-                            <input  id="conference_start" type="text" value="" class="form_datetime" v-model="temp.conference_start">
+                            <input  type="text"  class="form_datetime" v-model="temp.conference_start">
 
                         </div>
                         <label class="input-label" style="width:150px;float:none;margin-left:20%">会议结束日期</label>
@@ -692,6 +698,17 @@
 <script src='js/jquery-3.3.1.js'></script>
 <script src="js/bootstrap.js" ></script>
 <script src="js/vue.js"></script>
+<script src="js/bootstrap-datetimepicker.js"></script>
 <script src="js/person_center.js"></script>
+<script type="text/javascript" src="js/jquery.eeyellow.Timeline.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.VivaTimeline').vivaTimeline({
+            carousel: true,
+            carouselTime: 3000
+        });
+    });
+</script>
+<script src="js/login.js"></script>
 </body>
 </html>
