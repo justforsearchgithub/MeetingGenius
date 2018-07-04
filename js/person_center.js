@@ -2,8 +2,43 @@ var url='http://139.199.24.235:80/';
 function addChildAccount2(){
     $('#myModal').modal({backdrop: 'static', keyboard: true});
 }
+function GetCurrentUser(){
+    var user;
+    var type;
+    $.ajax({
+        type: 'GET',
+        async:false,
+        url: url + 'account/username/',
+        //headers:{'X-CSRFToken',Token},
+        success: function (data) {
+            console.log(data);
+            user = data.username;
+            if(user =="anonymous user"){
+                console.log(0);
+                type =0;
+                $('#NavText1').attr('href','userRegister.html');
+                $('#NavText1').text('免费注册');
+                $('#NavText2').remove('onclick','LogOut()');
+                $('#NavText2').attr('href','login.html');
+                $('#NavText2').text('登录');
+            }
+            else{
+                console.log(1);
+                type = 1;
+                $('#NavText1').attr('href','person_center.html');
+                $('#NavText2').removeAttr('href');
+                $('#NavText1').text ('个人中心');
+                $('#NavText2').text('登出');
+                $('#NavText2').attr('onclick','LogOut()');
+                var str = "";
+            }
+        }
+    });
+    return type;
+}
 
 $(document).ready(function () {
+    GetCurrentUser();
     var username;
     var oldpassword;
     var currentindex;

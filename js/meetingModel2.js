@@ -335,7 +335,7 @@ function favorite_state() {
         };
         $.ajax(settings).done(function (response) {
             console.log(response);
-            if(response.message === 'success'){
+            if(response.message === 'susccess'){
                 is_collected = response.data.collected;
                 if(is_collected == true){
                     $('#favorite').text('✔已收藏');
@@ -372,7 +372,7 @@ function add_favorite() {
             };
             $.ajax(settings).done(function (response) {
                console.log(response.message);
-               if(response.message === 'success'){
+               if(response.message === 'susccess'){
                    is_collected = false;
                    $('#favorite').text('❤收藏会议');
                    $('#favorite').hover(function () {
@@ -398,7 +398,7 @@ function add_favorite() {
             };
             $.ajax(settings).done(function (response) {
                 console.log(response.message);
-                if(response.message === 'success'){
+                if(response.message === 'susccess'){
                     is_collected = true;
                     $('#favorite').text('✔已收藏');
                     $('#favorite').hover(function () {

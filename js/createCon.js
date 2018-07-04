@@ -23,19 +23,19 @@ new Vue({
     data:{
         Subjects:optionsubjects
     }
-})
+});
 new Vue({
     el:"#TimeLine",
     data:{
         Activities:myActivities
     }
-})
+});
 new Vue({
     el:"#AlreadySelectedSubjectList",
     data:{
         AlreadySelectedSubjectList:AlreadySelectedSubjects
     }
-})
+});
 
 
 $('.form_datetime').datetimepicker({

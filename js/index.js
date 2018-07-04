@@ -1,4 +1,4 @@
-var url='http://139.199.24.235:80/';
+var url = 'http://139.199.24.235:80/';
 
 function GetCurrentUser() {
     var user;
@@ -34,31 +34,79 @@ function GetCurrentUser() {
     });
     return type;
 }
+
 var user_type;
-function GetUserType(){
+
+function GetUserType() {
     $.ajax({
-        type:'GET',
-        async:false,
-        url:url+'account/user_type/',
-        success:function(data){
+        type: 'GET',
+        async: false,
+        url: url + 'account/user_type/',
+        success: function (data) {
             console.log(data.data.user_type);
             user_type = data.data.user_type;
         }
     })
 }
-$('#CountConNumBar').mouseover(function(){
+
+$('#CountConNumBar').mouseover(function () {
     $('#CountConNumBar').addClass("animated tada");
-    setTimeout(function(){
+    setTimeout(function () {
         $('#CountConNumBar').removeClass("animated tada");
-    },5000);
+    }, 5000);
 });
-$(document).ready(function(){
-    GetUserType();
-    if(user_type != "normal_user"){
-        $("#CreateConButton").removeClass("hidden");
+
+function GetActiveConferenceNum() {
+    $.ajax({
+        type: 'GET',
+        url: url + 'conference/num_not_over/',
+        async: 'false',
+        success: function (data) {
+            console.log(data.data);
+            var ActiveConferenceNum = data.data;
+            $('#CountConNumBar').text("有" + ActiveConferenceNum + "个会议正等待您的参与");
+        }
+    })
+};
+
+var HotSpotConferenceList = [];
+var HotSpotConferenceListVue = new Vue({
+    el: '#HotSpotConference',
+    data: {
+        HotSpotConferenceList: HotSpotConferenceList
     }
-    else{
-        $('#CountNumBar').removeClass('hidden');
-    }
+});
+
+function GetHotConferenceList() {
+    $.ajax({
+        type: 'GET',
+        async: 'false',
+        url: url + 'conference/top10_hot_references/',
+        success: function (data) {
+            console.log(data.message);
+            HotSpotConferenceList = data.data;
+            for (con in data.data) {
+                HotSpotConferenceListVue.$data.HotSpotConferenceList.push(data.data[con]);
+            }
+
+        }
+    })
 }
+
+function GoToSearch(){
+    var Keyword = $("#SearchBarText").val();
+    window.location.href = "SearchResult.html?Keyword="+Keyword;
+}
+$(document).ready(function () {
+        GetUserType();
+        GetActiveConferenceNum();
+        GetHotConferenceList();
+        if (user_type != "normal_user") {
+            $("#CreateConButton").removeClass("hidden");
+        }
+        else {
+            $('#CountNumBar').removeClass('hidden');
+        }
+    }
 );
+

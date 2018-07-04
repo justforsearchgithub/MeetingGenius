@@ -365,7 +365,8 @@ function GoToCreateCon(){
                window.location.href = "createCon.html";
            }
            else{
-               alert("请先成为会议主办方！！")
+               alert("请先成为会议主办方！！");
+               window.location.href="enterpriseRegister.html";
            }
         }
     });

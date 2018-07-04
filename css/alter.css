@@ -1,3 +1,9 @@
+.a{
+    color:#000000;
+}
+.a:visited{
+    color:#000000;
+}
 .mynavBar {
     margin: 0;
 }
@@ -37,7 +43,6 @@
     backface-visibility: hidden;
     -moz-osx-font-smoothing: grayscale;
     position: relative;
-    background: #fff;
     border-radius: 25px;
     -webkit-border-radius: 25px;
     -moz-border-radius: 25px;
@@ -48,7 +53,9 @@
     -webkit-transition-duration: 0.3s;
     transition-duration: 0.3s;
 }
-
+.hvr-shutter-in-vertical>h3{
+    cursor: pointer;
+}
 .hvr-shutter-in-vertical:before {
     content: "";
     position: absolute;
@@ -77,12 +84,14 @@
 }
 
 .hvr-shutter-in-vertical:hover, .hvr-shutter-in-vertical:focus, .hvr-shutter-in-vertical:active {
-    color: #212121;
+    color: white;
 }
 
 .hvr-shutter-in-vertical:hover:before, .hvr-shutter-in-vertical:focus:before, .hvr-shutter-in-vertical:active:before {
-    -webkit-transform: scaleY(0);
-    transform: scaleY(0);
+    box-shadow: #00ff80 0 0 1px 1px;
+    transform: scale(1.05);
+    cursor: pointer;
+    transition: box-shadow 200ms,transform 200ms;
 }
 
 body a:hover {
