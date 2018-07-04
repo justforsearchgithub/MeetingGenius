@@ -4,7 +4,7 @@ function addChildAccount2(){
 }
 
 $(document).ready(function () {
-    $('.form_datetime').datetimepicker({
+    $(".form_datetime").datetimepicker({
         format: 'yyyy-mm-dd hh:ii'
     });
     $('.form_datetimeTimeLine').datetimepicker({
