@@ -439,3 +439,4 @@ function format_time(date) {
     str = str.replace('T', ' ');
     return str;
 }
+
