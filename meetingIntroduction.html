@@ -2,13 +2,17 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/meetingIntroduction.css">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-theme.css">
     <link rel="stylesheet" href="css/alter.css">
     <title>会议介绍</title>
 </head>
-<body  onload="leftTimer()">
-<div >
+<body>
+<script src='js/jquery-3.3.1.js'></script>
+<script src="js/vue.js"></script>
+
+<div>
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container" style="width:100%">
             <div class="navbar-header">
@@ -25,28 +29,28 @@
                 <ul class="nav navbar-nav" style="float:none;">
                     <li><a href="index.html">Home</a></li>
 
-                    <li class="pull-right" ><a id="NavText1" href="userRegister.html">免费注册</a></li>
-                    <li class="pull-right" ><a id="NavText2" href="login.html">登录</a></li>
+                    <li class="pull-right"><a>免费注册</a></li>
+                    <li class="pull-right"><a href="login.html">登录</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
     </nav>
 </div>
 <div id="meeting">
-<div class="banner">
-    <div class="banner-info" style="margin-top:50px" id="meetingName">
-        <h1>{{meetingName}}</h1>
+    <div class="banner">
+        <div class="banner-info" style="margin-top:50px" id="meetingName">
+            <h1>{{meetingName}}</h1>
+        </div>
     </div>
-</div>
 
-<div class="container-fluid">
-    <div class="row">
+    <div class="container-fluid">
+        <div class="row">
             <div class="col-md-8">
                 <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title" id="schedulingProgram">日程安排</h3>
-                </div>
-                <div class="panel-body" id="schedulingProgramList">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" id="schedulingProgram">日程安排</h3>
+                    </div>
+                    <div class="panel-body" id="schedulingProgramList">
                         <strong><span style="line-height:2;font-size:18px;">开始时间</span></strong></br>
                         <p>{{startTime}}</p>
                         <strong><span style="line-height:2;font-size:18px;">结束时间</span></strong></br>
@@ -55,26 +59,26 @@
                         <p>{{activityPlace}}</p>
                         <strong><span style="line-height:2;font-size:18px;">活动描述</span></strong></br>
                         <p>{{activityDescription}}</p>
+                    </div>
                 </div>
-            </div>
 
                 <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title" >学科</h3>
+                    <div class="panel-heading">
+                        <h3 class="panel-title" >学科</h3>
+                    </div>
+                    <div class="panel-body" style="height:50px">
+                        <p>{{subject}}</p>
+                    </div>
                 </div>
-                <div class="panel-body" style="height:50px">
-                    <p>{{subject}}</p>
-                </div>
-            </div>
 
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title" id="meetingIntroduction">会议简介</h3>
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" id="meetingIntroduction">会议简介</h3>
+                    </div>
+                    <div class="panel-body" style="height:500px">
+                        <p>{{meetingIntroduction}}</p>
+                    </div>
                 </div>
-                <div class="panel-body" style="height:500px">
-                    <p>{{meetingIntroduction}}</p>
-                </div>
-            </div>
                 <div class="panel panel-success">
                     <div class="panel-heading">
                         <h3 class="panel-title" >注册要求</h3>
@@ -83,127 +87,179 @@
                         <p>{{registerRequest}}</p>
                     </div>
                 </div>
-        </div>
+            </div>
 
-        <div class="col-md-4">
-            <div class="panel panel-danger">
-                <div class="panel-heading">
-                    <h3 class="panel-title">剩余时间</h3>
-                </div>
-                <div class="panel-body">
-                    <div id="timer" >
+            <div class="col-md-4">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">剩余时间</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="data-show-box mt-40" id="dateShow1">
+                            <span class="date-tiem-span d"></span>&nbsp;&nbsp;天&nbsp;
+                            <span class="date-tiem-span h"></span>&nbsp;&nbsp;小时&nbsp;
+                            <span class="date-tiem-span m"></span>&nbsp;&nbsp;分&nbsp;
+                            <span class="date-s-span date-tiem-span s"></span>&nbsp;&nbsp;秒&nbsp;
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="panel panel-danger">
-                <div class="panel-heading">
-                    <h3 class="panel-title">重要日期</h3>
-                </div>
-                <div class="panel-body">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">重要日期</h3>
+                    </div>
+                    <div class="panel-body">
 
-                    <strong><span style="line-height:2;font-size:18px;">截稿日期</span></strong></br>
-                    <p>{{closeDate}}</p>
-                    <strong><span style="line-height:2;font-size:18px;">第一次审核通知日期</span></strong></br>
-                    <p>{{firstAuditNoticeDate}}</p>
-                    <strong><span style="line-height:2;font-size:18px;">修改截稿日期</span></strong></br>
-                    <p>{{modifyCloseDate}}</p>
-                    <strong><span style="line-height:2;font-size:18px;">第二次审核通知日期</span></strong></br>
-                    <p>{{secondAuditNoticeDate}}</p>
-                    <strong><span style="line-height:2;font-size:18px;">注册开放日期</span></strong></br>
-                    <p>{{registerOpenDate}}</p>
-                    <strong><span style="line-height:2;font-size:18px;">注册结束日期</span></strong></br>
-                    <p>{{registerCloseDate}}</p>
-                    <strong><span style="line-height:2;font-size:18px;">会议开始日期</span></strong></br>
-                    <p>{{meetingStartDate}}</p>
+                        <strong><span style="line-height:2;font-size:18px;">截稿日期</span></strong></br>
+                        <p>{{closeDate}}</p>
+                        <strong><span style="line-height:2;font-size:18px;">第一次审核通知日期</span></strong></br>
+                        <p>{{firstAuditNoticeDate}}</p>
+                        <strong><span style="line-height:2;font-size:18px;">修改截稿日期</span></strong></br>
+                        <p>{{modifyCloseDate}}</p>
+                        <strong><span style="line-height:2;font-size:18px;">第二次审核通知日期</span></strong></br>
+                        <p>{{secondAuditNoticeDate}}</p>
+                        <strong><span style="line-height:2;font-size:18px;">注册开放日期</span></strong></br>
+                        <p>{{registerOpenDate}}</p>
+                        <strong><span style="line-height:2;font-size:18px;">注册结束日期</span></strong></br>
+                        <p>{{registerCloseDate}}</p>
+                        <strong><span style="line-height:2;font-size:18px;">会议开始日期</span></strong></br>
+                        <p>{{meetingStartDate}}</p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">主办单位</h3>
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">主办单位</h3>
+                    </div>
+                    <div class="panel-body">
+                        <strong><span style="line-height:2;font-size:18px;">组织名称</span></strong></br>
+                        <p>{{organizationName }}</p>
+                        <strong><span style="line-height:2;font-size:18px;">联系人姓名</span></strong></br>
+                        <p>{{contactName }}</p>
+                        <strong><span style="line-height:2;font-size:18px;">联系人电话</span></strong></br>
+                        <p>{{contactPhone }}</p>
+                        <strong><span style="line-height:2;font-size:18px;">联系人邮箱</span></strong></br>
+                        <p>{{contactEmail }}</p>
+                    </div>
                 </div>
-                <div class="panel-body">
-                    <strong><span style="line-height:2;font-size:18px;">组织名称</span></strong></br>
-                    <p>{{organizationName }}</p>
-                    <strong><span style="line-height:2;font-size:18px;">联系人姓名</span></strong></br>
-                    <p>{{contactName }}</p>
-                    <strong><span style="line-height:2;font-size:18px;">联系人电话</span></strong></br>
-                    <p>{{contactPhone }}</p>
-                    <strong><span style="line-height:2;font-size:18px;">联系人邮箱</span></strong></br>
-                    <p>{{contactEmail }}</p>
-                </div>
-            </div>
 
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">征文信息</h3>
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">投稿要求</h3>
+                    </div>
+                    <div class="panel-body" style="height:100px">
+                        <p>{{solicitInformation }}</p>
+                    </div>
                 </div>
-                <div class="panel-body" style="height:100px">
-                    <p>{{solicitInformation }}</p>
+
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">参会投稿</h3>
+                    </div>
+                    <div class="panel-body" style="height:100px">
+                        <button id="paper_download" onclick="downloadPaper()" style="line-height:2;font-size:18px;">论文模板</button>
+                        <button id="join_meeting" onclick="checkLogin()" data-toggle="modal" data-target="#join-meeting" style="line-height:2;font-size:18px;">参加会议</button>
+                        <button id="paper_upload" onclick="checkLogin()" data-toggle="modal" data-target="#paper-upload" style="line-height:2;font-size:18px;">我要投稿</button>
+                    </div>
                 </div>
+
             </div>
-            <a href="#" target="_self" class="item1" style="line-height:2;font-size:18px;">论文模板</a></br>
-        </div>
         </div>
     </div>
 </div>
 </div>
 
-<script language="javascript" type="text/javascript">
-    function leftTimer(year,month,day,hour,minute,second){
-        var leftTime = (new Date(year,month-1,day,hour,minute,second)) - (new Date()); //计算剩余的毫秒数
-        var days = parseInt(leftTime / 1000 / 60 / 60 / 24  , 10); //计算剩余的天数
-        var hours = parseInt(leftTime / 1000 / 60 / 60 % 24 , 10); //计算剩余的小时
-        var minutes = parseInt(leftTime / 1000 / 60 % 60, 10);//计算剩余的分钟
-        var seconds = parseInt(leftTime / 1000 % 60, 10);//计算剩余的秒数
-        days = checkTime(days);
-        hours = checkTime(hours);
-        minutes = checkTime(minutes);
-        seconds = checkTime(seconds);
-        setInterval("leftTimer(2019,3,1,11,11,11)",1000);
-        document.getElementById("timer").innerHTML = days+" 天 " + hours+" 小时 " + minutes+" 分 "+seconds+" 秒 ";
-    }
-    function checkTime(i){ //将0-9的数字前面加上0，例1变为01
-        if(i<10)
-        {
-            i = "0" + i;
-        }
-        return i;
-    }
-    var vm = new Vue(
-        {
-            url:"",
-            el: '#meeting',
-            data: {
-                meetingName: '',
-                startTime:'',
-                endTime: '',
-                activityPlace: '',
-                activityDescription: '',
-                subject:'',
-                meetingIntroduction: '',
-                registerRequest: '',
-                firstAuditNoticeDate: '',
-                closeDate: '',
-                secondAuditNoticeDate: '',
-                modifyCloseDate: '',
-                registerOpenDate: '',
-                registerCloseDate: '',
-                meetingStartDate: '',
-                organizationName: '',
-                contactName: '',
-                contactPhone: '',
-                contactEmail: '',
-                solicitInformation: '',
-
-            }
-        })
-</script>
-
-<script src='js/jquery-3.3.1.js'></script>
+<!--register child window start-->
+<div class="modal fade" id="join-meeting"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">注册参加会议</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="margin-top: 5px">
+                    <label>姓名</label>
+                    <input type="text" class="form-control" id="person_name" placeholder="请输入姓名">
+                </div>
+                <div class="form-group" style="margin-top: 5px">
+                    <label>性别</label>
+                    <div style="height: 46px;font-size: 18px; padding-top: 8px">
+                        <input type="radio" name="sex" id="person_gender_m" value="男" checked> 男
+                        <input type="radio" name="sex" id="person_gender_f" value="女"> 女
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 5px">
+                    <label>是否预订住宿</label>
+                    <div style="height: 46px;font-size: 18px; padding-top: 8px">
+                        <input type="radio" name="hotel" id="hotel_y" value=true checked> 是
+                        <input type="radio" name="hotel" id="hotel_n" value=false> 否
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 5px">
+                    <label>论文编号</label>
+                    <input type="text" class="form-control" id="paper_num"  aria-describedby="sizing-addon1" placeholder="没有投稿请勿填写">
+                </div>
+                <div class="form-group" style="margin-top: 5px">
+                    <label>缴费凭证</label>
+                    <input id="fee_upload" type="file" class="file" accept="image/*" onchange="triggerfile_fee()"/>
+                    <label id="label_fee_upload" for="fee_upload" style="font-size: 14px">选择图片</label>
+                    <a href="javascript:file_upload('fee_upload')"><img style="max-width: 568px" class="hidden" src="" alt="图片上传失败" id="img_fee_upload"></a>
+                </div>
+                <div class="form-group" style="margin-top: 5px">
+                    <label>补充说明</label>
+                    <textarea id="extra_info" class="form-control" rows="8"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="join_register()">提交</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!--register child window end-->
+<!--paper child window start-->
+<div class="modal fade" id="paper-upload"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">论文投稿</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="margin-top: 5px">
+                    <label>名称</label>
+                    <input type="text" class="form-control" id="paper_title">
+                </div>
+                <div class="form-group" style="margin-top: 5px">
+                    <label>作者</label>
+                    <input type="text" class="form-control" id="paper_author">
+                </div>
+                <div class="form-group" style="margin-top: 5px">
+                    <label>单位</label>
+                    <input type="text" class="form-control" id="paper_organization">
+                </div>
+                <div class="form-group" style="margin-top: 5px">
+                    <label>上传论文</label>
+                    <input id="paper_up" type="file" class="file" accept="application/pdf" onchange="triggerfile_paper()"/>
+                    <label id="label_paper_up" for="paper_up" style="font-size: 14px">选择文件</label>
+                </div>
+                <div class="form-group" style="margin-top: 5px">
+                    <label>摘要</label>
+                    <textarea id="paper_outline" class="form-control" rows="8"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="paper_upload()">提交</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!--paper child window end-->
+<script src="js/meetingIntroduction.js"></script>
 <script src="js/bootstrap.js"></script>
-<script src="js/vue.js"></script>
+<script src="js/jquery.countdown.js"></script>
+<script src="js/leftTime.min.js" ></script>
 </body>
 
 </html>
