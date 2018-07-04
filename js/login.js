@@ -148,13 +148,15 @@ function Login() {
             //headers:{'X-CSRFToken',Token},
             success: function (data) {
                 console.log(data);
-                if (data.message == "success") {
-                    //lert("SUcces.");
-                   console.log(data);
+                if (data.message === "success") {
+                    alert("登录成功");
                    window.location.href = 'index.html';
                 }
+                else if (data.message === "username or password error"){
+                    alert('登录失败，用户名或密码错误');
+                }
                 else {
-                    //alert(data.message);
+                    alert('登录失败，服务器错误，请联系网站管理员解决');
                 }
                 //return true;
             }
@@ -206,7 +208,19 @@ function user_reg() {
 
         $.ajax(settings).done(function (response) {
             console.log(response);
-            window.location.href = "index.html";
+            if(response.message === 'success'){
+                alert('注册成功');
+                window.location.href = "index.html";
+            }
+            else if (data.message === "username error"){
+                alert('注册失败，用户名重复');
+            }
+            else if (data.message === "password error"){
+                alert('注册失败，密码不一致');
+            }
+            else {
+                alert('注册失败，服务器错误，请联系网站管理员解决');
+            }
             //alert(response);
         });
     }
@@ -298,8 +312,17 @@ function enterprise_reg() {
             console.log(response);
             alert(response);
             if(response.message =="success"){
-                alert('success');
+                alert('注册信息提交成功，请等待管理员审核，审核结果将通过邮件发送');
                 window.location.href='index.html';
+            }
+            else if (data.message === "username error"){
+                alert('注册失败，用户名重复');
+            }
+            else if (data.message === "password error"){
+                alert('注册失败，密码不一致');
+            }
+            else {
+                alert('注册失败，服务器错误，请联系网站管理员解决');
             }
         });
     }

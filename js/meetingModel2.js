@@ -1,6 +1,7 @@
 var url = 'http://139.199.24.235:80/';
-var loggedIn = true;
 var conference_id = 0;
+var usertype = 'anonymous user';
+var is_collected = false;
 var meeting = new Vue({
     el: '#info',
     data: {
@@ -69,19 +70,14 @@ var meeting = new Vue({
 });
 
 function GetCurrentUser(){
-    var user;
-    var type;
     $.ajax({
         type: 'GET',
         async:false,
-        url: url + 'account/username/',
-        //headers:{'X-CSRFToken',Token},
+        url: url + 'account/user_type/',
         success: function (data) {
             console.log(data);
-            user = data.username;
-            if(user =="anonymous user"){
-                console.log(0);
-                type =0;
+            if(data.message ==="anonymous user"){
+                usertype = data.message;
                 $('#NavText1').attr('href','userRegister.html');
                 $('#NavText1').text('免费注册');
                 $('#NavText2').remove('onclick','LogOut()');
@@ -89,8 +85,13 @@ function GetCurrentUser(){
                 $('#NavText2').text('登录');
             }
             else{
-                console.log(1);
-                type = 1;
+                //TODO: check favorite
+                usertype = data.data.user_type;
+                if(usertype === 'organization_user' || usertype === 'organization_sub_user'){
+                    $('#join_meeting').addClass('hidden');
+                    $('#paper_upload').addClass('hidden');
+                    $('#favorite').addClass('hidden');
+                }
                 $('#NavText1').attr('href','person_center.html');
                 $('#NavText2').removeAttr('href');
                 $('#NavText1').text ('个人中心');
@@ -99,26 +100,11 @@ function GetCurrentUser(){
             }
         }
     });
-    return type;
 }
 
 $(document).ready(function () {
     conference_id = getParam('id');
-    var usertype_settings = {
-        "async": false,
-        "crossDomain": true,
-        "url": url + "account/user_type/",
-        "method": "GET",
-        "headers": {}
-    };
-    $.ajax(usertype_settings).done(function (responce) {
-        console.log(responce);
-        var type = responce.data.user_type;
-        if(type === 'organization_user' || type === 'organization_sub_user'){
-            $('#join_meeting').addClass('hidden');
-            $('#paper_upload').addClass('hidden');
-        }
-    });
+    GetCurrentUser();
     if(conference_id != 0 && conference_id != null && conference_id != undefined)
     {
         var conference_settings = {
@@ -160,6 +146,7 @@ $(document).ready(function () {
             meeting.activities = ac_response.data;
         });
     }
+    favorite_state();
     //日期倒计时
     $(function(){
         var today = new Date();
@@ -185,16 +172,6 @@ $(document).ready(function () {
             }
         });
     });
-
-    var username = GetCurrentUser();
-    console.log(username);
-    if(username === 0){
-        loggedIn = false;
-    }
-    else{
-        loggedIn = true;
-
-    }
 });
 
 function triggerfile_fee() {
@@ -299,7 +276,6 @@ function paper_upload() {
         alert('未上传论文');
         return;
     }
-    /*TODO:check ajax with file*/
     var formData = new FormData();
     formData.append('authors', authors);
     formData.append('institute', institute);
@@ -321,24 +297,11 @@ function paper_upload() {
         console.log(response);
         alert(response);
     });
-    /*
-url: conference/<会议的主键id>/paper_submit
-说明：普通用户提交论文
-from 前端：
-    post: authors 作者们 institute 机构  paper_name paper_abstract  paper 上传的论文文件
-    */
 }
 
-function checkLogin() {
-    if(loggedIn === false){
-        alert('您尚未登陆！');
-        return false;
-    }
-    return true;
-}
 
 function checkState_r() {
-    if(checkLogin()){
+    if(usertype != 'anonymous user' && usertype != null && usertype != undefined){
         if(meeting.state != '注册中'){
             alert('现在不在注册期间！');
         }
@@ -346,16 +309,22 @@ function checkState_r() {
             $('#join-meeting').modal('show');
         }
     }
+    else{
+        alert('请先登录！');
+    }
 }
 
 function checkState_p() {
-    if(checkLogin()){
+    if(usertype != 'anonymous user' && usertype != null && usertype != undefined){
         if(meeting.state != '征稿中'){
             alert('现在不在投稿期间！');
         }
         else{
             $('#paper-upload').modal('show');
         }
+    }
+    else{
+        alert('请先登录！');
     }
 }
 
@@ -365,7 +334,6 @@ function downloadPaper() {
 
 var getParam = function (name) {
     var search = document.location.search;
-    //alert(search);
     var pattern = new RegExp("[?&]" + name + "\=([^&]+)", "g");
     var matcher = pattern.exec(search);
     var items = null;
@@ -383,9 +351,92 @@ var getParam = function (name) {
     return items;
 };
 
-function add_favorite() {
-    if(checkLogin()){
+function favorite_state() {
+    if(usertype === 'normal_user') {
+        var settings = {
+            "async": false,
+            "crossDomain": true,
+            "url": url + "account/is_collected/" + conference_id + '/',
+            "method": "GET",
+            "headers": {}
+        };
+        $.ajax(settings).done(function (response) {
+            console.log(response);
+            if(response.message === 'success'){
+                is_collected = response.data.collected;
+                if(is_collected == true){
+                    $('#favorite').text('✔已收藏');
+                    $('#favorite').hover(function () {
+                        $('#favorite').text('取消收藏');
+                    }, function () {
+                        $('#favorite').text('✔已收藏');
+                    });
+                }
+                else{
+                    $('#favorite').text('❤收藏会议');
+                    $('#favorite').hover(function () {
+                        $('#favorite').text('❤收藏会议');
+                    }, function () {
+                        $('#favorite').text('❤收藏会议');
+                    });
+                }
+            }
+        });
+    }
+}
 
+function add_favorite() {
+    if(usertype === 'normal_user'){
+        if(is_collected == true){
+            var settings = {
+                "async": false,
+                "crossDomain": true,
+                "url": url + "account/discollect/" + conference_id + "/",
+                "method": "POST",
+                "headers": {},
+                "processData": false,
+                "contentType": false
+            };
+            $.ajax(settings).done(function (response) {
+               console.log(response.message);
+               if(response.message === 'success'){
+                   $('#favorite').text('❤收藏会议');
+                   $('#favorite').hover(function () {
+                       $('#favorite').text('❤收藏会议');
+                   }, function () {
+                       $('#favorite').text('❤收藏会议');
+                   });
+               }
+               else {
+                   alert('取消收藏失败，用户没有权限');
+               }
+            });
+        }
+        else{
+            var settings = {
+                "async": false,
+                "crossDomain": true,
+                "url": url + "account/collect/" + conference_id + "/",
+                "method": "POST",
+                "headers": {},
+                "processData": false,
+                "contentType": false
+            };
+            $.ajax(settings).done(function (response) {
+                console.log(response.message);
+                if(response.message === 'success'){
+                    $('#favorite').text('✔已收藏');
+                    $('#favorite').hover(function () {
+                        $('#favorite').text('取消收藏');
+                    }, function () {
+                        $('#favorite').text('✔已收藏');
+                    });
+                }
+                else {
+                    alert('收藏失败，用户没有权限');
+                }
+            });
+        }
     }
 }
 
