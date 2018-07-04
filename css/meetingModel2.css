@@ -200,7 +200,7 @@
     padding-bottom: 40px;
 }
 .Important_date dl{
-    width: 277px;
+    width: 380px;
     height: 100px;
     border:1px solid #CCCCCC;
     background: #f7f7f7;
@@ -1115,4 +1115,51 @@ h1,h2,h3,h4,h5,h6{margin: 0;padding: 0;}
 
 #favorite:hover {
     background: #f0ad4e;
+}
+
+#NavText2:hover {
+    cursor: pointer;
+}
+
+#first_title {
+    font-size: 40px;
+    font-weight: lighter;
+    color: #FFFFFF;
+}
+
+.box-line {
+    height: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.box-line .line-left {
+    height: 2px;
+    flex-grow: 1;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0) , #0088cc);
+}
+
+.box-line .line-right {
+    height: 2px;
+    flex-grow: 1;
+    background: linear-gradient(to left, rgba(0, 0, 0, 0) , #0088cc);
+}
+
+.box-line .text {
+    margin: 0 5px;
+}
+
+.input-sm-left {
+    width: 48%;
+    float: left;
+    margin-top: 5px;
+}
+
+.input-sm-right {
+    width: 48%;
+    float: right;
+    margin-top: 5px;
 }

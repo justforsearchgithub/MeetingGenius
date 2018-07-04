@@ -31,7 +31,7 @@
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav" style="float:none;">
 
-                    <li><a href="#">Home</a></li>
+                    <li><a href="index.html">Home</a></li>
 
                     <li class="pull-right" ><a id="NavText1" href="userRegister.html">免费注册</a></li>
                     <li class="pull-right" ><a id="NavText2" href="login.html">登录</a></li>
@@ -68,6 +68,9 @@
             </li>
             <li v-on:click="click_password">
                 <a href="#"><i class="fa fa-fw fa-cog"></i> 修改密码</a>
+            </li>
+            <li v-if="is_normal" v-on:click="click_paper">
+                <a href="#"><i class="fa fa-fw fa-cog"></i>论文信息 </a>
             </li>
             <!--<li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-plus"></i> Dropdown <span class="caret"></span></a>
@@ -119,11 +122,14 @@
                 <div class="panel panel-default" >
                     <div class="panel-heading" style="height: 50px">
                         <h3 class="panel-title" style="text-align: center">
-                            收藏
+                            收藏会议列表
                         </h3>
                     </div>
                     <div class="panel-body" >
-                        面板内容
+                        <ul class="list-group" v-for="(collection_meeting,index) in collection_meetings" >
+                            <li class="list-group-item" style="align:center"><a :href="['meetingModel2.html?id='+collection_meeting.id]">会议名称：{{collection_meeting.name}} </a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -141,7 +147,7 @@
                     </div>
                     <div class="panel-body" align="center" >
                         <ul class="list-group" v-for="(childaccount,index) in childaccounts" >
-                            <li class="list-group-item">子账户名：{{childaccount.name}} &nbsp;&nbsp; 子账户密码:{{childaccount.password}}&nbsp;&nbsp;&nbsp;&nbsp;
+                            <li class="list-group-item">子账户名：{{childaccount.name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                                 <a class="material-icons" v-on:click="setcapassword(index)" >build</a>     <!--model3-->
                                 <a class="material-icons" v-on:click="deleteca(index)">delete_foreve</a>
                             </li>
@@ -166,9 +172,10 @@
                     </div>
                     <div class="panel-body" >
                         <ul class="list-group" v-for="(meeting,index) in meetings" >
-                            <li class="list-group-item">会议名称：{{meeting.name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                            <li class="list-group-item"><a :href="['meetingModel2.html?id='+meeting.id]">会议名称：{{meeting.name}} </a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                                 <button type="button" class="btn btn-primary" v-on:click="click_meeting_info(index)">修改会议信息</button>
                                 <button type="button" class="btn btn-success" v-on:click="click_paper_info(index)">投稿情况</button>
+                                <button type="button" class="btn btn-warning" v-on:click="click_meeting_user_info(index)">参会人员注册情况</button>
                             </li>
                         </ul>
                     </div>
@@ -189,7 +196,7 @@
                     <div style="margin-top:30px">
                         <label class="input-label">会议名称</label>
                         <div class="input-group" style="width:80%">
-                            <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1" v-model="temp.name">
+                            <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1" v-model="temp.title">
                         </div>
 
                     </div>
@@ -198,7 +205,7 @@
                         <label class="input-label">会议简介</label>
                         <div class="input-group" style="width:80%">
             <textarea style="height:100px; resize:none" class="form-control" placeholder="Username"
-                      aria-describedby="basic-addon1" v-model="temp.description"></textarea>
+                      aria-describedby="basic-addon1" v-model="temp.introduction"></textarea>
                         </div>
 
                     </div>
@@ -207,49 +214,94 @@
                         <label class="input-label">注册要求</label>
                         <div class="input-group" style="width:80%">
             <textarea style="height:70px; resize:none" class="form-control" placeholder="Username"
-                      aria-describedby="basic-addon1" v-model="temp.requirement"></textarea>
+                      aria-describedby="basic-addon1" v-model="temp.register_requirement"></textarea>
                         </div>
                     </div>
 
                     <div class="step1-title">
-                        <span class="num">2</span>填写会议相关日期
+                        <span class="num">2</span>修改您已选择的会议学科
+                    </div>
+
+                    <div style="margin-top:30px">
+                        <label class="input-label">分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类</label>
+
+                        <div class="select-input select-category" id="CreatConSubjectList">
+                            <input type="text" id="txt_ide" list="optionList" />
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"  onclick="AddSubjects()"></span>
+                        </div>
+
+                        <datalist id="optionList">
+                            <option v-for="(subject,index) in Subjects" :id="['SubjectOptionList_'+index]" :value="[subject]" />
+                        </datalist>
+                        <div class="step1-title">
+                        </div>
+
+                        <label class="input-label" style="margin-top:20px;bottom-bottom:40px">已选分类</label>
+
+                        <div class="select-input select-category" style="margin-top:15px" id="AlreadySelectedSubjectList">
+                            <span v-for="(subject,index) in AlreadySelectedSubjectList" style="margin-left:5px" class="Alreadycategory-list selected" index="1" :id="['AlreadySelectedSubjectOptionList_'+index]" onclick="DeleteAlreadySelectedSubject(this)">{{subject}}</span>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="step1-title">
+                        <span class="num">3</span>填写会议相关日期
                     </div>
                     <div style="margin-top:30px">
                         <label class="input-label">截稿日期</label>
                         <div class="input-group" style="display: inline-block">
-                            <input size="10" type="text" value="" class="form_datetime">
-                        </div>
-                        <label class="input-label" style="width:250px;float:none;margin-left:20%">第一次审核结果通知日期</label>
-                        <div class="input-group" style="display: inline-block">
-                            <input size="10" type="text" value="" class="form_datetime">
+                            <input size="10" type="text" value="" class="form_datetime" v-model="temp.accept_due">
                         </div>
                     </div>
 
 
                     <div style="margin-top:30px">
-                        <label class="input-label" style="width:200px">修改稿件截稿日期</label>
+                        <label class="input-label" style="width:200px">注册开始日期</label>
                         <div class="input-group" style="display: inline-block">
-                            <input size="10" type="text" value="" class="form_datetime">
+                            <input size="10" type="text" value="" class="form_datetime" v-model="temp.register_start">
 
                         </div>
-                        <label class="input-label" style="width:250px;float:none;margin-left:20%">第二次审核结果通知日期</label>
+                        <label class="input-label" style="width:250px;float:none;margin-left:20%">注册截止日期</label>
                         <div class="input-group" style="display: inline-block">
-                            <input size="10" type="text" value="" class="form_datetime">
+                            <input size="10" type="text" value="" class="form_datetime" v-model="temp.register_due">
                         </div>
                     </div>
 
+                    <div style="margin-top:30px">
+                        <label class="input-label" style="width:150px">会议开始时间</label>
+                        <div class="input-group" style="display: inline-block">
+                            <input  id="conference_start" type="text" value="" class="form_datetime" v-model="temp.conference_start">
+
+                        </div>
+                        <label class="input-label" style="width:150px;float:none;margin-left:20%">会议结束日期</label>
+                        <div class="input-group" style="display: inline-block">
+                            <input  type="text" id="conference_due" value="" class="form_datetime" v-model="temp.conference_due">
+                        </div>
+                    </div>
 
                     <div class="step1-title">
-                        <span class="num">3</span>填写征文信息和要求
+                        <span class="num">4</span>填写投稿信息和要求
                     </div>
 
                     <div style="margin-top:30px">
-                        <label class="input-label">征文信息</label>
+                        <label class="input-label">投稿信息</label>
                         <div class="input-group" style="width:80%">
             <textarea style="height:70px; resize:none" class="form-control" placeholder="Username"
-                      aria-describedby="basic-addon1" v-model="temp.paperinfo"></textarea>
+                      aria-describedby="basic-addon1" v-model="temp.soliciting_requirement"></textarea>
                         </div>
 
+                    </div>
+
+                    <div style="margin-top:30px">
+                        <label class="input-label">论文模板</label>
+                        <div class="input-group" style="width:80%">
+                            <label for="PaperExample" class=" btn btn-default">选择文件</label>
+                            <input id="PaperExample" accept="application/pdf" onchange="PaperExample()" type="file"
+                                   style="display:none">
+                            <div id="PaperExampleFileName">请选择论文模版pdf文件！</div>
+                        </div>
                     </div>
 
 
@@ -356,33 +408,13 @@
                     </div><!-- /.modal -->
 
 
-                    <div class="step1-title">
-                        <span class="num">5</span>填写会议主办方信息
-                    </div>
 
-                    <div style="margin-top:30px">
-                        <label class="input-label">联系人姓名</label>
-                        <div class="input-group" style="width:80%">
-                            <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1" v-model="temp.contactname">
-                        </div>
 
-                    </div>
 
-                    <div style="margin-top:30px">
-                        <label class="input-label">联系人电话</label>
-                        <div class="input-group" style="width:80%">
-                            <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1" v-model="temp.contactphone">
-                        </div>
 
-                    </div>
 
-                    <div style="margin-top:30px">
-                        <label class="input-label">联系人邮箱</label>
-                        <div class="input-group" style="width:80%">
-                            <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1" v-model="temp.contactmail">
-                        </div>
 
-                    </div>
+
                 </div>
                 <div align="center">
                     <button type="button" class="btn btn-primary" v-on:click="click_meeting_cancal">取消</button>
@@ -421,6 +453,29 @@
             </div>
         </div>
 
+        <div class="container" style="display:none" id="div_meeting_user_info">
+            <div class="row" style="width: 85%">
+                <!--<div class="col-lg-8 col-lg-offset-2">-->
+                <!--收藏-->
+                <div class="panel panel-default" >
+                    <div class="panel-heading" style="height: 50px">
+                        <h3 class="panel-title" style="text-align: center">
+                            注册会议人员信息
+                        </h3>
+                    </div>
+                    <div class="panel-body" >
+                        <ul class="list-group" v-for="(meeting_user in meeting_users" >
+                            <li class="list-group-item">姓名：{meeting_user.name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 性别：{{meeting_user.gender}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;是否预定住宿:{meeting_user.reservation}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div align="center">
+                    <button type="button" class="btn btn-primary" v-on:click="click_meeting_user_end">返回</button>
+                </div>
+            </div>
+        </div>
+
 
         <div class="container" style="display:none" id="div_password">
             <div class="row" style="width: 85%">
@@ -449,6 +504,29 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+
+        <div class="container" style="display:none" id="div_paper">
+            <div class="row" style="width: 85%">
+                <!--<div class="col-lg-8 col-lg-offset-2">-->
+                <!--收藏-->
+                <div class="panel panel-default" >
+                    <div class="panel-heading" style="height: 50px">
+                        <h3 class="panel-title" style="text-align: center">
+                            论文提交情况
+                        </h3>
+                    </div>
+                    <div class="panel-body" >
+                        <ul class="list-group" v-for="(user_paper,index) in user_papers" >
+                            <li class="list-group-item">论文题目：{{user_paper.name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文作者：{{user_paper.author}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{user_paper.status}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div align="center">
+                    <button type="button" class="btn btn-primary" v-on:click="click_paper_end">返回</button>
+                </div>
             </div>
         </div>
 
@@ -490,7 +568,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    <button type="button" class="btn btn-default" data-dismiss="modal" v-on:click="addChildAccount4">关闭
                     </button>
                     <button type="button" class="btn btn-primary" v-on:click="addChildAccount3">
                         提交添加
@@ -521,13 +599,22 @@
                     <div style="margin-top:30px">
                         <label class="input-label" style="width:150px;">输入密码</label>
                         <div class="input-group" style="display: inline-block">
+                            <input v-model="setaccount_password" type="text" value=""
+                                   class="form-control form_datetimeTimeLine" >
+                        </div>
+                    </div>
+
+
+                    <div style="margin-top:30px">
+                        <label class="input-label" style="width:150px;">输入新密码</label>
+                        <div class="input-group" style="display: inline-block">
                             <input v-model="temp_password" type="text" value=""
-                                   class="form-control form_datetimeTimeLine">
+                                   class="form-control form_datetimeTimeLine" >
                         </div>
                     </div>
 
                     <div style="margin-top:30px">
-                        <label class="input-label" style="width:150px;">确认密码密码</label>
+                        <label class="input-label" style="width:150px;">确认密码</label>
                         <div class="input-group" style="display: inline-block">
                             <input v-model="temp_password2" type="text" value=""
                                    class="form-control form_datetimeTimeLine">
@@ -606,5 +693,6 @@
 <script src="js/bootstrap.js" ></script>
 <script src="js/vue.js"></script>
 <script src="js/person_center.js"></script>
+<script src="js/login.js"></script>
 </body>
 </html>

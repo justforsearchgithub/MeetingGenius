@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-theme.css">
-    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/alter.css">
+    <link rel="stylesheet" href="css/registerFile.css">
     <title>单位用户注册</title>
 </head>
 <body>
@@ -29,89 +30,88 @@
         </div>
     </nav>
 </div>
-<div class="top-content">
-    <div class="row">
-        <div class="col-sm-8 col-sm-offset-2 text" style="padding-bottom: 10px">
-            <h1><strong>单位用户注册</strong></h1>
-            <div class="description">
-                <p>
-                    注册成为单位用户，可以发布会议和征稿
-                </p>
-            </div>
+<div class="step-content">
+    <h1>单位用户注册</h1>
+    <div class="step1-title">
+        <span class="num">1</span>填写基本信息
+    </div>
+
+    <div class="form-group">
+        <label class="input-label">联系人邮箱</label>
+        <input type="email" name="username" placeholder="请输入邮箱" class="form-control" id="form-email">
+    </div>
+    <div class="form-group">
+        <label class="input-label">密码</label>
+        <input type="password" name = "password" placeholder="请输入密码" class="form-control" id="form-passwd">
+    </div>
+    <div class="form-group">
+        <label class="input-label">确认密码</label>
+        <input type="password" name="confirm_password" placeholder="请确认密码" class="form-control" id="form-passwd-ok">
+    </div>
+
+    <div class="step1-title">
+        <span class="num">2</span>填写机构信息
+    </div>
+
+    <div class="form-group">
+        <label class="input-label">组织机构名称</label>
+        <input type="text" name="org_name" placeholder="请输入机构名" class="form-control" id="form-company-name">
+    </div>
+    <div class="form-group">
+        <label class="input-label">部门</label>
+        <input type="text" name="department" placeholder="请输入部门名" class="form-control" id="form-department-name">
+    </div>
+    <div class="form-group">
+        <label class="input-label">地址</label>
+        <input type="text" name="address" placeholder="请输入地址" class="form-control" id="form-address">
+    </div>
+
+    <div class="step1-title">
+        <span class="num">3</span>填写联系人信息
+    </div>
+    <div class="form-group">
+        <label class="input-label">联系人姓名</label>
+        <input type="text" name="contacts" placeholder="请输入姓名" class="form-control" id="form-name">
+    </div>
+
+    <div class="form-group">
+        <label class="input-label">联系人手机</label>
+        <input type="number" name="phone_number" placeholder="请输入手机号" class="form-control" id="form-phone">
+    </div>
+
+    <div class="step1-title">
+        <span class="num">4</span>上传证明图片
+    </div>
+
+    <div class="form-group">
+        <label class="input-label-file">上传营业电子执照</label>
+        <div style="min-height: 50px">
+            <input id="license_upload" type="file" class="file" accept="image/*" onchange="triggerfile_l()"/>
+            <!--<input name="bussiness_license" id="license_upload" type="file" class="file"  onchange="triggerfile_l()"/>-->
+            <label class="file-lg" id="license_label" for="license_upload">&nbsp;&nbsp;选择图片</label>
+            <a href="javascript:file_upload('license_upload')"><img class="hidden" src="" alt="图片上传失败" id="license_img" style="max-width: 100%"></a>
         </div>
     </div>
-    <div class="row" style="margin-left: 20%; width: 100%">
-        <div class="col-sm-7 form-box">
-            <div class="form-top">
-                <div class="form-top-left">
-                    <h3>单位用户注册</h3>
-                </div>
-            </div>
-            <div class="form-bottom" style="">
-                <form role="form" action="" method="post" class="registration-form">
-                    <div class="form-group">
-                        <label>组织机构名称</label>
-                        <input type="text" name="org_name" placeholder="请输入机构名" class="form-control" id="form-company-name">
-                    </div>
-                    <div class="form-group">
-                        <label>部门</label>
-                        <input type="text" name="department" placeholder="请输入部门名" class="form-control" id="form-department-name">
-                    </div>
-                    <div class="form-group">
-                        <label>地址</label>
-                        <input type="text" name="address" placeholder="请输入地址" class="form-control" id="form-address">
-                    </div>
-                    <div class="form-group">
-                        <label>联系人姓名</label>
-                        <input type="text" name="contacts" placeholder="请输入姓名" class="form-control" id="form-name">
-                    </div>
-                    <div class="form-group">
-                        <label>联系人邮箱</label>
-                        <input type="email" name="username" placeholder="请输入邮箱" class="form-control" id="form-email">
-                    </div>
-                    <div class="form-group">
-                        <label>联系人手机</label>
-                        <input type="number" name="phone_number" placeholder="请输入手机号" class="form-control" id="form-phone">
-                    </div>
-                    <div class="form-group">
-                        <label>密码</label>
-                        <input type="password" name = "password" placeholder="请输入密码" class="form-control" id="form-passwd">
-                    </div><div class="form-group">
-                    <label>确认密码</label>
-                    <input type="password" name="confirm_password" placeholder="请确认密码" class="form-control" id="form-passwd-ok">
-                </div>
-                    <div class="form-group">
-                        <label>上传营业电子执照</label>
-                        <div style="min-height: 50px">
-                            <input id="license_upload" type="file" class="file" accept="image/*" onchange="triggerfile_l()"/>
-                            <!--<input name="bussiness_license" id="license_upload" type="file" class="file"  onchange="triggerfile_l()"/>-->
-                            <label id="license_label" for="license_upload">&nbsp;&nbsp;选择图片</label>
-                            <a href="javascript:file_upload('license_upload')"><img class="hidden" src="" alt="图片上传失败" id="license_img"></a>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>上传联系人身份证（正面）</label>
-                        <div style="min-height: 50px">
-                            <!--<input name="id_card_front" id="id_upload_front" type="file" class="file"  onchange="triggerfile_f()"/>-->
-                            <input id="id_upload_front" type="file" class="file" accept="image/*" onchange="triggerfile_f()"/>
-                            <label id="id_label_front" for="id_upload_front">&nbsp;&nbsp;选择图片</label>
-                            <a href="javascript:file_upload('id_upload_front')"><img class="hidden" src="" alt="图片上传失败" id="id_img_front"></a>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>上传联系人身份证（背面）</label>
-                        <div style="min-height: 50px">
-                            <input id="id_upload_back" type="file" class="file" accept="image/*" onchange="triggerfile_f()"/>
-                            <label id="id_label_back" for="id_upload_back">&nbsp;&nbsp;选择图片</label>
-                            <a href="javascript:file_upload('id_upload_back')"><img class="hidden" src="" alt="图片上传失败" id="id_img_back"></a>
-                        </div>
-                    </div>
-                    <!--<div style="text-align: center"><button type="submit" class="btn" id="enterprise_register_btn">注册</button></div-->
-                    <div style="text-align: center"><button type="button" class="btn" id="enterprise_register_btn" onclick="enterprise_reg()">注册</button></div>
-                </form>
-            </div>
+    <div style="overflow: auto">
+    <div class="form-group" style="width: 48%; float: left">
+        <label class="input-label-file">上传联系人身份证（正面）</label>
+        <div style="min-height: 50px">
+            <!--<input name="id_card_front" id="id_upload_front" type="file" class="file"  onchange="triggerfile_f()"/>-->
+            <input id="id_upload_front" type="file" class="file" accept="image/*" onchange="triggerfile_f()"/>
+            <label class="file-lg" id="id_label_front" for="id_upload_front">&nbsp;&nbsp;选择图片</label>
+            <a href="javascript:file_upload('id_upload_front')"><img class="hidden" src="" alt="图片上传失败" id="id_img_front" style="width: 100%"></a>
         </div>
     </div>
+    <div class="form-group" style="width: 48%; float: right">
+        <label class="input-label-file">上传联系人身份证（背面）</label>
+        <div style="min-height: 50px">
+            <input id="id_upload_back" type="file" class="file" accept="image/*" onchange="triggerfile_b()"/>
+            <label class="file-lg" id="id_label_back" for="id_upload_back">&nbsp;&nbsp;选择图片</label>
+            <a href="javascript:file_upload('id_upload_back')"><img class="hidden" src="" alt="图片上传失败" id="id_img_back" style="width: 100%"></a>
+        </div>
+    </div>
+    </div>
+    <div style="text-align: center"><button type="button" class="btn btn-primary btn-lg" id="enterprise_register_btn" onclick="enterprise_reg()">注册</button></div>
 </div>
 <script src='js/jquery-3.3.1.js'></script>
 <script src="js/bootstrap.js" ></script>

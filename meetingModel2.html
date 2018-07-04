@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css/bootstrap-theme.css">
     <link rel="stylesheet" href="css/bootstrap-datetimepicker.css">
     <link rel="stylesheet" type="text/css" href="css/jquery.eeyellow.Timeline.css"/>
-    <title>会议模板2</title>
+    <title>会议详情</title>
 </head>
 <body>
 <script src='js/jquery-3.3.1.js'></script>
@@ -39,16 +39,19 @@
 <div id="info">
 <!-- header star!-->
 <div class="header" id="title">
-    <!--Time-->
+
+
+
+
     <div class="time w-1200 auto">
-        <h1>{{ title }}</h1>
+        <label id = "first_title">{{ title }}</label>
         <div class="data-show-box mt-40" id="dateShow1">
             <span class="date-tiem-span d"></span>&nbsp;&nbsp;天&nbsp;
             <span class="date-tiem-span h"></span>&nbsp;&nbsp;小时&nbsp;
             <span class="date-tiem-span m"></span>&nbsp;&nbsp;分&nbsp;
             <span class="date-s-span date-tiem-span s"></span>&nbsp;&nbsp;秒&nbsp;
         </div>
-        <div><button id="favorite" onclick="add_favorite()">收藏会议</button></div>
+        <div><button id="favorite" onclick="add_favorite()">❤收藏会议</button></div>
     </div>
     <!-- Time-->
 </div>
@@ -57,9 +60,9 @@
 <div class="w-1200 auto mt-70" >
     <div class="introduction" id="introduction">
         <div style="text-align: center">
+            <button id="join_meeting" onclick="checkState_r()" data-target="#join-meeting">参加会议</button>
             <button id="paper_download" onclick="downloadPaper()">论文模板</button>
-            <button id="join_meeting" onclick="checkLogin()" data-toggle="modal" data-target="#join-meeting">参加会议</button>
-            <button id="paper_upload" onclick="checkLogin()" data-toggle="modal" data-target="#paper-upload">我要投稿</button>
+            <button id="paper_upload" onclick="checkState_p()" data-target="#paper-upload">我要投稿</button>
         </div>
         <h1>会议简介</h1>
         <div class="col-md-4  col-xs-12  fl " style="font-size: 20px">
@@ -80,18 +83,14 @@
             <dt>投稿开始:<span>{{ accept_start }}</span></dt>
             <dd>投稿截止:<span>{{ accept_due }}</span></dd>
         </dl>
-    <dl class="ml-30">
-        <dt>修改开始:<span>{{ accept_due }}</span></dt>
-        <dd>修改截止:<span>{{ modify_due }}</span></dd>
-    </dl>
-    <dl class="ml-30 mr-30">
-        <dt>注册开始:<span>{{ register_start }}</span></dt>
-        <dd>注册截止:<span>{{ register_due }}</span></dd>
-    </dl>
-    <dl>
-        <dt>会议开始:<span>{{ conference_start }}</span></dt>
-        <dd>会议结束:<span>{{ conference_due }}</span></dd>
-    </dl>
+        <dl class="ml-30 mr-30">
+            <dt>注册开始:<span>{{ register_start }}</span></dt>
+            <dd>注册截止:<span>{{ register_due }}</span></dd>
+        </dl>
+        <dl>
+            <dt>会议开始:<span>{{ conference_start }}</span></dt>
+            <dd>会议结束:<span>{{ conference_due }}</span></dd>
+        </dl>
     </div>
 </div>
 <!--Important date end-->
@@ -111,7 +110,7 @@
                         <div class="events-body">
                             <div class="row" style="display: block">
                                 <div class="events-desc timelineDe">
-                                    {{act.activity}}
+                                    {{act.activity_name}}
                                 </div>
                             </div>
                         </div>
@@ -143,7 +142,7 @@
             <p class="f-20 pt-40">联系主办方</p>
             <p class="f-16 pt-20"><label>联系人：</label>{{ contact }}</p>
             <p class="f-16"><label>电话：</label>{{ phonenum }}</p>
-            <p class="f-16"><label>地址：</label>{{ address }}</p>
+            <p class="f-16"><label>邮箱：</label>{{ email }}</p>
         </div>
     </div>
 </div>
@@ -210,17 +209,77 @@
                 <h4 class="modal-title">论文投稿</h4>
             </div>
             <div class="modal-body">
-                <div class="form-group" style="margin-top: 5px">
-                    <label>名称</label>
-                    <input type="text" class="form-control" id="paper_title">
+                <div class="box-line">
+                    <span class="line-left"></span><span class="text">作者信息</span><span class="line-right"></span>
                 </div>
-                <div class="form-group" style="margin-top: 5px">
-                    <label>作者</label>
-                    <input type="text" class="form-control" id="paper_author">
+                <div class="form-group input-sm-left">
+                    <label>第一作者</label>
+                    <input type="text" class="form-control" role="author">
                 </div>
-                <div class="form-group" style="margin-top: 5px">
+                <div class="form-group input-sm-right">
                     <label>单位</label>
-                    <input type="text" class="form-control" id="paper_organization">
+                    <input type="text" class="form-control" role="org">
+                </div>
+                <div style="clear: both"></div>
+                <div id="author-2" class="hidden">
+                <div class="form-group input-sm-left">
+                    <label>第二作者</label>
+                    <input type="text" class="form-control" role="author">
+                </div>
+                <div class="form-group input-sm-right">
+                    <label>单位</label>
+                    <input type="text" class="form-control" role="org">
+                </div>
+                <div style="clear: both"></div>
+                </div>
+                <div id="author-3" class="hidden">
+                <div class="form-group input-sm-left">
+                    <label>第三作者</label>
+                    <input type="text" class="form-control" role="author">
+                </div>
+                <div class="form-group input-sm-right">
+                    <label>单位</label>
+                    <input type="text" class="form-control" role="org">
+                </div>
+                <div style="clear: both"></div>
+                </div>
+                <div id="author-4" class="hidden">
+                <div class="form-group input-sm-left">
+                    <label>第四作者</label>
+                    <input type="text" class="form-control" role="author">
+                </div>
+                <div class="form-group input-sm-right">
+                    <label>单位</label>
+                    <input type="text" class="form-control" role="org">
+                </div>
+                <div style="clear: both"></div>
+                </div>
+                <div id="author-5" class="hidden">
+                <div class="form-group input-sm-left">
+                    <label>第五作者</label>
+                    <input type="text" class="form-control" role="author">
+                </div>
+                <div class="form-group input-sm-right">
+                    <label>单位</label>
+                    <input type="text" class="form-control" role="org">
+                </div>
+                <div style="clear: both"></div>
+                </div>
+                <div class="form-group input-sm-left">
+                    <label>通讯作者</label>
+                    <input type="text" class="form-control" role="author">
+                </div>
+                <div class="form-group input-sm-right">
+                    <label>单位</label>
+                    <input type="text" class="form-control" role="org">
+                </div>
+                <div style="clear: both"></div>
+                <div style="text-align: center">
+                    <button id="addAuthor" class="btn btn-primary ml-5 mr-5" onclick="add_author()">添加作者</button>
+                    <button id="delAuthor" class="btn btn-primary ml-5 mr-5 hidden" onclick="del_author()">删除作者</button>
+                </div>
+                <div class="box-line">
+                    <span class="line-left"></span><span class="text">论文信息</span><span class="line-right"></span>
                 </div>
                 <div class="form-group" style="margin-top: 5px">
                     <label>上传论文</label>
@@ -228,7 +287,11 @@
                     <label id="label_paper_up" for="paper_up" style="font-size: 14px">选择文件</label>
                 </div>
                 <div class="form-group" style="margin-top: 5px">
-                    <label>摘要</label>
+                    <label>论文标题</label>
+                    <input type="text" class="form-control" id="paper_title">
+                </div>
+                <div class="form-group" style="margin-top: 5px">
+                    <label>论文摘要</label>
                     <textarea id="paper_outline" class="form-control" rows="8"></textarea>
                 </div>
             </div>
@@ -293,11 +356,13 @@
         s.parentNode.insertBefore(hm, s);
     })();
 </script>
-<script src="js/meetingModel2.js"></script>
+<script src="js/jquery-3.3.1.js"></script>
 <script src="js/bootstrap.js" ></script>
-<script src="js/leftTime.min.js" ></script>
 <script src="js/bootstrap-datetimepicker.js"></script>
+<script src="js/meetingModel2.js"></script>
 <script type="text/javascript" src="js/jquery.eeyellow.Timeline.js"></script>
+<script src="js/leftTime.min.js" ></script>
+<script src="js/addAuthor.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         $('.VivaTimeline').vivaTimeline({
