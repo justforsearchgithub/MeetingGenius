@@ -5,6 +5,7 @@ function addChildAccount2(){
 $(document).ready(function () {
     var username;
     var oldpassword;
+    var currentindex;
     $.ajax({
         type: 'GET',
         async:false,
@@ -21,19 +22,28 @@ $(document).ready(function () {
     var vm = new Vue({
         el: '#per_info',
         data: {
+            //当前显示的页面
             is_normal:false,
             is_unit:true,
             not_normal:true,
+            //当前用户名字
             account_name:'123@163.com',
             addchildaccount_name:'',
             addchildaccount_password:'',
             setaccount_password:'',
-            currentindex:1,
-
+            //临时存储的账户名，密码
             temp_name:'',
             temp_password:'',
             temp_password2:'',
-
+            //用户提交的论文信息
+            user_papers:[
+                {
+                    name:'用户论文题目',
+                    author:'用户论文作者',
+                    status:'论文审核状态'
+                }
+            ],
+            //子账户详细信息
             childaccounts:[
                 {
                     name:'456@163.com',
@@ -61,6 +71,21 @@ $(document).ready(function () {
                 contactphone:'',
                 contactmail:''
             },
+            collection_meetings:[
+                {
+                    id:'1',
+                    name:'收藏会议',
+                }
+            ],
+            //子账户标识信息
+            childaccounts:[
+                {
+                    id:'1',
+                    name:'2',
+
+                }
+            ],
+            //会议详细信息
             meetings:[
                 {
                     id:'1',
@@ -77,40 +102,116 @@ $(document).ready(function () {
                     contactmail:'1@126.com'
                 }
             ],
+            //论文信息
             papers:[
                 {
+                    id:'1',
                     name:'123',
                     author:'456',
+                    status:'good'
+
                 }
             ]
         },
         methods:{
+            //点击侧边栏相应标题
             click_account: function (event) {
                 document.getElementById("div_account").style.display="block";
                 document.getElementById("div_collection").style.display="none";
                 document.getElementById("div_childaccount").style.display="none";
                 document.getElementById("div_meeting").style.display="none";
                 document.getElementById("div_password").style.display="none";
+                document.getElementById("div_paper").style.display="none";
 
                 document.getElementById("div_meeting_info").style.display="none";
                 document.getElementById("div_paper_info").style.display="none";
             },
             click_collection: function (event) {
+                $.ajax({
+                    type: 'GET',
+                    url: url + 'account/collect_list/',
+                    contentType: false,
+                    async: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        console.log(data);
+                        if (data.message == "success") {
+                            vm.$data.collection_meetings.length=0;
+                            if(data.data.length!=0)
+                            {
+                                for(var ptr=0;ptr<data.data.length;ptr++)
+                                {
+
+                                    var abc={
+                                        id:data.data[ptr].id,
+                                        name:data.data[ptr].title
+
+                                    }
+                                    vm.$data.collection_meetings.push(abc);
+                                    console.log('good'+abc);
+
+                                }
+                                    console.log(vm.$data.collection_meetings);
+                            }
+                            else
+                            {
+
+                            }
+
+                        }
+                    }
+                });
+
+
                 document.getElementById("div_account").style.display="none";
                 document.getElementById("div_collection").style.display="block";
                 document.getElementById("div_childaccount").style.display="none";
                 document.getElementById("div_meeting").style.display="none";
                 document.getElementById("div_password").style.display="none";
+                document.getElementById("div_paper").style.display="none";
 
                 document.getElementById("div_meeting_info").style.display="none";
                 document.getElementById("div_paper_info").style.display="none";
             },
             click_childaccount: function (event) {
+                $.ajax({
+                    type: 'GET',
+                    url: url + 'display/my_subusers/',
+                    contentType: false,
+                    async: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        console.log(data);
+                        if (data.message == "success") {
+                            vm.$data.childaccounts.length=0;
+                            if(data.data.length!=0)
+                            {
+                                for(var ptr=0;ptr<data.data.length;ptr++)
+                                {
+                                    var abc={
+                                        id:data.data[ptr].sub_user_id,
+                                        name:data.data[ptr].sub_username
+                                    }
+                                    vm.$data.childaccounts.push(abc);
+                                }
+                            }
+                            else
+                            {
+                            }
+                        }
+                    }
+                });
+
+
+
                 document.getElementById("div_account").style.display="none";
                 document.getElementById("div_collection").style.display="none";
                 document.getElementById("div_childaccount").style.display="block";
                 document.getElementById("div_meeting").style.display="none";
                 document.getElementById("div_password").style.display="none";
+                document.getElementById("div_paper").style.display="none";
 
                 document.getElementById("div_meeting_info").style.display="none";
                 document.getElementById("div_paper_info").style.display="none";
@@ -125,7 +226,8 @@ $(document).ready(function () {
                     processData: false,
                     success: function (data) {
                         if (data.message == "success") {
-                            vm.$data.meetings.pop();
+                            vm.$data.meetings.length=0;
+                            console.log('end');
                             for(var ptr=0;ptr<data.data.length;ptr++)
                             {
                                 console.log('ptr'+ptr);
@@ -149,6 +251,7 @@ $(document).ready(function () {
                 document.getElementById("div_childaccount").style.display="none";
                 document.getElementById("div_meeting").style.display="block";
                 document.getElementById("div_password").style.display="none";
+                document.getElementById("div_paper").style.display="none";
 
                 document.getElementById("div_meeting_info").style.display="none";
                 document.getElementById("div_paper_info").style.display="none";
@@ -159,10 +262,24 @@ $(document).ready(function () {
                 document.getElementById("div_childaccount").style.display="none";
                 document.getElementById("div_meeting").style.display="none";
                 document.getElementById("div_password").style.display="block";
+                document.getElementById("div_paper").style.display="none";
 
                 document.getElementById("div_meeting_info").style.display="none";
                 document.getElementById("div_paper_info").style.display="none";
                 },
+            click_paper: function (event) {
+                document.getElementById("div_account").style.display="none";
+                document.getElementById("div_collection").style.display="none";
+                document.getElementById("div_childaccount").style.display="none";
+                document.getElementById("div_meeting").style.display="none";
+                document.getElementById("div_password").style.display="none";
+                document.getElementById("div_paper").style.display="block";
+
+                document.getElementById("div_meeting_info").style.display="none";
+                document.getElementById("div_paper_info").style.display="none";
+            },
+
+            //修改会议信息
             click_meeting_info: function (no) {
                 var formData = new FormData();
                 formData.append("id",this.$data.meetings[no].id);
@@ -187,27 +304,83 @@ $(document).ready(function () {
 
                 document.getElementById("div_meeting").style.display="none";
                 document.getElementById("div_meeting_info").style.display="block";
-                this.$data.currentindex=no;
+                currentindex=no;
                 this.$data.temp=this.$data.meetings[this.$data.currrentindex];
             },
+
+            //论文审核信息
             click_paper_info: function (no) {
-                this.$data.currentindex.no;
+                    console.log(vm.$data.meetings[no].id);
+                    console.log(url + 'display/conference/'+vm.$data.meetings[no].id+'/papers/');
+                $.ajax({
+                    type: 'GET',
+                    url: url + 'display/conference/'+vm.$data.meetings[no].id+'/papers',
+                    contentType: false,
+                    async: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        console.log(data);
+                        paper_id.length=0;
+                        if (data.message == "success") {
+                            paper_id.length=0;
+                            for(var ptr=0;ptr<data.data.length;ptr++)
+                            {
+                                paper_id[ptr].id=data.data[ptr].submitter_id;
+                                console.log('paper'+paper_id[ptr].id);
+                            }
+
+                        }
+                    }
+                });
+                vm.$data.papers.length=0;
+                for(var ptr=0;ptr<paper_id.length;ptr++)
+                {
+
+                    $.ajax({
+                        type: 'GET',
+                        url: url + 'conference/submission/'+paper_id[ptr]+'/',
+                        contentType: false,
+                        async: false,
+                        cache: false,
+                        processData: false,
+                        success: function (data) {
+                            if (data.message == "success") {
+                                    var abc={
+                                        id:data.data[ptr].submitter_id,
+                                        name:data.data[ptr].paper_name,
+                                        author:data.data[ptr].authors,
+                                        status:data.data[ptr].state
+
+                                    }
+                                    vm.$data.papers.push(abc);
+
+                                }
+
+                        }
+                    });
+                }
+
                 document.getElementById("div_meeting").style.display="none";
                 document.getElementById("div_paper_info").style.display="block";
             },
+            //修改会议信息取消
             click_meeting_cancal: function (event) {
                 document.getElementById("div_meeting").style.display="block";
                 document.getElementById("div_meeting_info").style.display="none";
             },
+            //修改会议信息确认
             click_meeting_set: function (event) {
                 document.getElementById("div_meeting").style.display="block";
                 document.getElementById("div_meeting_info").style.display="none";
                 Vue.set(vm.$data.meetings,currentindex,vm.$data.temp);
             },
+            //从审核会议页面返回会议管理页面
             click_paper_end: function (event) {
                 document.getElementById("div_meeting").style.display="block";
                 document.getElementById("div_paper_info").style.display="none";
             },
+            //添加子账户
             addChildAccount:function (event) {
                 $('#myModal').modal({backdrop: 'static', keyboard: true});
             },
@@ -235,31 +408,79 @@ $(document).ready(function () {
                     }
                 });
             },
+            addChildAccount4: function(event){
+                $.ajax({
+                    type: 'GET',
+                    url: url + 'display/my_subusers/',
+                    contentType: false,
+                    async: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        console.log(data);
+                        if (data.message == "success") {
+                            vm.$data.childaccounts.length=0;
+                            if(data.data.length!=0)
+                            {
+                                for(var ptr=0;ptr<data.data.length;ptr++)
+                                {
+
+                                    var abc={
+                                        id:data.data[ptr].sub_user_id,
+                                        name:data.data[ptr].sub_username
+
+                                    }
+                                    vm.$data.childaccounts.push(abc);
+                                }
+                            }
+                            else
+                            {
+
+                            }
+
+                        }
+                    }
+                });
+            },
+            //修改子账户密码  悬浮框
             setcapassword: function (no) {
-                this.$data.currentindex=no;
-                this.$data.temp_name=this.$data.childaccounts[this.$data.currentindex].name;
+                currentindex=no;
+                this.$data.temp_name=this.$data.childaccounts[currentindex].name;
                 $('#myModal3').modal({backdrop: 'static', keyboard: true});
             },
+            //修改子账户密码确认
             complete_ac_password: function (event) {
                   if(this.$data.temp_password===this.$data.temp_password2)
                   {
                       //上传修改密码
-
-
-                      //修改本地
-                        var temp_object={
-                            name:this.$data.temp_name,
-                            password:this.$data.temp_password
-                        }
-                      Vue.set(vm.$data.childaccounts,vm.$data.currentindex,temp_object);
+                      var formData = new FormData();
+                      formData.append("username", this.$data.childaccount[currentindex].name);
+                      formData.append("old_password",this.$data.setaccount_password);
+                      formData.append("new_password", this.$data.temp_password);
+                      formData.append("confirm_password", this.$data.temp_password);
+                      $.ajax({
+                          type: 'POST',
+                          url: url + 'account/change_password/',
+                          data: formData,
+                          contentType: false,
+                          async: false,
+                          cache: false,
+                          processData: false,
+                          success: function (data) {
+                              if (data.message == "success") {
+                                  alert('修改成功');
+                              }
+                          }
+                      });
                   }
                   else{
                       alert("密码不一致！");
                   }
             },
+            //删除子帐号
             deleteca: function (no) {
 
-                /*var formData = new FormData();
+                var formData = new FormData();
                 formData.append("sub_user_username", this.$data.childaccounts[no].name);
                 $.ajax({
                     type: 'POST',
@@ -275,7 +496,7 @@ $(document).ready(function () {
 
                         }
                     }
-                });*/
+                });
 
                 this.$data.childaccounts.splice(no,1);
 
@@ -283,6 +504,7 @@ $(document).ready(function () {
                 //document.getElementById("div_childaccount").style.display="block";
 
             },
+            //修改密码
             set_password: function (event) {
                 if(this.$data.temp_password===this.$data.temp_password2)
                 {
@@ -318,6 +540,7 @@ $(document).ready(function () {
                 }
 
             },
+            //修改密码确认
             complete_password: function (event) {
                 if(this.$data.temp_password===this.$data.temp_password2)
                 {
