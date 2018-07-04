@@ -122,11 +122,14 @@
                 <div class="panel panel-default" >
                     <div class="panel-heading" style="height: 50px">
                         <h3 class="panel-title" style="text-align: center">
-                            收藏
+                            收藏会议列表
                         </h3>
                     </div>
                     <div class="panel-body" >
-                        面板内容
+                        <ul class="list-group" v-for="(collection_meeting,index) in collection_meetings" >
+                            <li class="list-group-item" style="align:center"><a :href="['meetingModel2.html?id='+collection_meeting.id]">会议名称：{{collection_meeting.name}} </a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -144,7 +147,7 @@
                     </div>
                     <div class="panel-body" align="center" >
                         <ul class="list-group" v-for="(childaccount,index) in childaccounts" >
-                            <li class="list-group-item">子账户名：{{childaccount.name}} &nbsp;&nbsp; 子账户密码:{{childaccount.password}}&nbsp;&nbsp;&nbsp;&nbsp;
+                            <li class="list-group-item">子账户名：{{childaccount.name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                                 <a class="material-icons" v-on:click="setcapassword(index)" >build</a>     <!--model3-->
                                 <a class="material-icons" v-on:click="deleteca(index)">delete_foreve</a>
                             </li>
@@ -172,6 +175,7 @@
                             <li class="list-group-item"><a :href="['meetingModel2.html?id='+meeting.id]">会议名称：{{meeting.name}} </a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                                 <button type="button" class="btn btn-primary" v-on:click="click_meeting_info(index)">修改会议信息</button>
                                 <button type="button" class="btn btn-success" v-on:click="click_paper_info(index)">投稿情况</button>
+                                <button type="button" class="btn btn-warning" v-on:click="click_meeting_user_info(index)">参会人员注册情况</button>
                             </li>
                         </ul>
                     </div>
@@ -455,6 +459,29 @@
             </div>
         </div>
 
+        <div class="container" style="display:none" id="div_paper">
+            <div class="row" style="width: 85%">
+                <!--<div class="col-lg-8 col-lg-offset-2">-->
+                <!--收藏-->
+                <div class="panel panel-default" >
+                    <div class="panel-heading" style="height: 50px">
+                        <h3 class="panel-title" style="text-align: center">
+                            论文提交情况
+                        </h3>
+                    </div>
+                    <div class="panel-body" >
+                        <ul class="list-group" v-for="(user_paper,index) in user_papers" >
+                            <li class="list-group-item">论文题目：{{user_paper.name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文作者：{{user_paper.author}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{user_paper.status}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div align="center">
+                    <button type="button" class="btn btn-primary" v-on:click="click_paper_end">返回</button>
+                </div>
+            </div>
+        </div>
+
 
     </div>
 
@@ -493,7 +520,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    <button type="button" class="btn btn-default" data-dismiss="modal" v-on:click="addChildAccount4">关闭
                     </button>
                     <button type="button" class="btn btn-primary" v-on:click="addChildAccount3">
                         提交添加
@@ -524,13 +551,22 @@
                     <div style="margin-top:30px">
                         <label class="input-label" style="width:150px;">输入密码</label>
                         <div class="input-group" style="display: inline-block">
+                            <input v-model="setaccount_password" type="text" value=""
+                                   class="form-control form_datetimeTimeLine" >
+                        </div>
+                    </div>
+
+
+                    <div style="margin-top:30px">
+                        <label class="input-label" style="width:150px;">输入新密码</label>
+                        <div class="input-group" style="display: inline-block">
                             <input v-model="temp_password" type="text" value=""
-                                   class="form-control form_datetimeTimeLine">
+                                   class="form-control form_datetimeTimeLine" >
                         </div>
                     </div>
 
                     <div style="margin-top:30px">
-                        <label class="input-label" style="width:150px;">确认密码密码</label>
+                        <label class="input-label" style="width:150px;">确认密码</label>
                         <div class="input-group" style="display: inline-block">
                             <input v-model="temp_password2" type="text" value=""
                                    class="form-control form_datetimeTimeLine">
