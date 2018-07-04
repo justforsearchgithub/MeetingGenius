@@ -56,21 +56,25 @@
     <!-- Time-->
 </div>
 <!--header end!-->
+<!-- button start!-->
+    <div class="title-bottom" style="text-align: center; background-color: rgb(83, 135, 195)">
+        <button id="join_meeting" onclick="checkState_r()" data-target="#join-meeting">参加会议</button>
+        <button id="paper_download" onclick="downloadPaper()">论文模板</button>
+        <button id="paper_upload" onclick="checkState_p()" data-target="#paper-upload">我要投稿</button>
+    </div>
+<!--button end!-->
 <!--大会简介 star！-->
 <div class="w-1200 auto mt-70" >
     <div class="introduction" id="introduction">
-        <div style="text-align: center">
-            <button id="join_meeting" onclick="checkState_r()" data-target="#join-meeting">参加会议</button>
-            <button id="paper_download" onclick="downloadPaper()">论文模板</button>
-            <button id="paper_upload" onclick="checkState_p()" data-target="#paper-upload">我要投稿</button>
-        </div>
         <h1>会议简介</h1>
-        <div class="col-md-4  col-xs-12  fl " style="font-size: 20px">
+        <div class="col-md-4  col-xs-12  fl mt-20" style="font-size: 20px">
             <div><label>主办方：</label>{{ organization }}</div>
             <div><label>学科：</label>{{ subject }}</div>
             <div><label>状态：</label><span style="color: #ff0000">{{ state }}</span></div>
         </div>
-        <div style="width: 65%; float: right; text-align: justify;"><p class="f-18 lh-36">{{ introduction }}</p></div>
+        <div class="well" style="width: 65%; float: right; min-height: 200px">
+            <p class="f-18 lh-36">&nbsp;&nbsp;&nbsp;&nbsp;{{ introduction }}</p>
+        </div>
     </div>
     <div class="clear"></div>
 </div>
@@ -122,7 +126,7 @@
 </div>
 <!-- activity end-->
 <!-- paper start-->
-<div class="Important_date">
+<div class="essay_wanted">
     <div class="w-1200 auto">
         <h2>征文要求</h2>
         <div class="explain-info" style="color: #ffffff">{{ soliciting_requirement }}</div>
