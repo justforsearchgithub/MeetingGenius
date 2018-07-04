@@ -2,10 +2,25 @@ var url='http://139.199.24.235:80/';
 function addChildAccount2(){
     $('#myModal').modal({backdrop: 'static', keyboard: true});
 }
+
 $(document).ready(function () {
     var username;
     var oldpassword;
     var currentindex;
+    var subjects = [
+        '工业技术',
+        '医药卫生',
+        '经济',
+        '农业科学',
+        '文化科学、教育、体育',
+        '交通运输','天文学、地球科学','数理科学与化学','环境科学、安全科学','政治、法律','航空、航天',
+        '生物科学','社会科学总论','历史','地理','自然科学总论','语言、文字','哲学、宗教','艺术','文学','军事'
+    ];
+    var optionsubjects = [
+        '环境科学、安全科学','政治、法律','航空、航天',
+        '生物科学','社会科学总论','历史','地理','自然科学总论','语言、文字','哲学、宗教','艺术','文学','军事'
+    ];
+
     $.ajax({
         type: 'GET',
         async:false,
@@ -35,6 +50,8 @@ $(document).ready(function () {
             temp_name:'',
             temp_password:'',
             temp_password2:'',
+            //选中的会议学科分类
+
             //用户提交的论文信息
             user_papers:[
                 {
@@ -43,6 +60,12 @@ $(document).ready(function () {
                     status:'论文审核状态'
                 }
             ],
+            // 下拉框 会议学科
+            Subjects:subjects,
+            AlreadySelectedSubjectList:[
+               '已选学科' 
+            ],
+
             //子账户详细信息
             childaccounts:[
                 {
@@ -59,17 +82,19 @@ $(document).ready(function () {
                 }
             ],
             temp:{
-                name:'',
-                description:'',
-                requirement:'',
-                starttime:'',
-                endtime:'',
-                firsttime:'',
-                secondtime:'',
-                paperinfo:'',
-                contactname:'',
-                contactphone:'',
-                contactmail:''
+                title:'测试会议名称',//会议名称
+                subject:'测试会议学科',//所属学科
+                introduction:'测试会议简介',//会议简介
+                soliciting_requirement:'投稿要求',//投稿要求
+                paper_template:'论文模版',//论文模板，返回的是路径/media/xxx，加到ip地址后可访问
+                register_requirement:'注册要求',//注册要求
+                //accept_start:'',//开始投稿时间
+                accept_due:'',//投稿截止时间
+                modify_due:'',//修改截止日期
+                register_start:'',//注册开始时间
+                register_due:'',//注册截止时间
+                conference_start:'',//会议开始时间
+                conference_due:''//会议结束时间
             },
             collection_meetings:[
                 {
@@ -89,17 +114,7 @@ $(document).ready(function () {
             meetings:[
                 {
                     id:'1',
-                    name:'混合现实区块链社交研讨会',
-                    description:'123',
-                    requirement:'456',
-                    starttime:'2018-10-10 12:30',
-                    endtime:'2018-11-10 12:30',
-                    firsttime:'2018-10-25 12:30',
-                    secondtime:'2018-11-20 12:30',
-                    paperinfo:'789',
-                    contactname:'联系人',
-                    contactphone:'123456',
-                    contactmail:'1@126.com'
+                    name:'测试'
                 }
             ],
             //论文信息
@@ -110,6 +125,14 @@ $(document).ready(function () {
                     author:'456',
                     status:'good'
 
+                }
+            ],
+            //注册会议人员信息
+            meeting_users:[
+                {
+                    name:'注册会议人员名字',
+                    gender:'性别出错',
+                    reservation:'是否'
                 }
             ]
         },
@@ -124,7 +147,8 @@ $(document).ready(function () {
                 document.getElementById("div_paper").style.display="none";
 
                 document.getElementById("div_meeting_info").style.display="none";
-                document.getElementById("div_paper_info").style.display="none";
+                document.getElementById("div_paper_info").style.display="none"
+                document.getElementById("div_meeting_user_info").style.display="none";
             },
             click_collection: function (event) {
                 $.ajax({
@@ -173,6 +197,7 @@ $(document).ready(function () {
 
                 document.getElementById("div_meeting_info").style.display="none";
                 document.getElementById("div_paper_info").style.display="none";
+                document.getElementById("div_meeting_user_info").style.display="none";
             },
             click_childaccount: function (event) {
                 $.ajax({
@@ -215,6 +240,7 @@ $(document).ready(function () {
 
                 document.getElementById("div_meeting_info").style.display="none";
                 document.getElementById("div_paper_info").style.display="none";
+                document.getElementById("div_meeting_user_info").style.display="none";
              },
             click_meeting: function (event) {
                 $.ajax({
@@ -255,6 +281,7 @@ $(document).ready(function () {
 
                 document.getElementById("div_meeting_info").style.display="none";
                 document.getElementById("div_paper_info").style.display="none";
+                document.getElementById("div_meeting_user_info").style.display="none";
             },
             click_password: function (event) {
                 document.getElementById("div_account").style.display="none";
@@ -266,6 +293,7 @@ $(document).ready(function () {
 
                 document.getElementById("div_meeting_info").style.display="none";
                 document.getElementById("div_paper_info").style.display="none";
+                document.getElementById("div_meeting_user_info").style.display="none";
                 },
             click_paper: function (event) {
                 document.getElementById("div_account").style.display="none";
@@ -277,6 +305,7 @@ $(document).ready(function () {
 
                 document.getElementById("div_meeting_info").style.display="none";
                 document.getElementById("div_paper_info").style.display="none";
+                document.getElementById("div_meeting_user_info").style.display="none";
             },
 
             //修改会议信息
@@ -363,11 +392,13 @@ $(document).ready(function () {
 
                 document.getElementById("div_meeting").style.display="none";
                 document.getElementById("div_paper_info").style.display="block";
+                document.getElementById("div_meeting_user_info").style.display="none";
             },
             //修改会议信息取消
             click_meeting_cancal: function (event) {
                 document.getElementById("div_meeting").style.display="block";
                 document.getElementById("div_meeting_info").style.display="none";
+                document.getElementById("div_meeting_user_info").style.display="none";
             },
             //修改会议信息确认
             click_meeting_set: function (event) {
@@ -379,6 +410,57 @@ $(document).ready(function () {
             click_paper_end: function (event) {
                 document.getElementById("div_meeting").style.display="block";
                 document.getElementById("div_paper_info").style.display="none";
+            },
+            //查看注册会议人员信息
+            click_meeting_user_info: function (no) {
+                $.ajax({
+                    type: 'GET',
+                    url: url + '',
+                    contentType: false,
+                    async: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        console.log(data);
+                        if (data.message == "success") {
+                            vm.$data.meeting_users.length=0;
+                            if(data.data.length!=0)
+                            {
+                                for(var ptr=0;ptr<data.data.length;ptr++)
+                                {
+                                    var de;
+                                    if(data.data[ptr].reservation)
+                                    {
+                                        de='是';
+                                    }
+                                    else
+                                    {
+                                        de='否';
+                                    }
+                                    var abc={
+                                        name:data.data[ptr].name,
+                                        gender:data.data[ptr].gender,
+                                        reservation:de
+                                    }
+                                    vm.$data.meeting_users.push(abc);
+
+
+                                }
+
+                            }
+                            else
+                            {
+
+                            }
+
+                        }
+                    }
+                });
+
+            },
+            click_meeting_user_end: function (event) {
+                document.getElementById("div_meeting").style.display="block";
+                document.getElementById("div_meeting_user_info").style.display="none";
             },
             //添加子账户
             addChildAccount:function (event) {
@@ -570,6 +652,15 @@ $(document).ready(function () {
                     alert('密码不一致！');
                 }
 
+            },
+
+
+            AddSubjectsToAlreadySelected: function (e) {
+
+
+            },
+            DeleteAlreadySelectedSubject: function (e) {
+                
             }
 
         }
