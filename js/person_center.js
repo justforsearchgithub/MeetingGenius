@@ -192,10 +192,11 @@ $(document).ready(function () {
             //论文信息
             papers:[
                 {
-                    id:'1',
-                    name:'123',
-                    author:'456',
-                    status:'good'
+                    submission_id:'1',
+                    paper_name:'123',
+                    paper_url:'456',
+                    state:'good',
+                    submitter:'789'
 
                 }
             ],
@@ -450,7 +451,7 @@ $(document).ready(function () {
                 document.getElementById("div_meeting").style.display="none";
                 document.getElementById("div_meeting_info").style.display="block";
                 currentindex=no;
-                this.$data.temp=this.$data.meetings[this.$data.currrentindex];
+                //this.$data.temp=this.$data.meetings[this.$data.currrentindex];
             },
 
             //论文审核信息
@@ -469,10 +470,15 @@ $(document).ready(function () {
                             for(var ptr=0;ptr<data.data.length;ptr++)
                             {
                                 var abc={
-                                    
-                                }
-                                paper_id[ptr].id=data.data[ptr].submitter_id;
-                                console.log('paper'+paper_id[ptr].id);
+                                    submission_id:data.data[ptr].submitter_id,
+                                    paper_name:data.data[ptr].paper_name,
+                                    paper_url:data.data[ptr].paper_uer,
+                                    state:data.data[ptr].state,
+                                    submitter:data.data[ptr].submitter
+                                };
+                                vm.$data.papers.push(abc);
+                                //paper_id[ptr].id=data.data[ptr].submitter_id;
+                                //console.log('paper'+paper_id[ptr].id);
                             }
 
                         }
@@ -812,9 +818,6 @@ $(document).ready(function () {
 
 
             },
-            DeleteAlreadySelectedSubject: function (e) {
-                
-            }
 
         }
     });

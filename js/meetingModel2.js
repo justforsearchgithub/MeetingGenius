@@ -370,7 +370,7 @@ function add_favorite() {
                 "processData": false,
                 "contentType": false
             };
-            $.ajax(settings).done(function (response) {
+            $.ajax(settings).done(function (response) {  b
                console.log(response.message);
                if(response.message === 'susccess'){
                    is_collected = false;

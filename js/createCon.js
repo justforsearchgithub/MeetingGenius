@@ -126,6 +126,9 @@ function DeleteAlreadySelectedSubject(e){
 
 function AddConference() {
     var formdata = new FormData();
+    var location_id = document.getElementById('province').selectedIndex;
+    var city_id = document.getElementById('city').selectedIndex;
+    var location = $('#province')+'_'+location_id+'&'+$('#city')+'_'+city_id+'&'+$('#Location');
     var title = $('#title').val();
     var introduction = $('#Description').val();
     var subject = AlreadySelectedSubjects[0];
@@ -140,18 +143,35 @@ function AddConference() {
     var activities = JSON.stringify(myActivities);
     var template_no = 1;
     formdata.append('title', title);
+    console.log('__________CHECK_________');
+    console.log(title);
     formdata.append('introduction', introduction);
+    console.log(introduction);
     formdata.append('subject', subject);
+    console.log(subject);
     formdata.append('register_requirement', register_requirement);
+    console.log(register_requirement);
     formdata.append('soliciting_requirement', soliciting_requirement);
+    console.log(soliciting_requirement);
     formdata.append('accept_due', accept_due);
+    console.log(accept_due);
     formdata.append('register_start', register_start);
+    console.log(register_start);
     formdata.append('register_due', register_due);
+    console.log(register_due);
     formdata.append('conference_start', conference_start);
+    console.log(conference_start);
     formdata.append('conference_due', conference_due);
+    console.log(conference_due);
     formdata.append('paper_template', paper_template);
+    console.log(paper_template);
     formdata.append('activities', activities);
+    console.log(activities);
     formdata.append('template_no', template_no);
+    console.log(template_no);
+    formdata.append('venue',location);
+    console.log(location);
+    console.log('_________CHECKOUT_________');
 
     $.ajax({
         type: 'POST',
@@ -168,3 +188,46 @@ function AddConference() {
 
 
 }
+
+function AddMap(){
+    var province = $('#province').val();
+    var city = $('#city').val();
+
+    $('#allmap').removeClass('hidden');
+    var location = $('#Location').val();
+    switch(city){
+        case '北京市市辖区':
+        case '上海市市辖区':
+        case '重庆市市辖区':
+        case '天津市市辖区':
+        case '北京市郊县':
+        case '上海市郊县':
+        case '重庆市郊县':
+        case '天津市郊县':
+            city = city.substr(0,3);
+            break;
+    }
+    console.log(city);
+    var map = new BMap.Map("allmap");
+    var point = new BMap.Point(116.331398,39.897445);
+    map.centerAndZoom(point,12);
+    map.addControl(new BMap.NavigationControl());
+    map.addControl(new BMap.ScaleControl());
+    map.addControl(new BMap.OverviewMapControl());
+    // 创建地址解析器实例
+    var myGeo = new BMap.Geocoder();
+    // 将地址解析结果显示在地图上,并调整地图视野
+    myGeo.getPoint(location, function(point){
+        if (point) {
+            map.centerAndZoom(point, 16);
+            map.addOverlay(new BMap.Marker(point));
+        }else{
+            $('#LocationWarning').removeClass("hidden");
+            $('#LocationWarning').text("无法解析到您的地址,请检查输入");
+        }
+    },city);
+}
+$(document).ready(function(){
+
+
+});
