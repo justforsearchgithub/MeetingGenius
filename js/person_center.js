@@ -1,4 +1,37 @@
 var url='http://139.199.24.235:80/';
+function GetCurrentUser(){
+    var user;
+    var type;
+    $.ajax({
+        type: 'GET',
+        async:false,
+        url: url + 'account/username/',
+        //headers:{'X-CSRFToken',Token},
+        success: function (data) {
+            console.log(data);
+            user = data.username;
+            if(user =="anonymous user"){
+                console.log(0);
+                type =0;
+                $('#NavText1').attr('href','userRegister.html');
+                $('#NavText1').text('免费注册');
+                $('#NavText2').remove('onclick','LogOut()');
+                $('#NavText2').attr('href','login.html');
+                $('#NavText2').text('登录');
+            }
+            else{
+                console.log(1);
+                type = 1;
+                $('#NavText1').attr('href','person_center.html');
+                $('#NavText2').removeAttr('href');
+                $('#NavText1').text ('个人中心');
+                $('#NavText2').text('登出');
+                $('#NavText2').attr('onclick','LogOut()');
+            }
+        }
+    });
+    return type;
+}
 var myActivities = [
     {
         start_time:'1',
@@ -66,7 +99,7 @@ function stringchange (str){
 }
 $(document).ready(function () {
     var paper_template;
-
+    GetCurrentUser();
     $(".form_datetime").datetimepicker({
         format: 'yyyy-mm-dd hh:ii'
     });
@@ -174,11 +207,7 @@ $(document).ready(function () {
             ],
             //子账户标识信息
             childaccounts:[
-                {
-                    id:'1',
-                    name:'2',
 
-                }
             ],
             //会议详细信息
             meetings:[
@@ -273,6 +302,9 @@ $(document).ready(function () {
                 document.getElementById("div_meeting_user_info").style.display="none";
             },
             click_childaccount: function (event) {
+                vm.$data.childaccounts.length=0;
+                console.log('#2');
+                console.log(vm.$data.childaccounts);
                 $.ajax({
                     type: 'GET',
                     url: url + 'display/my_subusers/',
@@ -283,7 +315,7 @@ $(document).ready(function () {
                     success: function (data) {
                         console.log(data);
                         if (data.message == "success") {
-                            vm.$data.childaccounts.length=0;
+
                             if(data.data.length!=0)
                             {
                                 for(var ptr=0;ptr<data.data.length;ptr++)
