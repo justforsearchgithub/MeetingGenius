@@ -57,11 +57,11 @@ function paper_upload() {
             }
             else {
                 if(i===0){
-                    authorsJSON.push({'CA': {'name': authorsJSON[i], 'institute': orgs[i]}});
+                    authorsJSON.push({'CA': {'name': authors[i], 'institute': orgs[i]}});
                 }
                 else{
                     var tempJSON = {};
-                    tempJSON['A'+i]= {'name': authorsJSON[i], 'institute': orgs[i]};
+                    tempJSON['A'+i]= {'name': authors[i], 'institute': orgs[i]};
                     authorsJSON.push(tempJSON);
                 }
             }
