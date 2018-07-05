@@ -447,7 +447,7 @@
                     </div>
                     <div class="panel-body" >
                         <ul class="list-group" v-for="(paper,index) in papers" >
-                            <li class="list-group-item">论文题目：{{paper.name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文作者：{{paper.author}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{paper.status}}
+                            <li class="list-group-item">论文题目：{{paper.paper_name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文提交者：{{paper.submitter}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{paper.status}}
                                 <button type="button" class="btn btn-primary" v-on:click="click_meeting_info(index)">填写审核意见</button>
                                 <button type="button" class="btn btn-success" v-on:click="click_paper_info(index)">下载</button>
                             </li>
