@@ -249,7 +249,7 @@
 
                     <label class="input-label">测试</label>
                     <div class="input-group" style="display: inline-block">
-                        <input id="accept_due" type="text" value="" class="form_datetime">
+                        <input  type="text" value="2012-06-15 14:45" class="form_datetime">
                     </div>
 
                     <div class="step1-title">
@@ -322,23 +322,24 @@
                             <div class="col-md-12">
                                 <div class="VivaTimeline">
                                     <dl>
-                                        <dd class="pos-left clearfix" v-for="activite in activities">
+                                        <dd  v-for="(activity,index) in Activities" class="clearfix" :class="{'pos-right':index%2 != 1}">
                                             <div class="circ"></div>
-                                            <div class="time">Feb 03</div>
+                                            <div class="time">{{activity.start_time}}</div>
                                             <div class="events">
-                                                <div class="events-header">Event Heading</div>
+                                                <div class="events-header">{{activity.place}}</div>
                                                 <div class="events-body">
-                                                    <div class="row">
+                                                    <div class="row" style="display: block">
                                                         <div class="events-desc timelineDe">
-                                                            test1
+                                                            {{activity.activity}}
                                                         </div>
-                                                        <div style="float:right;margin-right:20px">
-                                                            <button class="btn btn-danger">-</button>
+                                                        <div style="float:right;margin-right:160px">
+                                                            <button class="btn btn-danger" :id="['RemoveTimeLineButton_'+index]" onclick="ReMoveTimeLine(this)">-</button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </dd>
+
 
                                     </dl>
                                 </div>
@@ -693,7 +694,12 @@
     <!-- /#page-content-wrapper -->
 
 </div>
+
 </div>
+
+
+
+
 
 <script src='js/jquery-3.3.1.js'></script>
 <script src="js/bootstrap.js" ></script>
@@ -709,6 +715,6 @@
         });
     });
 </script>
-<script src="js/login.js"></script>
+
 </body>
 </html>
