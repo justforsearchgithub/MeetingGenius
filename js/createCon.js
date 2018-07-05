@@ -23,19 +23,19 @@ new Vue({
     data:{
         Subjects:optionsubjects
     }
-})
+});
 new Vue({
     el:"#TimeLine",
     data:{
         Activities:myActivities
     }
-})
+});
 new Vue({
     el:"#AlreadySelectedSubjectList",
     data:{
         AlreadySelectedSubjectList:AlreadySelectedSubjects
     }
-})
+});
 
 
 $('.form_datetime').datetimepicker({
@@ -89,17 +89,21 @@ function AddTimeLine(){
     myActivities.sort(sortbyTime);
 }
 
+
 function ReMoveTimeLine(e){
     var id = $(e).attr("id");
     var index = parseInt(id.split('_')[1]);
     console.log(myActivities[index]);
     myActivities.splice(index,1);
 }
+
+
 function sortbyTime(a,b){
     var date_a = GetTime(a.StartTime);
     var date_b = GetTime(b.StartTime);
     return date_a-date_b;
 }
+
 
 function AddSubjects(){
     console.log($('#txt_ide').val());

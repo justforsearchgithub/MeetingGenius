@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-theme.css">
     <link rel="stylesheet" href="css/alter.css">
+    <link rel="stylesheet" href="css/animate.min.css">
     <title>会议管理平台</title>
 </head>
 <body>
@@ -25,8 +26,8 @@
                 <ul class="nav navbar-nav" style="float:none;">
                     <li><a href="index.html">Home</a></li>
 
-                    <li class="pull-right" ><a id="NavText1" href="userRegister.html">免费注册</a></li>
-                    <li class="pull-right" ><a id="NavText2" href="login.html">登录</a></li>
+                    <li class="pull-right"><a id="NavText1" href="userRegister.html">免费注册</a></li>
+                    <li class="pull-right"><a id="NavText2" href="login.html">登录</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -37,16 +38,75 @@
 <div class="banner">
     <div class="banner-info">
         <h1>这是一个专业的会议管理平台</h1>
-        <p>这是一个面向会议组织机构和参会人员的通用学术会议管理平台，为会议主办方和学者之间搭建一个沟通的渠道。</p>
-        <a class="hvr-shutter-in-vertical" onclick="GoToCreateCon()"><h3 style="margin-bottom:20px">发布您的会议</h3>
+        <p style="font-weight:lighter">这是一个面向会议组织机构和参会人员的通用学术会议管理平台，为会议主办方和学者之间搭建一个沟通的渠道。</p>
+        <a id="CreateConButton" class="hvr-shutter-in-vertical hidden" onclick="GoToCreateCon()"><h3
+                style="margin-bottom:20px;font-weight:lighter">发布您的会议</h3>
             <!--<span class="glyphicon glyphicon-arrow-right"></span>-->
         </a>
+
+        <div style="text-align: center;" id="CountNumBar" class="hidden">
+            <h1 style="font-weight: lighter;font-size:80px;display: inline-block;margin-right:40px"
+                class="animated bounceInLeft">[</h1>
+            <h2 id="CountConNumBar" style="font-weight: lighter;display: inline-block;">有20个会议正等待您的参与</h2>
+            <h1 style="font-weight: lighter;font-size:80px;display: inline-block;margin-left:40px"
+                class="animated bounceInRight">]</h1>
+        </div>
     </div>
 </div>
 
-<script src='js/jquery-3.3.1.js'></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/vue.js"></script>
-<script src="js/login.js"></script>
+<div class="Search-Wrapper">
+    <div class="container" style="display: inline-block">
+        <!--<h4>Search your Conference</h4>-->
+        <input id="SearchBarText" type="text" class="SearchBar" placeholder="会议名称/机构/分类">
+        <button type="button" class="btn SearchBarBtn" onclick="GoToSearch()">
+            <i class="glyphicon glyphicon-search">
+            </i>
+        </button>
+    </div>
+</div>
+
+
+<div class="container" style="width:100%">
+    <div style="width:60%;float:left">
+        <div style="width:100%;padding-left:40px;float:left">
+            <h2 style="font-weight: lighter;">热点会议</h2>
+        </div>
+        <div style="width:100%;padding-left:40px;float:left" id="HotSpotConference">
+            <ul class="list-group">
+                <li class="list-group-item" v-for="Con in HotSpotConferenceList">
+                    <div>
+                        <span :id="['ConDetail_'+Con.pk]" style="display: inline-block"><h4><a style="color: #000000;" :href="['meetingModel2.html?id='+Con.pk]">{{Con.title}}</a></h4></span>
+                        <span style="float:right"><h5 style="display: inline-block">{{Con.conference_start}}</h5></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div style="width:30%;float:right">
+        <div style="width:100%;float:left">
+            <h2 style="font-weight: lighter;">已经入驻的机构</h2>
+        </div>
+
+        <div style="width:100%;padding-right:40px;float:right">
+
+            <ul class="list-group">
+
+                <li class="list-group-item">
+                    <div>
+                        <span style="display: inline-block"><h4>灵子转移机构</h4></span>
+
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <script src='js/jquery-3.3.1.js'></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/index.js"></script>
 </body>
 </html>
