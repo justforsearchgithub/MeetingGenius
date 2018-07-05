@@ -1,9 +1,72 @@
 var url='http://139.199.24.235:80/';
-function addChildAccount2(){
+var myActivities = [
+    {
+        start_time:'1',
+        end_time:'2',
+        place:'p',
+        activity:'a'
+    }
+
+];
+function showAddTimeLine(){
     $('#myModal').modal({backdrop: 'static', keyboard: true});
 }
+function PaperExample(){
+    var test = $('#PaperExample').val();
+    console.log(test);
+    var pos = test.lastIndexOf("\\");
+    console.log(pos);
+    var Filename = test.substring(pos+1);
+    if(Filename.length != 0)
+        $('#PaperExampleFileName').html(Filename);
+    else
+        $('#PaperExampleFileName').html('&nbsp;&nbsp;选择文件');
 
+    paper_template = $('#PaperExample')[0].files[0];
+}
+
+function ReMoveTimeLine(e){
+    var id = $(e).attr("id");
+    var index = parseInt(id.split('_')[1]);
+    console.log(myActivities[index]);
+    myActivities.splice(index,1);
+}
+function AddTimeLine(){
+    var StartTime  = $('#AddTimeLine_StartTime').val();
+    var EndTime = $('#AddTimeLine_FinishTime').val();
+    var Location = $('#AddTimeLine_Location').val();
+    var Description = $('#AddTimeLine_Description').val();
+    console.log(Description);
+    if(StartTime>=EndTime){
+        alert("Error!");
+    }
+    myActivities.push({start_time:StartTime,end_time:EndTime,place:Location,activity:Description});
+    myActivities.sort(sortbyTime);
+}
+function sortbyTime(a,b){
+    if(a.StartTime>b.StartTime)
+    {
+        return 1;
+    }
+    else if(a.StartTime<b.StartTime)
+    {
+        return -1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+function stringchange (str){
+    var sub_str=str.substring(0,10);
+    var sub_str2=str.substring(11,16);
+    sub_str+=" ";
+    sub_str+=sub_str2;
+    return sub_str;
+}
 $(document).ready(function () {
+    var paper_template;
+
     $(".form_datetime").datetimepicker({
         format: 'yyyy-mm-dd hh:ii'
     });
@@ -124,6 +187,8 @@ $(document).ready(function () {
                     name:'测试'
                 }
             ],
+            //会议的活动列表
+            Activities:myActivities,
             //论文信息
             papers:[
                 {
@@ -317,8 +382,7 @@ $(document).ready(function () {
 
             //修改会议信息
             click_meeting_info: function (no) {
-                var formData = new FormData();
-                formData.append("id",this.$data.meetings[no].id);
+                currentindex=no;
                 $.ajax({
                     type: 'GET',
                     url: url + 'conference/conference/'+this.$data.meetings[no].id+'/information/',
@@ -334,19 +398,54 @@ $(document).ready(function () {
                             vm.$data.temp.paper_template=data.data.paper_template;
                             vm.$data.temp.register_requirement=data.data.register_requirement;
                             vm.$data.temp.soliciting_requirement=data.data. soliciting_requirement;
-                            vm.$data.temp.accept_start=data.data.accept_due;
-                            vm.$data.temp.accept_due=data.data.accept_due;
-                            vm.$data.temp.modify_due=data.data.modify_due;
-                            vm.$data.temp.register_start=data.data.register_start;
-                            vm.$data.temp.register_due=data.data.register_due;
-                            vm.$data.temp.conference_start=data.data.conference_start;
-                            vm.$data.temp.conference_due=data.data.conference_due;
+                            vm.$data.temp.accept_start=stringchange(data.data.accept_due);
+                            vm.$data.temp.accept_due=stringchange(data.data.accept_due);
+                            //vm.$data.temp.modify_due=stringchange(data.data.modify_due);
+
+                            vm.$data.temp.register_start=stringchange(data.data.register_start);
+
+                            vm.$data.temp.register_due=stringchange(data.data.register_due);
+                            vm.$data.temp.conference_start=stringchange(data.data.conference_start);
+                            vm.$data.temp.conference_due=stringchange(data.data.conference_due);
                             vm.$data.AlreadySelectedSubjectList.length=0;
                             vm.$data.AlreadySelectedSubjectList.push(data.data.subject);
-                            console.log(vm.$data.temp);
+
                         }
                     }
                 });
+
+                $.ajax({
+                    type: 'GET',
+                    url: url + 'display/conference/'+this.$data.meetings[no].id+'/activities/',
+                    contentType: false,
+                    async: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        if (data.message == "success") {
+                            console.log('goodgood');
+                            console.log(data);
+                            myActivities.length=0;
+                            vm.$data.Activities.length=0;
+                            for(var index=0;index<data.data.length;index++)
+                            {
+                                var temp_activity={
+                                    start_time:stringchange(data.data[index].start_time),
+                                    end_time:stringchange(data.data[index].end_time),
+                                    place:data.data[index].place,
+                                    activity:data.data[index].activity_name
+                                };
+                                console.log(temp_activity.start_time);
+                                console.log(temp_activity.end_time);
+                                myActivities.push(temp_activity);
+                               // vm.$data.Activities.push(temp_activity);
+                            }
+                            console.log('endend');
+                            console.log(vm.$data.Activities[0].activity);
+                        }
+                    }
+                });
+
 
                 document.getElementById("div_meeting").style.display="none";
                 document.getElementById("div_meeting_info").style.display="block";
@@ -356,22 +455,22 @@ $(document).ready(function () {
 
             //论文审核信息
             click_paper_info: function (no) {
-                    console.log(vm.$data.meetings[no].id);
-                    console.log(url + 'display/conference/'+vm.$data.meetings[no].id+'/papers/');
+                    currentindex=no;
                 $.ajax({
                     type: 'GET',
-                    url: url + 'display/conference/'+vm.$data.meetings[no].id+'/papers',
+                    url: url + 'display/conference/'+this.$data.meetings[no].id+'/papers/',
                     contentType: false,
                     async: false,
                     cache: false,
                     processData: false,
                     success: function (data) {
-                        console.log(data);
-                        paper_id.length=0;
                         if (data.message == "success") {
                             paper_id.length=0;
                             for(var ptr=0;ptr<data.data.length;ptr++)
                             {
+                                var abc={
+                                    
+                                }
                                 paper_id[ptr].id=data.data[ptr].submitter_id;
                                 console.log('paper'+paper_id[ptr].id);
                             }
@@ -419,9 +518,40 @@ $(document).ready(function () {
             },
             //修改会议信息确认
             click_meeting_set: function (event) {
+                vm.$data.meetings[currentindex].name=vm.$data.temp.title;
+                Vue.set(vm.$data.meetings, currentindex, vm.$data.meetings[currentindex]);
+                var activities = JSON.stringify(myActivities);
+                var formdata = new FormData();
+                formdata.append('title', vm.$data.temp.title);
+                formdata.append('introduction', vm.$data.temp.introduction);
+                formdata.append('subject', vm.$data.temp.subject);
+                formdata.append('register_requirement', vm.$data.temp.register_requirement);
+                formdata.append('soliciting_requirement', vm.$data.temp.soliciting_requirement);
+                formdata.append('accept_due', vm.$data.temp.accept_due);
+                formdata.append('register_start', vm.$data.temp.register_start);
+                formdata.append('register_due', vm.$data.temp.register_due);
+                formdata.append('conference_start', vm.$data.temp.conference_start);
+                formdata.append('conference_due', vm.$data.temp.conference_due);
+                //formdata.append('paper_template', vm.$data.temp.paper_template);
+                //formdata.append('activities',activities);
+                formdata.append('template_no', 1);
+                formdata.append('venue','123');
+                $.ajax({
+                    type: 'POST',
+                    url: url + 'conference/edit_conference/'+this.$data.meetings[currentindex].id+'/',
+                    data: formdata,
+                    contentType: false,
+                    async: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        console.log(data);
+                    }
+                });
+
                 document.getElementById("div_meeting").style.display="block";
                 document.getElementById("div_meeting_info").style.display="none";
-                Vue.set(vm.$data.meetings,currentindex,vm.$data.temp);
+                //Vue.set(vm.$data.meetings,currentindex,vm.$data.temp);
             },
             //从审核会议页面返回会议管理页面
             click_paper_end: function (event) {
@@ -732,7 +862,6 @@ $(document).ready(function () {
         }
 
     });
-
 
     var trigger = $('.hamburger'),
         overlay = $('.overlay'),
