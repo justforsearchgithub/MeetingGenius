@@ -246,12 +246,6 @@
                         </div>
                     </div>
 
-
-                    <label class="input-label">测试</label>
-                    <div class="input-group" style="display: inline-block">
-                        <input  type="text" value="2012-06-15 14:45" class="form_datetime">
-                    </div>
-
                     <div class="step1-title">
                         <span class="num">3</span>填写会议相关日期
                     </div>
@@ -448,13 +442,14 @@
                     <div class="panel-body" >
                         <ul class="list-group" v-for="(paper,index) in papers" >
                             <li class="list-group-item">论文题目：{{paper.paper_name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文提交者：{{paper.submitter}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{paper.status}}
-                                <button type="button" class="btn btn-primary" v-on:click="click_paper_check(index)">填写审核意见</button>
+                                <button type="button" class="btn btn-primary"  v-if="paper.seen" v-on:click="click_paper_check(index)">填写审核意见</button>
                                 <button type="button" class="btn btn-success" v-on:click="click_download(index)"  >下载</button>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div align="center">
+                    <button type="button" class="btn btn-success" v-on:click="click_paper_download">导出投稿情况信息</button>
                     <button type="button" class="btn btn-primary" v-on:click="click_paper_end">返回</button>
                 </div>
             </div>
@@ -478,6 +473,7 @@
                     </div>
                 </div>
                 <div align="center">
+                    <button type="button" class="btn btn-success" v-on:click="click_user_download">导出注册会议人员信息</button>
                     <button type="button" class="btn btn-primary" v-on:click="click_meeting_user_end">返回</button>
                 </div>
             </div>
@@ -527,12 +523,13 @@
                     <div class="panel-body" >
                         <ul class="list-group" v-for="(user_paper,index) in user_papers" >
                             <li class="list-group-item">论文题目：{{user_paper.paper_name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文作者：{{user_paper.conference_title}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{user_paper.status}}
-                                <button type="button" class="btn btn-primary hidden" v-if="user_paper.state==='M'" v-on:click="click_modify(index)" >修改后提交</button>
+                                <button type="button" class="btn btn-primary" v-if="user_paper.state==='M'" v-on:click="click_modify(index)" >修改后提交</button>
                             </li>
 
                         </ul>
                     </div>
                 </div>
+
             </div>
         </div>
 
@@ -772,11 +769,11 @@
                     </div>
                     <div class="form-group" style="margin-top: 5px">
                         <label>论文标题</label>
-                        <input type="text" class="form-control" id="paper_title1">
+                        <input type="text" readonly="readonly" class="form-control" id="paper_title1">
                     </div>
                     <div class="form-group" style="margin-top: 5px">
                         <label>论文摘要</label>
-                        <textarea class="form-control" rows="8" id="paper_abstract1"></textarea>
+                        <textarea class="form-control" readonly="readonly" rows="8" id="paper_abstract1"></textarea>
                     </div>
                     <div style="margin-top:30px">
                         <label class="input-label" style="width:150px;">审核意见 </label>
@@ -788,19 +785,23 @@
 
                     <div style="margin-top:30px">
                         <label class="input-label" style="width:150px;">是否通过</label>
-                        <div class="input-group" style="display: inline-block">
-                            <button type="button" class="btn btn-primary" onclick="check_pass()">通过</button>
-
-                            <button type="button" class="btn btn-success" onclick="check_not_pass()">不通过</button>
-
-                            <button type="button" class="btn btn-info"  onclick="check_modify()">建议修改</button>
+                        <div class="btn-group" data-toggle="buttons">
+                            <label name="options" class="btn btn-primary">
+                                <input type="radio"  id="option1">通过
+                            </label>
+                            <label name="options"  class="btn btn-primary">
+                                <input type="radio"  id="option2">不通过
+                            </label>
+                            <label name="options" v-if="!paper_detail.modified" class="btn btn-primary">
+                                <input type="radio"  id="option3">建议修改
+                            </label>
                         </div>
                     </div>
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="click_check_add">提交</button>
+                    <button type="button" class="btn btn-primary" v-on:click="click_check_add">提交</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
@@ -901,7 +902,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="paper_upload()">提交</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="paper_upload">提交</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
