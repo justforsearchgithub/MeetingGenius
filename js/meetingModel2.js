@@ -136,6 +136,10 @@ $(document).ready(function () {
         };
         $.ajax(conference_settings).done(function (response) {
             console.log(response.message);
+            if(response.data.template_no != '1'){
+                window.location.href = url + "static/meetingModel3.html?id=" + conference_id;
+                return;
+            }
             meeting.organization = response.data.organization.org_name;
             meeting.title = response.data.title;
             meeting.subject = response.data.subject;
