@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-theme.css">
-    <link rel="stylesheet" href="css/per_center.css">
     <link rel="stylesheet" href="css/alter.css">
     <link rel="stylesheet" href="css/bootstrap-datetimepicker.css">
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
     <link rel="stylesheet" type="text/css" href="css/jquery.eeyellow.Timeline.css"/>
+    <link rel="stylesheet" href="css/per_center.css">
+
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+
 
     <title>会议管理平台</title>
 </head>
@@ -227,7 +229,8 @@
 
                         <div class="select-input select-category" id="CreatConSubjectList">
                             <input type="text" id="txt_ide" list="optionList" />
-                            <span class="glyphicon glyphicon-plus" aria-hidden="true"  onclick="AddSubjects()"></span>
+                            <a class="material-icons" v-on:click="AddSubject" >cached</a>
+
                         </div>
 
                         <datalist id="optionList">
@@ -239,12 +242,15 @@
                         <label class="input-label" style="margin-top:20px;bottom-bottom:40px">已选分类</label>
 
                         <div class="select-input select-category" style="margin-top:15px" id="AlreadySelectedSubjectList">
-                            <span v-for="(subject,index) in AlreadySelectedSubjectList" style="margin-left:5px" class="Alreadycategory-list selected" index="1" :id="['AlreadySelectedSubjectOptionList_'+index]" onclick="DeleteAlreadySelectedSubject(this)">{{subject}}</span>
+                            <span v-for="(subject,index) in AlreadySelectedSubjectList" style="margin-left:5px" class="Alreadycategory-list selected" index="1" :id="['AlreadySelectedSubjectOptionList_'+index]" >{{AlreadySelectedSubjectList[0]}}</span>
                         </div>
                     </div>
 
 
-
+                    <label class="input-label">测试</label>
+                    <div class="input-group" style="display: inline-block">
+                        <input  type="text" value="2012-06-15 14:45" class="form_datetime">
+                    </div>
 
                     <div class="step1-title">
                         <span class="num">3</span>填写会议相关日期
@@ -252,7 +258,7 @@
                     <div style="margin-top:30px">
                         <label class="input-label">截稿日期</label>
                         <div class="input-group" style="display: inline-block">
-                            <input size="10" type="text" value="" class="form_datetime" v-model="temp.accept_due">
+                            <input size="10" placeholder="yyyy-mm-dd hh:ii" type="text" value="" class="date form_datetime" >
                         </div>
                     </div>
 
@@ -272,7 +278,7 @@
                     <div style="margin-top:30px">
                         <label class="input-label" style="width:150px">会议开始时间</label>
                         <div class="input-group" style="display: inline-block">
-                            <input  id="conference_start" type="text" value="" class="form_datetime" v-model="temp.conference_start">
+                            <input  type="text"  class="form_datetime" v-model="temp.conference_start">
 
                         </div>
                         <label class="input-label" style="width:150px;float:none;margin-left:20%">会议结束日期</label>
@@ -316,23 +322,24 @@
                             <div class="col-md-12">
                                 <div class="VivaTimeline">
                                     <dl>
-                                        <dd class="pos-left clearfix" v-for="activite in activities">
+                                        <dd  v-for="(activity,index) in Activities" class="clearfix" :class="{'pos-right':index%2 != 1}">
                                             <div class="circ"></div>
-                                            <div class="time">Feb 03</div>
+                                            <div class="time">{{activity.start_time}}</div>
                                             <div class="events">
-                                                <div class="events-header">Event Heading</div>
+                                                <div class="events-header">{{activity.place}}</div>
                                                 <div class="events-body">
-                                                    <div class="row">
+                                                    <div class="row" style="display: block">
                                                         <div class="events-desc timelineDe">
-                                                            test1
+                                                            {{activity.activity}}
                                                         </div>
-                                                        <div style="float:right;margin-right:20px">
-                                                            <button class="btn btn-danger">-</button>
+                                                        <div style="float:right;margin-right:160px">
+                                                            <button class="btn btn-danger" :id="['RemoveTimeLineButton_'+index]" onclick="ReMoveTimeLine(this)">-</button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </dd>
+
 
                                     </dl>
                                 </div>
@@ -440,9 +447,9 @@
                     </div>
                     <div class="panel-body" >
                         <ul class="list-group" v-for="(paper,index) in papers" >
-                            <li class="list-group-item">论文题目：{{paper.name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文作者：{{paper.author}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{paper.status}}
-                                <button type="button" class="btn btn-primary" v-on:click="click_meeting_info(index)">填写审核意见</button>
-                                <button type="button" class="btn btn-success" v-on:click="click_paper_info(index)">下载</button>
+                            <li class="list-group-item">论文题目：{{paper.paper_name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文提交者：{{paper.submitter}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{paper.state}}
+                                <button type="button" class="btn btn-primary" v-on:click="click_paper_check(index)">填写审核意见</button>
+                                <button type="button" class="btn btn-success" v-on:click="click_download(index)"  >下载</button>
                             </li>
                         </ul>
                     </div>
@@ -519,13 +526,12 @@
                     </div>
                     <div class="panel-body" >
                         <ul class="list-group" v-for="(user_paper,index) in user_papers" >
-                            <li class="list-group-item">论文题目：{{user_paper.name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文作者：{{user_paper.author}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{user_paper.status}}
+                            <li class="list-group-item">论文题目：{{user_paper.paper_name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文作者：{{user_paper.conference_title}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{user_paper.state}}
+                                <button type="button" class="btn btn-primary" v-on:click="click_modify(index)">修改后提交</button>
                             </li>
+
                         </ul>
                     </div>
-                </div>
-                <div align="center">
-                    <button type="button" class="btn btn-primary" v-on:click="click_paper_end">返回</button>
                 </div>
             </div>
         </div>
@@ -568,7 +574,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" v-on:click="addChildAccount4">关闭
+                    <button type="button" class="btn btn-default" data-dismiss="modal" >关闭
                     </button>
                     <button type="button" class="btn btn-primary" v-on:click="addChildAccount3">
                         提交添加
@@ -684,15 +690,247 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 
+    <!--填写审核信息-->
+
+
+
+    <!--论文详细信息及审核-->
+    <div class="modal fade" id="myModal6"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">论文投稿</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box-line">
+                        <span class="line-left"></span><span class="text">作者信息</span><span class="line-right"></span>
+                    </div>
+                    <div class="form-group input-sm-left">
+                        <label>第一作者</label>
+                        <input readonly="readonly" type="text" class="form-control" id="author11">
+                    </div>
+                    <div class="form-group input-sm-right">
+                        <label>单位</label>
+                        <input readonly="readonly" type="text" class="form-control" id="org11">
+                    </div>
+                    <div style="clear: both"></div>
+                    <div id="author-12" class="hidden">
+                        <div class="form-group input-sm-left">
+                            <label>第二作者</label>
+                            <input readonly="readonly" type="text" class="form-control" id="author12">
+                        </div>
+                        <div class="form-group input-sm-right">
+                            <label>单位</label>
+                            <input readonly="readonly" type="text" class="form-control" id="org12">
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div id="author-13" class="hidden">
+                        <div class="form-group input-sm-left">
+                            <label>第三作者</label>
+                            <input readonly="readonly" type="text" class="form-control" id="author13">
+                        </div>
+                        <div class="form-group input-sm-right">
+                            <label>单位</label>
+                            <input readonly="readonly" type="text" class="form-control" id="org13">
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div id="author-14" class="hidden">
+                        <div class="form-group input-sm-left">
+                            <label>第四作者</label>
+                            <input readonly="readonly" type="text" class="form-control" id="author14">
+                        </div>
+                        <div class="form-group input-sm-right">
+                            <label>单位</label>
+                            <input readonly="readonly" type="text" class="form-control" id="org14">
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div id="author-15" class="hidden">
+                        <div class="form-group input-sm-left">
+                            <label>第五作者</label>
+                            <input readonly="readonly" type="text" class="form-control" id="author15">
+                        </div>
+                        <div class="form-group input-sm-right">
+                            <label>单位</label>
+                            <input readonly="readonly" type="text" class="form-control" id="org15">
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div class="form-group input-sm-left">
+                        <label>通讯作者</label>
+                        <input readonly="readonly" type="text" class="form-control" id="author-com1">
+                    </div>
+                    <div class="form-group input-sm-right">
+                        <label>单位</label>
+                        <input readonly="readonly" type="text" class="form-control" id="org-com1">
+                    </div>
+                    <div style="clear: both"></div>
+                    <div class="box-line">
+                        <span class="line-left"></span><span class="text">论文信息</span><span class="line-right"></span>
+                    </div>
+                    <div class="form-group" style="margin-top: 5px">
+                        <label>论文标题</label>
+                        <input type="text" class="form-control" id="paper_title1">
+                    </div>
+                    <div class="form-group" style="margin-top: 5px">
+                        <label>论文摘要</label>
+                        <textarea class="form-control" rows="8" id="paper_abstract1"></textarea>
+                    </div>
+                    <div style="margin-top:30px">
+                        <label class="input-label" style="width:150px;">审核意见 </label>
+                        <div class="input-group" style="display: inline-block">
+                            <input id="check_advice" type="text" value=""
+                                   class="form-control form_datetimeTimeLine">
+                        </div>
+                    </div>
+
+                    <div style="margin-top:30px">
+                        <label class="input-label" style="width:150px;">是否通过</label>
+                        <div class="input-group" style="display: inline-block">
+                            <button type="button" class="btn btn-primary" onclick="check_pass()">通过</button>
+
+                            <button type="button" class="btn btn-success" onclick="check_not_pass()">不通过</button>
+
+                            <button type="button" class="btn btn-info"  onclick="check_modify()">建议修改</button>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="click_check_add">提交</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <div class="modal fade" id="myModal7"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">论文投稿</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box-line">
+                        <span class="line-left"></span><span class="text">作者信息</span><span class="line-right"></span>
+                    </div>
+                    <div class="form-group input-sm-left">
+                        <label>第一作者</label>
+                        <input type="text" class="form-control" id="author1">
+                    </div>
+                    <div class="form-group input-sm-right">
+                        <label>单位</label>
+                        <input type="text" class="form-control" id="org1">
+                    </div>
+                    <div style="clear: both"></div>
+                    <div id="author-2" class="hidden">
+                        <div class="form-group input-sm-left">
+                            <label>第二作者</label>
+                            <input type="text" class="form-control" id="author2">
+                        </div>
+                        <div class="form-group input-sm-right">
+                            <label>单位</label>
+                            <input type="text" class="form-control" id="org2">
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div id="author-3" class="hidden">
+                        <div class="form-group input-sm-left">
+                            <label>第三作者</label>
+                            <input type="text" class="form-control" id="author3">
+                        </div>
+                        <div class="form-group input-sm-right">
+                            <label>单位</label>
+                            <input type="text" class="form-control" id="org3">
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div id="author-4" class="hidden">
+                        <div class="form-group input-sm-left">
+                            <label>第四作者</label>
+                            <input type="text" class="form-control" id="author4">
+                        </div>
+                        <div class="form-group input-sm-right">
+                            <label>单位</label>
+                            <input type="text" class="form-control" id="org4">
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div id="author-5" class="hidden">
+                        <div class="form-group input-sm-left">
+                            <label>第五作者</label>
+                            <input type="text" class="form-control" id="author5">
+                        </div>
+                        <div class="form-group input-sm-right">
+                            <label>单位</label>
+                            <input type="text" class="form-control" id="org5">
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div class="form-group input-sm-left">
+                        <label>通讯作者</label>
+                        <input type="text" class="form-control" id="author-com">
+                    </div>
+                    <div class="form-group input-sm-right">
+                        <label>单位</label>
+                        <input type="text" class="form-control" id="org-com">
+                    </div>
+                    <div style="clear: both"></div>
+                    <div style="text-align: center">
+                        <button id="addAuthor" class="btn btn-primary ml-5 mr-5" onclick="add_author()">添加作者</button>
+                        <button id="delAuthor" class="btn btn-primary ml-5 mr-5 hidden" onclick="del_author()">删除作者</button>
+                    </div>
+                    <div class="box-line">
+                        <span class="line-left"></span><span class="text">论文信息</span><span class="line-right"></span>
+                    </div>
+                    <div class="form-group" style="margin-top: 5px">
+                        <label>上传论文</label>
+                        <input id="paper_up" type="file" class="file" accept="application/pdf" onchange="triggerfile_paper()"/>
+                        <label id="label_paper_up" for="paper_up" style="font-size: 14px">选择文件</label>
+                    </div>
+                    <div class="form-group" style="margin-top: 5px">
+                        <label>论文标题</label>
+                        <input type="text" class="form-control" id="paper_title">
+                    </div>
+                    <div class="form-group" style="margin-top: 5px">
+                        <label>论文摘要</label>
+                        <textarea id="paper_outline" class="form-control" rows="8"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="paper_upload()">提交</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
     <!-- /#page-content-wrapper -->
 
 </div>
+
 </div>
+
+
+
+
 
 <script src='js/jquery-3.3.1.js'></script>
 <script src="js/bootstrap.js" ></script>
 <script src="js/vue.js"></script>
+<script src="js/bootstrap-datetimepicker.js"></script>
 <script src="js/person_center.js"></script>
-<script src="js/login.js"></script>
+<script type="text/javascript" src="js/jquery.eeyellow.Timeline.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.VivaTimeline').vivaTimeline({
+            carousel: true,
+            carouselTime: 3000
+        });
+    });
+</script>
+
 </body>
 </html>

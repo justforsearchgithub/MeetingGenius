@@ -56,21 +56,25 @@
     <!-- Time-->
 </div>
 <!--header end!-->
+<!-- button start!-->
+    <div class="title-bottom" style="text-align: center; background-color: rgb(83, 135, 195)">
+        <button id="join_meeting" onclick="checkState_r()" data-target="#join-meeting">参加会议</button>
+        <button id="paper_download" onclick="downloadPaper()">论文模板</button>
+        <button id="paper_upload" onclick="checkState_p()" data-target="#paper-upload">我要投稿</button>
+    </div>
+<!--button end!-->
 <!--大会简介 star！-->
 <div class="w-1200 auto mt-70" >
     <div class="introduction" id="introduction">
-        <div style="text-align: center">
-            <button id="join_meeting" onclick="checkState_r()" data-target="#join-meeting">参加会议</button>
-            <button id="paper_download" onclick="downloadPaper()">论文模板</button>
-            <button id="paper_upload" onclick="checkState_p()" data-target="#paper-upload">我要投稿</button>
-        </div>
         <h1>会议简介</h1>
-        <div class="col-md-4  col-xs-12  fl " style="font-size: 20px">
+        <div class="col-md-4  col-xs-12  fl mt-20" style="font-size: 20px">
             <div><label>主办方：</label>{{ organization }}</div>
             <div><label>学科：</label>{{ subject }}</div>
-            <div><label>状态：</label>{{ state }}</div>
+            <div><label>状态：</label><span style="color: #ff0000">{{ state }}</span></div>
         </div>
-        <div style="width: 65%; float: right; text-align: justify;"><p class="f-18 lh-36">{{ introduction }}</p></div>
+        <div class="well" style="width: 65%; float: right; min-height: 200px">
+            <p class="f-18 lh-36">&nbsp;&nbsp;&nbsp;&nbsp;{{ introduction }}</p>
+        </div>
     </div>
     <div class="clear"></div>
 </div>
@@ -122,7 +126,7 @@
 </div>
 <!-- activity end-->
 <!-- paper start-->
-<div class="Important_date">
+<div class="essay_wanted">
     <div class="w-1200 auto">
         <h2>征文要求</h2>
         <div class="explain-info" style="color: #ffffff">{{ soliciting_requirement }}</div>
@@ -214,64 +218,64 @@
                 </div>
                 <div class="form-group input-sm-left">
                     <label>第一作者</label>
-                    <input type="text" class="form-control" role="author">
+                    <input type="text" class="form-control" id="author1">
                 </div>
                 <div class="form-group input-sm-right">
                     <label>单位</label>
-                    <input type="text" class="form-control" role="org">
+                    <input type="text" class="form-control" id="org1">
                 </div>
                 <div style="clear: both"></div>
                 <div id="author-2" class="hidden">
                 <div class="form-group input-sm-left">
                     <label>第二作者</label>
-                    <input type="text" class="form-control" role="author">
+                    <input type="text" class="form-control" id="author2">
                 </div>
                 <div class="form-group input-sm-right">
                     <label>单位</label>
-                    <input type="text" class="form-control" role="org">
+                    <input type="text" class="form-control" id="org2">
                 </div>
                 <div style="clear: both"></div>
                 </div>
                 <div id="author-3" class="hidden">
                 <div class="form-group input-sm-left">
                     <label>第三作者</label>
-                    <input type="text" class="form-control" role="author">
+                    <input type="text" class="form-control" id="author3">
                 </div>
                 <div class="form-group input-sm-right">
                     <label>单位</label>
-                    <input type="text" class="form-control" role="org">
+                    <input type="text" class="form-control" id="org3">
                 </div>
                 <div style="clear: both"></div>
                 </div>
                 <div id="author-4" class="hidden">
                 <div class="form-group input-sm-left">
                     <label>第四作者</label>
-                    <input type="text" class="form-control" role="author">
+                    <input type="text" class="form-control" id="author4">
                 </div>
                 <div class="form-group input-sm-right">
                     <label>单位</label>
-                    <input type="text" class="form-control" role="org">
+                    <input type="text" class="form-control" id="org4">
                 </div>
                 <div style="clear: both"></div>
                 </div>
                 <div id="author-5" class="hidden">
                 <div class="form-group input-sm-left">
                     <label>第五作者</label>
-                    <input type="text" class="form-control" role="author">
+                    <input type="text" class="form-control" id="author5">
                 </div>
                 <div class="form-group input-sm-right">
                     <label>单位</label>
-                    <input type="text" class="form-control" role="org">
+                    <input type="text" class="form-control" id="org5">
                 </div>
                 <div style="clear: both"></div>
                 </div>
                 <div class="form-group input-sm-left">
                     <label>通讯作者</label>
-                    <input type="text" class="form-control" role="author">
+                    <input type="text" class="form-control" id="author-com">
                 </div>
                 <div class="form-group input-sm-right">
                     <label>单位</label>
-                    <input type="text" class="form-control" role="org">
+                    <input type="text" class="form-control" id="org-com">
                 </div>
                 <div style="clear: both"></div>
                 <div style="text-align: center">

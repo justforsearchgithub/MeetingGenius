@@ -6,13 +6,13 @@
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-theme.css">
     <link rel="stylesheet" href="css/alter.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
     <link rel="stylesheet" type="text/css" href="css/jquery.eeyellow.Timeline.css"/>
     <title>会议详情</title>
 </head>
 <body>
 <script src='js/jquery-3.3.1.js'></script>
 <script src="js/vue.js"></script>
-
 <div>
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container" style="width:100%">
@@ -48,7 +48,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8">
-                <div class="panel panel-danger">
+                <div class="panel">
                     <div class="panel-heading">
                         <h3 class="panel-title" id="schedulingProgram">日程安排</h3>
                     </div>
@@ -74,7 +74,7 @@
 
                 <div class="row">
                 <div class="col-md-6">
-                <div class="panel panel-success">
+                <div class="panel">
                     <div class="panel-heading">
                         <h3 class="panel-title" >学科</h3>
                     </div>
@@ -85,7 +85,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <div class="panel panel-success">
+                    <div class="panel">
                         <div class="panel-heading">
                             <h3 class="panel-title" >状态</h3>
                         </div>
@@ -96,7 +96,7 @@
                 </div>
                 </div>
 
-                <div class="panel panel-success">
+                <div class="panel">
                     <div class="panel-heading">
                         <h3 class="panel-title" id="meetingIntroduction">会议简介</h3>
                     </div>
@@ -107,7 +107,7 @@
             </div>
 
             <div class="col-md-4">
-                <div class="panel panel-danger">
+                <div class="panel">
                     <div class="panel-heading">
                         <h3 class="panel-title">倒计时</h3>
                     </div>
@@ -121,38 +121,38 @@
                     </div>
                 </div>
 
-                <div class="panel panel-success">
+                <div class="panel">
                     <div class="panel-heading">
                         <h3 class="panel-title">参会投稿</h3>
                     </div>
                     <div class="panel-body-btn" style="height:40px;text-align: center">
-                        <button id="paper_download"class="panel-body-btn"  onclick="downloadPaper()" >论文模板</button>
-                        <button id="join_meeting"class="panel-body-btn"  onclick="checkState_r()" data-target="#join-meeting" >参加会议</button>
-                        <button id="paper_upload"class="panel-body-btn"  onclick="checkState_p()"  data-target="#paper-upload">我要投稿</button>
+                        <button id="paper_download" class="panel-body-btn"  onclick="downloadPaper()" >论文模板</button>
+                        <button id="join_meeting" class="panel-body-btn"  onclick="checkState_r()" data-target="#join-meeting">参加会议</button>
+                        <button id="paper_upload" class="panel-body-btn"  onclick="checkState_p()"  data-target="#paper-upload">我要投稿</button>
                     </div>
                 </div>
 
-                <div class="panel panel-danger">
+                <div class="panel">
                     <div class="panel-heading">
                         <h3 class="panel-title">重要日期</h3>
                     </div>
                     <div class="panel-body">
-                        <strong><span style="line-height:2;font-size:18px;">注册开始日期</span></strong></br>
+                        <span>注册开始日期</span></br>
                         <p>{{registerOpenDate}}</p>
-                        <strong><span style="line-height:2;font-size:18px;">注册截止日期</span></strong></br>
+                        <span>注册截止日期</span></br>
                         <p>{{registerEndDate}}</p>
-                        <strong><span style="line-height:2;font-size:18px;">投稿开始日期</span></strong></br>
+                        <span>投稿开始日期</span></br>
                         <p>{{firstAuditNoticeDate}}</p>
-                        <strong><span style="line-height:2;font-size:18px;">投稿截止日期</span></strong></br>
+                        <span>投稿截止日期</span></br>
                         <p>{{closeDate}}</p>
-                        <strong><span style="line-height:2;font-size:18px;">会议开始日期</span></strong></br>
+                        <span>会议开始日期</span></br>
                         <p>{{meetingStartDate}}</p>
-                        <strong><span style="line-height:2;font-size:18px;">会议结束日期</span></strong></br>
+                        <span>会议结束日期</span></br>
                         <p>{{meetingEndDate}}</p>
                     </div>
                 </div>
 
-                <div class="panel panel-success">
+                <div class="panel">
                     <div class="panel-heading">
                         <h3 class="panel-title" >注册要求</h3>
                     </div>
@@ -161,7 +161,7 @@
                     </div>
                 </div>
 
-                <div class="panel panel-success">
+                <div class="panel">
                     <div class="panel-heading">
                         <h3 class="panel-title">投稿要求</h3>
                     </div>
@@ -170,18 +170,18 @@
                     </div>
                 </div>
 
-                <div class="panel panel-success">
+                <div class="panel">
                     <div class="panel-heading">
                         <h3 class="panel-title">主办单位</h3>
                     </div>
                     <div class="panel-body">
-                        <strong><span style="line-height:2;font-size:18px;">组织名称</span></strong></br>
+                        <span>组织名称</span></br>
                         <p>{{organizationName }}</p>
-                        <strong><span style="line-height:2;font-size:18px;">联系人姓名</span></strong></br>
+                        <span>联系人姓名</span></br>
                         <p>{{contactName }}</p>
-                        <strong><span style="line-height:2;font-size:18px;">联系人电话</span></strong></br>
+                        <span>联系人电话</span></br>
                         <p>{{contactPhone }}</p>
-                        <strong><span style="line-height:2;font-size:18px;">联系人邮箱</span></strong></br>
+                        <span>联系人邮箱</span></br>
                         <p>{{email }}</p>
                     </div>
                 </div>
@@ -241,7 +241,6 @@
     </div><!-- /.modal -->
 </div>
 <!--register child window end-->
-<!--paper child window start-->
 <div class="modal fade" id="paper-upload"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -249,25 +248,89 @@
                 <h4 class="modal-title">论文投稿</h4>
             </div>
             <div class="modal-body">
-                <div class="form-group" style="margin-top: 5px">
-                    <label>名称</label>
-                    <input type="text" class="form-control" id="paper_title">
+                <div class="box-line">
+                    <span class="line-left"></span><span class="text">作者信息</span><span class="line-right"></span>
                 </div>
-                <div class="form-group" style="margin-top: 5px">
-                    <label>作者</label>
-                    <input type="text" class="form-control" id="paper_author">
+                <div class="form-group input-sm-left">
+                    <label>第一作者</label>
+                    <input type="text" class="form-control" id="author1">
                 </div>
-                <div class="form-group" style="margin-top: 5px">
+                <div class="form-group input-sm-right">
                     <label>单位</label>
-                    <input type="text" class="form-control" id="paper_organization">
+                    <input type="text" class="form-control" id="org1">
+                </div>
+                <div style="clear: both"></div>
+                <div id="author-2" class="hidden">
+                    <div class="form-group input-sm-left">
+                        <label>第二作者</label>
+                        <input type="text" class="form-control" id="author2">
+                    </div>
+                    <div class="form-group input-sm-right">
+                        <label>单位</label>
+                        <input type="text" class="form-control" id="org2">
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div id="author-3" class="hidden">
+                    <div class="form-group input-sm-left">
+                        <label>第三作者</label>
+                        <input type="text" class="form-control" id="author3">
+                    </div>
+                    <div class="form-group input-sm-right">
+                        <label>单位</label>
+                        <input type="text" class="form-control" id="org3">
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div id="author-4" class="hidden">
+                    <div class="form-group input-sm-left">
+                        <label>第四作者</label>
+                        <input type="text" class="form-control" id="author4">
+                    </div>
+                    <div class="form-group input-sm-right">
+                        <label>单位</label>
+                        <input type="text" class="form-control" id="org4">
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div id="author-5" class="hidden">
+                    <div class="form-group input-sm-left">
+                        <label>第五作者</label>
+                        <input type="text" class="form-control" id="author5">
+                    </div>
+                    <div class="form-group input-sm-right">
+                        <label>单位</label>
+                        <input type="text" class="form-control" id="org5">
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="form-group input-sm-left">
+                    <label>通讯作者</label>
+                    <input type="text" class="form-control" id="author-com">
+                </div>
+                <div class="form-group input-sm-right">
+                    <label>单位</label>
+                    <input type="text" class="form-control" id="org-com">
+                </div>
+                <div style="clear: both"></div>
+                <div style="text-align: center">
+                    <button id="addAuthor" class="btn btn-primary ml-5 mr-5" onclick="add_author()">添加作者</button>
+                    <button id="delAuthor" class="btn btn-primary ml-5 mr-5 hidden" onclick="del_author()">删除作者</button>
+                </div>
+                <div class="box-line">
+                    <span class="line-left"></span><span class="text">论文信息</span><span class="line-right"></span>
                 </div>
                 <div class="form-group" style="margin-top: 5px">
                     <label>上传论文</label>
-                    <input id="paper_up" type="file" class="file" accept="application/pdf" onchange="triggerfile_paper()"/>
+                    <input id="paper_up" type="file" class="file" accept="application/pdf" onchange="triggerfile_paper()">
                     <label id="label_paper_up" for="paper_up" style="font-size: 14px">选择文件</label>
                 </div>
                 <div class="form-group" style="margin-top: 5px">
-                    <label>摘要</label>
+                    <label>论文标题</label>
+                    <input type="text" class="form-control" id="paper_title">
+                </div>
+                <div class="form-group" style="margin-top: 5px">
+                    <label>论文摘要</label>
                     <textarea id="paper_outline" class="form-control" rows="8"></textarea>
                 </div>
             </div>
@@ -282,11 +345,10 @@
 <script src="js/jquery-3.3.1.js"></script>
 <script src="js/bootstrap.js" ></script>
 <script src="js/bootstrap-datetimepicker.js"></script>
-<script src="js/leftTime.min.js" ></script>
-<script src="js/meetingIntroduction.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/jquery.countdown.js"></script>
 <script type="text/javascript" src="js/jquery.eeyellow.Timeline.js"></script>
+<script src="js/leftTime.min.js" ></script>
+<script src="js/addAuthor.js"></script>
+<script src="js/meetingIntroduction.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         $('.VivaTimeline').vivaTimeline({

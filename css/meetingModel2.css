@@ -104,23 +104,23 @@
     margin-left: 0px !important;
 }
 
-.introduction button{
+.title-bottom button{
     display: inline-block;
     width: 240px;
     height: 60px;
     line-height: 60px;
     font-size: 30px;
     color: #FFFFFF;
-    background: #00a0e3;
+    background: transparent;
     text-align: center;
     margin: 0px 50px 0px 50px;
     border: none;
 }
-.introduction button:hover{
-    background: #fb2b4e;
+.title-bottom button:hover{
+    color: #fb2b4e;
 }
 .introduction h1{
-    padding: 80px 0px 50px  0px;
+    padding: 10px 0px 30px 0px;
     font-size: 40px;
     text-align: center;
     font-weight: bold;
@@ -185,7 +185,7 @@
     display: block;
 }
 .Important_date {
-    background: url(../img/background1.jpg) no-repeat center;
+    background: url(../img/img_date.jpg) no-repeat center;
     width: 100%;
     min-height: 300px;
     text-align: center;
@@ -1162,4 +1162,20 @@ h1,h2,h3,h4,h5,h6{margin: 0;padding: 0;}
     width: 48%;
     float: right;
     margin-top: 5px;
+}
+
+.essay_wanted {
+    background: url(../img/img_paper.jpg) no-repeat center;
+    width: 100%;
+    min-height: 300px;
+    text-align: center;
+}
+
+.essay_wanted h2{
+    text-align: center;
+    font-size: 40px;
+    font-weight: bold;
+    color: #ffffff;
+    padding-top: 50px;
+    padding-bottom: 40px;
 }

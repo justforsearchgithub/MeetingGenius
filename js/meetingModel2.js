@@ -238,7 +238,8 @@ function join_register() {
     var formData = new FormData();
     formData.append('listen_only', listen_only);
     formData.append('paper_id', paper_id);
-    formData.append('participants', temp_json);
+    formData.append('participants', JSON.stringify(temp_json));
+    console.log(temp_json);
     formData.append('pay_voucher', pay_voucher);
     var settings = {
         "async": false,
@@ -252,11 +253,12 @@ function join_register() {
         "data": formData
     };
     $.ajax(settings).done(function (response) {
-        console.log(response);
-        if(response.message === 'success'){
+        var data = JSON.parse(response);
+        console.log(data);
+        if(data.message === 'success'){
             alert('注册成功');
         }
-        else if (response.message === 'reduplicate register'){
+        else if (data.message === 'reduplicate register'){
             alert('您已经注册了该会议');
         }
         else{
@@ -302,7 +304,8 @@ function checkState_p() {
 }
 
 function downloadPaper() {
-    window.open('http://www.baidu.com');
+    console.log(url + meeting.paper_template);
+    window.open(url + meeting.paper_template);
 }
 
 var getParam = function (name) {
@@ -439,3 +442,4 @@ function format_time(date) {
     str = str.replace('T', ' ');
     return str;
 }
+
