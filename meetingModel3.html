@@ -2,7 +2,7 @@
 <html xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
 	<meta charset="UTF-8">
-	<title>	Kite Coming Soon HTML Template</title>
+	<title>会议详情</title>
 	<meta name="description" content="Kite Coming Soon HTML Template by Jewel Theme" >
 	<meta name="author" content="Jewel Theme">
 
@@ -108,7 +108,7 @@
 					
 				</div><!-- /.time-count-container -->
 				<div style="text-align: center; margin: auto">
-					<button id="favorite" onclick="add_favorite()">❤收藏会议</button>
+					<button class="hvr-shutter-in-vertical" id="favorite" onclick="add_favorite()">❤收藏会议</button>
 				</div>
 
 
@@ -133,13 +133,23 @@
 				<p style="text-align: center; font-size: 24px; margin:0 auto">
 					<label>主办方：</label>{{ organization }}&emsp;&emsp;&emsp;&emsp;
 					<label>学科：</label>{{subject}}&emsp;&emsp;&emsp;&emsp;
-					<label>状态：</label><span style="color: #ffd396">{{state}}</span>
+					<label>状态：</label><span v-html="state"></span>
 				</p>
-				<div style="width: 500px;float: left; margin-left: 100px">
+				<div style="width: 500px; height:550px; float: left; margin-left: 100px; position: relative">
 					<h3 style="text-align: center">会议简介</h3>
 					<p class="section-description">
 						&emsp;&emsp;{{introduction}}
 					</p><!-- /.section-description -->
+					<div id="weather" style="max-width: 500px; max-height: 200px; position: absolute; bottom: 0px; right: 0px">
+						<div style="text-align: center;margin-bottom: 10px">
+							<img id="weather-icon" src="" alt="天气图标加载中"/>
+						</div>
+						<li id="weather1">天气：晴</li>
+						<li id="weather2">温度：0℃</li>
+						<li id="weather3">空气质量：0</li>
+						<li id="weather4">风向：西北风 11~12级</li>
+						<li id="weather5">温馨提示：宅</li>
+					</div>
 				</div>
 				<div style="width: 800px; height: 550px; float: right">
 					<h3 style="text-align: center">会议地址</h3>
@@ -166,8 +176,8 @@
 				</h2><!-- /.Section-title  -->
 				<div style="margin:50px 0 50px 0">
 				<dl>
-					<dt>投稿开始：<span>{{ accept_start }}</span></dt>
-					<dd>投稿截止：<span>{{ accept_due }}</span></dd>
+					<dt>投稿截止：<span>{{ accept_due }}</span></dt>
+					<dd>修改截止：<span>{{ modify_due }}</span></dd>
 				</dl>
 				<dl>
 					<dt>注册开始：<span>{{ register_start }}</span></dt>
