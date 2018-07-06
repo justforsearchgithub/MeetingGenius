@@ -25,7 +25,7 @@ function GetCurrentUser() {
                 type = 1;
                 $('#NavText1').attr('href', 'person_center.html');
                 $('#NavText2').removeAttr('href');
-                $('#NavText1').text('个人中心');
+                $('#NavText1').text(user);
                 $('#NavText2').text('登出');
                 $('#NavText2').attr('onclick', 'LogOut()');
                 var str = "";
@@ -92,12 +92,39 @@ function GetHotConferenceList() {
         }
     })
 }
-
+var RandomOrgList = [];
+var RandomOrgListVue = new Vue({
+   el:'#RandomOrgList',
+    data:{
+        RandomOrgList:RandomOrgList
+    }
+});
+function GetRandomOrg(){
+    $.ajax({
+        type:'GET',
+        url:url+'account/random_6_orgs/',
+        async:false,
+        success:function(data){
+            console.log(data);
+            RandomOrgList = data.data;
+            for(Org in data.data){
+                RandomOrgListVue.$data.RandomOrgList.push(data.data[Org]);
+            }
+        }
+    })
+}
 function GoToSearch(){
     var Keyword = $("#SearchBarText").val();
     window.location.href = "SearchResult.html?Keyword="+Keyword;
 }
+function RefreshOrg(){
+    for(var i =0;i<6;i++){
+        RandomOrgListVue.$data.RandomOrgList.pop();
+    }
+    GetRandomOrg();
+}
 $(document).ready(function () {
+        GetRandomOrg();
         GetUserType();
         GetActiveConferenceNum();
         GetHotConferenceList();
