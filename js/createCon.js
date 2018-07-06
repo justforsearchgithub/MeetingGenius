@@ -18,6 +18,7 @@ var AlreadySelectedSubjects=[
 var myActivities = [
 
 ];
+var AlreadySelectedSubject = 0;
 new Vue({
     el:"#optionList",
     data:{
@@ -85,8 +86,16 @@ function AddTimeLine(){
     if(StartDate>=EndDate){
         alert("Error!");
     }
-    myActivities.push({start_time:StartTime,end_time:EndTime,place:Location,activity:Description});
-    myActivities.sort(sortbyTime);
+    else {
+        myActivities.push({start_time: StartTime, end_time: EndTime, place: Location, activity: Description});
+        myActivities.sort(sortbyTime);
+        $('#myModal').modal('hide');
+        $('#AddTimeLine_StartTime').val("");
+        $('#AddTimeLine_FinishTime').val("");
+        $('#AddTimeLine_Location').val("");
+        $('#AddTimeLine_Description').val("");
+        $('#AddTimeLine_Description').val("");
+    }
 }
 
 
@@ -106,15 +115,21 @@ function sortbyTime(a,b){
 
 
 function AddSubjects(){
-    console.log($('#txt_ide').val());
-    if($.inArray($('#txt_ide').val(),AlreadySelectedSubjects)==-1){
-        AlreadySelectedSubjects.push($('#txt_ide').val());
+    if(AlreadySelectedSubject == 0) {
+        console.log($('#txt_ide').val());
+        if ($.inArray($('#txt_ide').val(), AlreadySelectedSubjects) == -1) {
+            AlreadySelectedSubjects.push($('#txt_ide').val());
+            AlreadySelectedSubject = AlreadySelectedSubject + 1;
+        }
     }
 }
 
 function AddSubjectsToAlreadySelected(e){
-    if($.inArray($(e).text(),AlreadySelectedSubjects)==-1) {
-        AlreadySelectedSubjects.push($(e).text());
+    if(AlreadySelectedSubject == 0) {
+        if ($.inArray($(e).text(), AlreadySelectedSubjects) == -1) {
+            AlreadySelectedSubjects.push($(e).text());
+            AlreadySelectedSubject = AlreadySelectedSubject + 1;
+        }
     }
 }
 
@@ -122,8 +137,10 @@ function DeleteAlreadySelectedSubject(e){
     console.log($(e).text());
     var index = $.inArray($(e).text());
     AlreadySelectedSubjects.splice(index,1);
+    AlreadySelectedSubject = AlreadySelectedSubject - 1;
 }
 
+var sendflag = true;
 function AddConference() {
     var formdata = new FormData();
     var location_id = document.getElementById('province').selectedIndex;
@@ -143,15 +160,46 @@ function AddConference() {
     var activities = JSON.stringify(myActivities);
     var template_no = 1;
     formdata.append('title', title);
+    if(title==""){
+        $('#Title_Warning').removeClass("hidden");
+        $('#Title_Warning').text("该字段不能为空");
+        flag = false;
+        return;
+    }
     console.log('__________CHECK_________');
     console.log(title);
     formdata.append('introduction', introduction);
     console.log(introduction);
-    formdata.append('subject', subject);
-    console.log(subject);
+    if(introduction == ""){
+        $('#Description_Warning').removeClass("hidden");
+        $('#Description_Warning').text("该字段不能为空");
+        flag = false;
+        return;
+    }
     formdata.append('register_requirement', register_requirement);
+    if(register_requirement == ""){
+        $('#RegRequirment_Warning').removeClass('hidden');
+        $('#RegRequirment_Warning').text("该字段不能为空");
+        flag = false;
+        return ;
+    }
+    formdata.append('subject', subject);
+    if(AlreadySelectedSubject == 0){
+        $('#SubjectZero_Warning').removeClass("hidden");
+        $('#SubjectZero_Warning').text("该字段不能为空");
+        flag = false;
+        return ;
+    }
+    console.log(subject);
+
     console.log(register_requirement);
     formdata.append('soliciting_requirement', soliciting_requirement);
+    if(soliciting_requirement == ""){
+        $('#UploadRequirment_Warning').removeClass('hidden');
+        $('#UploadRequirment_Warning').text("该字段不能为空");
+        flag = false;
+        return ;
+    }
     console.log(soliciting_requirement);
     formdata.append('accept_due', accept_due);
     console.log(accept_due);
@@ -173,23 +221,29 @@ function AddConference() {
     console.log(location);
     console.log('_________CHECKOUT_________');
 
-    $.ajax({
-        type: 'POST',
-        url: url + 'conference/add_conference/',
-        data: formdata,
-        contentType: false,
-        async: false,
-        cache: false,
-        processData: false,
-        success: function (data) {
-           console.log(data);
-        }
-    });
-
+    if(sendflag) {
+        $.ajax({
+            type: 'POST',
+            url: url + 'conference/add_conference/',
+            data: formdata,
+            contentType: false,
+            async: false,
+            cache: false,
+            processData: false,
+            success: function (data) {
+                console.log(data);
+                if (data.message == 'success') {
+                    alert("添加成功");
+                    window.location.href = "index.html";
+                }
+            }
+        });
+    }
 
 }
 
 function AddMap(){
+    $('#LocationWarning').addClass("hidden");
     var province = $('#province').val();
     var city = $('#city').val();
 
@@ -224,10 +278,14 @@ function AddMap(){
         }else{
             $('#LocationWarning').removeClass("hidden");
             $('#LocationWarning').text("无法解析到您的地址,请检查输入");
+            sendflag = false;
         }
     },city);
 }
+function CancelWarning(){
+    $('div[role=Warning]').addClass("hidden");
+}
 $(document).ready(function(){
-
-
+    $('input[role=listen]').attr("onchange","CancelWarning()");
+    $('textarea[role=listen]').attr("onchange","CancelWarning()");
 });

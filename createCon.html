@@ -47,18 +47,18 @@
     <div style="margin-top:30px">
         <label class="input-label">会议名称</label>
         <div class="input-group" style="width:80%">
-            <input type="text" id = "title" class="form-control" placeholder="会议名称" aria-describedby="basic-addon1">
+            <input role="listen" type="text" id = "title" class="form-control" placeholder="会议名称" aria-describedby="basic-addon1">
         </div>
-        <div style="margin-left:120px">Warning</div>
+        <div role="Warning" style="margin-left:120px;color:#ff4c27" class="hidden" id="Title_Warning">Warning</div>
     </div>
 
     <div style="margin-top:30px">
         <label class="input-label">会议简介</label>
         <div class="input-group" style="width:80%">
-            <textarea id="Description" style="height:100px; resize:none" class="form-control" placeholder="会议简介"
+            <textarea role="listen" id="Description" style="height:100px; resize:none" class="form-control" placeholder="会议简介"
                       aria-describedby="basic-addon1"></textarea>
         </div>
-        <div style="margin-left:120px">Warning</div>
+        <div role="Warning" style="margin-left:120px;color:#ff4c27" class="hidden" id="Description_Warning">Warning</div>
     </div>
 
     <div style="margin-top:30px">
@@ -80,10 +80,10 @@
     <div style="margin-top:30px">
         <label class="input-label">注册要求</label>
         <div class="input-group" style="width:80%">
-            <textarea id="RegRequirment" style="height:70px; resize:none" class="form-control" placeholder="注册要求"
+            <textarea role="listen" id="RegRequirment" style="height:70px; resize:none" class="form-control" placeholder="注册要求"
                       aria-describedby="basic-addon1"></textarea>
         </div>
-        <div style="margin-left:120px">Warning</div>
+        <div  role="Warning" style="margin-left:120px;color:#ff4c27" class="hidden" id="RegRequirment_Warning">Warning</div>
     </div>
 
 
@@ -113,6 +113,8 @@
 
 
 
+
+
         <div class="step1-title">
         </div>
 
@@ -121,6 +123,8 @@
         <div class="select-input select-category" style="margin-top:15px" id="AlreadySelectedSubjectList">
             <span v-for="(subject,index) in AlreadySelectedSubjectList" style="margin-left:5px" class="Alreadycategory-list selected" index="1" :id="['AlreadySelectedSubjectOptionList_'+index]" onclick="DeleteAlreadySelectedSubject(this)">{{subject}}</span>
         </div>
+
+        <div  role="Warning" style="margin-left:120px;color:#ff4c27" class="hidden" id="SubjectZero_Warning">Warning</div>
     </div>
 
 
@@ -146,45 +150,44 @@
 
     <div class="step1-title" style="margin-top:100px">
         <span class="num">3</span>填写会议相关日期
+
+        <div style="color:#ff4c27"  class="hidden" id="Date_Warning">Warning</div>
     </div>
     <div style="margin-top:30px">
         <label class="input-label">截稿日期</label>
         <div class="input-group" style="display: inline-block">
-            <input id = "accept_due" type="text" value="" class="form_datetime">
+            <input role="listen" id = "accept_due" type="text" value="" class="form_datetime">
         </div>
         <label class="input-label" style="width:200px;float:none;margin-left:20%">审核结果通知日期</label>
         <div class="input-group" style="display: inline-block">
-            <input  type="text" value="" class="form_datetime">
+            <input role="listen"  type="text" value="" class="form_datetime">
         </div>
     </div>
-    <div style="margin-left:120px">Warning</div>
 
     <div style="margin-top:30px">
         <label class="input-label" style="width:150px">注册开始日期</label>
         <div class="input-group" style="display: inline-block">
-            <input  id="register_start" type="text" value="" class="form_datetime">
+            <input  role="listen" id="register_start" type="text" value="" class="form_datetime">
 
         </div>
         <label class="input-label" style="width:150px;float:none;margin-left:20%">注册截止日期</label>
         <div class="input-group" style="display: inline-block">
-            <input  type="text" id="register_due" value="" class="form_datetime">
+            <input  role="listen" type="text" id="register_due" value="" class="form_datetime">
         </div>
     </div>
-    <div style="margin-left:150px">Warning</div>
 
 
     <div style="margin-top:30px">
         <label class="input-label" style="width:150px">会议开始时间</label>
         <div class="input-group" style="display: inline-block">
-            <input  id="conference_start" type="text" value="" class="form_datetime">
+            <input  role="listen" id="conference_start" type="text" value="" class="form_datetime">
 
         </div>
         <label class="input-label" style="width:150px;float:none;margin-left:20%">会议结束日期</label>
         <div class="input-group" style="display: inline-block">
-            <input  type="text" id="conference_due" value="" class="form_datetime">
+            <input  role="listen" type="text" id="conference_due" value="" class="form_datetime">
         </div>
     </div>
-    <div style="margin-left:150px">Warning</div>
 
 
     <div class="step1-title">
@@ -194,17 +197,17 @@
     <div style="margin-top:30px">
         <label class="input-label">投稿信息</label>
         <div class="input-group" style="width:80%">
-            <textarea id="UploadRequirment" style="height:70px; resize:none" class="form-control" placeholder="投稿要求"
+            <textarea role="listen" id="UploadRequirment" style="height:70px; resize:none" class="form-control" placeholder="投稿要求"
                       aria-describedby="basic-addon1"></textarea>
         </div>
-        <div style="margin-left:120px">Warning</div>
+        <div   role="Warning"  style="margin-left:120px;color:#ff4c27" class="hidden" id="UploadRequirment_Warning">Warning</div>
     </div>
 
     <div style="margin-top:30px">
         <label class="input-label">论文模板</label>
         <div class="input-group" style="width:80%">
             <label for="PaperExample" class=" btn btn-default">选择文件</label>
-            <input id="PaperExample" accept="application/pdf" onchange="PaperExample()" type="file"
+            <input role="listen" id="PaperExample" accept="application/pdf" onchange="PaperExample()" type="file"
                    style="display:none">
             <div id="PaperExampleFileName">请选择论文模版pdf文件！</div>
         </div>
@@ -320,33 +323,33 @@
     <div style="margin-top:30px">
         <label class="input-label">组织名称</label>
         <div class="input-group" style="width:80%">
-            <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+            <input role="listen" type="text" class="form-control" placeholder="组织名称" aria-describedby="basic-addon1">
         </div>
-        <div style="margin-left:120px">Warning</div>
+        <div  role="Warning" style="margin-left:120px;color:#ff4c27" class="hidden" id="OrgName_Warning">Warning</div>
     </div>
 
     <div style="margin-top:30px">
         <label class="input-label">联系人姓名</label>
         <div class="input-group" style="width:80%">
-            <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+            <input role="listen"  type="text" class="form-control" placeholder="联系人姓名" aria-describedby="basic-addon1">
         </div>
-        <div style="margin-left:120px">Warning</div>
+        <div  role="Warning" style="margin-left:120px;color:#ff4c27" class="hidden" id="ContactName_Warning">Warning</div>
     </div>
 
     <div style="margin-top:30px">
         <label class="input-label">联系人电话</label>
         <div class="input-group" style="width:80%">
-            <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+            <input role="listen"  type="text" class="form-control" placeholder="联系人电话" aria-describedby="basic-addon1">
         </div>
-        <div style="margin-left:120px">Warning</div>
+        <div  role="Warning" style="margin-left:120px;color:#ff4c27" class="hidden" id="ContactPhone_Warning">Warning</div>
     </div>
 
     <div style="margin-top:30px">
         <label class="input-label">联系人邮箱</label>
         <div class="input-group" style="width:80%">
-            <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+            <input role="listen"  type="text" class="form-control" placeholder="联系人邮箱" aria-describedby="basic-addon1">
         </div>
-        <div style="margin-left:120px">Warning</div>
+        <div  role="Warning" style="margin-left:120px;color:#ff4c27" class="hidden" id="ContactMail_Warning">Warning</div>
     </div>
 
 <div class="AddConButton">

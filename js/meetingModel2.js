@@ -239,6 +239,7 @@ function join_register() {
     formData.append('listen_only', listen_only);
     formData.append('paper_id', paper_id);
     formData.append('participants', temp_json);
+    console.log(temp_json);
     formData.append('pay_voucher', pay_voucher);
     var settings = {
         "async": false,
@@ -252,11 +253,12 @@ function join_register() {
         "data": formData
     };
     $.ajax(settings).done(function (response) {
-        console.log(response);
-        if(response.message === 'success'){
+        var data = JSON.parse(response);
+        console.log(data);
+        if(data.message === 'success'){
             alert('注册成功');
         }
-        else if (response.message === 'reduplicate register'){
+        else if (data.message === 'reduplicate register'){
             alert('您已经注册了该会议');
         }
         else{
@@ -370,7 +372,7 @@ function add_favorite() {
                 "processData": false,
                 "contentType": false
             };
-            $.ajax(settings).done(function (response) {  b
+            $.ajax(settings).done(function (response) {
                console.log(response.message);
                if(response.message === 'susccess'){
                    is_collected = false;
