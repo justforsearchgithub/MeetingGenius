@@ -158,7 +158,11 @@ function AddConference() {
     var conference_due = $('#conference_due').val();
     var paper_template = $('#PaperExample')[0].files[0];
     var activities = JSON.stringify(myActivities);
-    var template_no = $('img.active').attr('id');
+    var temp_no = $('img.active').attr('id');
+    if(temp_no === undefined || temp_no === null || temp_no === ''){
+        temp_no = '1';
+    }
+    var template_no = temp_no;
     formdata.append('title', title);
     if(title==""){
         $('#Title_Warning').removeClass("hidden");
