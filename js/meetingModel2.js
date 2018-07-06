@@ -1,5 +1,5 @@
 var url = 'http://139.199.24.235:80/';
-var conference_id = 0;
+var conference_id = '0';
 var usertype = 'anonymous user';
 var is_collected = false;
 var meeting = new Vue({
@@ -16,6 +16,7 @@ var meeting = new Vue({
         register_requirement: '这里是注册会议要求',
         accept_start: '2018-05-15 12:00:00',
         accept_due: '2018-10-01 12:00:00',
+        modify_due: '2018-10-05 12:00:00',
         register_start: '2018-10-10 12:00:00',
         register_due: '2018-10-20 12:00:00',
         conference_start: '2018-10-25 12:00:00',
@@ -47,24 +48,25 @@ var meeting = new Vue({
             var today = new Date();
             var date0 = new Date(this.accept_start);
             var date1 = new Date(this.accept_due);
+            var date2 = new Date(this.modify_due);
             var date3 = new Date(this.register_start);
             var date4 = new Date(this.register_due);
             var date5 = new Date(this.conference_start);
             var date6 = new Date(this.conference_due);
             if (today < date0)
-                return '征稿未开始';
+                return '<span style="color: #000000;">投稿未开始</span>';
             else if (today < date1)
-                return '征稿中';
+                return '<span style="color: #3000d2;">投稿中</span>';
             else if (today <date3)
-                return '已截稿';
+                return '<span style="color: #b44400;">已截稿</span>';
             else if (today <date4)
-                return '注册中';
+                return '<span style="color: #07ae00;">注册中</span>';
             else if (today <date5)
-                return '截止注册';
+                return '<span style="color: #b5351d;">注册截止</span>';
             else if (today <date6)
-                return '会议中';
+                return '<span style="color: #980061;">会议中</span>';
             else
-                return '会议完成';
+                return '<span style="color: #464646;">会议结束</span>';
         }
     }
 });
@@ -105,7 +107,7 @@ function GetCurrentUser(){
 $(document).ready(function () {
     conference_id = getParam('id');
     GetCurrentUser();
-    if(conference_id === 0 || conference_id === null || conference_id === undefined)
+    if(conference_id === '0' || conference_id === null || conference_id === undefined)
     {
         $('button').attr("disabled",true);
     }
@@ -128,6 +130,7 @@ $(document).ready(function () {
             meeting.register_requirement = response.data.register_requirement;
             meeting.accept_start = format_time(response.data.accept_start);
             meeting.accept_due = format_time(response.data.accept_due);
+            meeting.modify_due = format_time(response.data.modify_due);
             meeting.register_start = format_time(response.data.register_start);
             meeting.register_due = format_time(response.data.register_due);
             meeting.conference_start = format_time(response.data.conference_start);
@@ -228,13 +231,12 @@ function join_register() {
     if (paper_id === null || paper_id === ""){
         listen_only = true;
     }
-    /*TODO:check ajax with file*/
-    var temp_json = [
-        {'name': name},
-        {'gender': gender},
-        {'reservation': reservation},
-        {'information': information}
-    ];
+    var temp_json = {
+        'name': name,
+        'gender': gender,
+        'reservation': reservation,
+        'information': information
+    };
     var formData = new FormData();
     formData.append('listen_only', listen_only);
     formData.append('paper_id', paper_id);

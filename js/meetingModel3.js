@@ -1,5 +1,5 @@
 var url = 'http://139.199.24.235:80/';
-var conference_id = 0;
+var conference_id = '0';
 var usertype = 'anonymous user';
 var is_collected = false;
 var map_location = '北京市_1&北京市辖区_1&天安门';
@@ -17,6 +17,7 @@ var meeting = new Vue({
         register_requirement: '这里是注册会议要求',
         accept_start: '2018-05-15 12:00:00',
         accept_due: '2018-10-01 12:00:00',
+        modify_due: '2018-10-05 12:00:00',
         register_start: '2018-10-10 12:00:00',
         register_due: '2018-10-20 12:00:00',
         conference_start: '2018-10-25 12:00:00',
@@ -66,24 +67,25 @@ var meeting = new Vue({
             var today = new Date();
             var date0 = new Date(this.accept_start);
             var date1 = new Date(this.accept_due);
+            var date2 = new Date(this.modify_due);
             var date3 = new Date(this.register_start);
             var date4 = new Date(this.register_due);
             var date5 = new Date(this.conference_start);
             var date6 = new Date(this.conference_due);
             if (today < date0)
-                return '征稿未开始';
+                return '<span style="color: #000000;">投稿未开始</span>';
             else if (today < date1)
-                return '征稿中';
+                return '<span style="color: #54f0ff;">投稿中</span>';
             else if (today <date3)
-                return '已截稿';
+                return '<span style="color: #ff4c27;">已截稿</span>';
             else if (today <date4)
-                return '注册中';
+                return '<span style="color: #00ff64;">注册中</span>';
             else if (today <date5)
-                return '截止注册';
+                return '<span style="color: #ff4c27;">注册截止</span>';
             else if (today <date6)
-                return '会议中';
+                return '<span style="color: #ffff00;">会议中</span>';
             else
-                return '会议完成';
+                return '<span style="color: #aaaaaa;">会议结束</span>';
         }
     },
     methods: {
@@ -133,7 +135,7 @@ function GetCurrentUser(){
 $(document).ready(function () {
     conference_id = getParam('id');
     GetCurrentUser();
-    if(conference_id === 0 || conference_id === null || conference_id === undefined)
+    if(conference_id === '0' || conference_id === null || conference_id === undefined)
     {
         $('button').attr("disabled",true);
     }
@@ -156,6 +158,7 @@ $(document).ready(function () {
             meeting.register_requirement = response.data.register_requirement;
             meeting.accept_start = format_time(response.data.accept_start);
             meeting.accept_due = format_time(response.data.accept_due);
+            meeting.modify_due = format_time(response.data.modify_due);
             meeting.register_start = format_time(response.data.register_start);
             meeting.register_due = format_time(response.data.register_due);
             meeting.conference_start = format_time(response.data.conference_start);
@@ -180,6 +183,7 @@ $(document).ready(function () {
     }
     favorite_state();
     AddMap();
+    getWeather();
 });
 
 function triggerfile_fee() {
@@ -233,13 +237,12 @@ function join_register() {
     if (paper_id === null || paper_id === ""){
         listen_only = true;
     }
-    /*TODO:check ajax with file*/
-    var temp_json = [
-        {'name': name},
-        {'gender': gender},
-        {'reservation': reservation},
-        {'information': information}
-    ];
+    var temp_json = {
+        'name': name,
+        'gender': gender,
+        'reservation': reservation,
+        'information': information
+    };
     var formData = new FormData();
     formData.append('listen_only', listen_only);
     formData.append('paper_id', paper_id);
@@ -515,3 +518,62 @@ function getLoaction(str) {
         return str.split('&')[2];
     }
 };
+
+function getWeather() {
+    var today = new Date();
+    var start = new Date(meeting.conference_start);
+    var days = (start - today)/(1000*60*60*24);
+    days = Math.floor(days);
+    console.log(days);
+    if(days >= 0 && days < 5) {
+        $.ajax({
+            type: 'GET',
+            async: false,
+            url: 'https://www.sojson.com/open/api/weather/json.shtml?city=' + getCity(map_location),
+            success: function (data) {
+                console.log(data);
+                if (data.message === "Success !") {
+                    var wea = data.data.forecast[days];
+                    if(wea != undefined){
+                        set_weather_icon(wea.type);
+                        $("li[id='weather1']").text('天气：'+wea.type);
+                        $("li[id='weather2']").text('温度：'+wea.low.split(' ')[1]+'~'+wea.high.split(' ')[1]);
+                        $("li[id='weather3']").text('空气质量：'+wea.aqi);
+                        $("li[id='weather4']").text('风向：'+wea.fx+'  '+wea.fl);
+                        $("li[id='weather5']").text('温馨提示：'+wea.notice);
+                    }
+                    else {
+                        $('#weather').addClass('hidden');
+                    }
+                }
+            }
+        })
+    }
+    else{
+        $('#weather').addClass('hidden');
+    }
+};
+function set_weather_icon(str) {
+    if(str.indexOf('晴') > -1){
+        $('#weather-icon').attr('src', 'img/w-sun.png');
+    }
+    else if(str.indexOf('多云') > -1){
+        $('#weather-icon').attr('src', 'img/w-cloudy.png');
+    }
+    else if(str.indexOf('阴') > -1){
+        $('#weather-icon').attr('src', 'img/w-overcast.png');
+    }
+    else if(str.indexOf('雷') > -1){
+        $('#weather-icon').attr('src', 'img/w-thunder.png');
+    }
+    else if(str.indexOf('雨') > -1){
+        $('#weather-icon').attr('src', 'img/w-rain.png');
+    }
+    else if(str.indexOf('雪') > -1){
+        $('#weather-icon').attr('src', 'img/w-snow.png');
+    }
+    else{
+        $('#weather-icon').attr('src', 'img/w-other.png');
+    }
+    console.log($('#weather-icon').src);
+}
