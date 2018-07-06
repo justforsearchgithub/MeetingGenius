@@ -257,3 +257,13 @@ body a:hover {
 .Search-Wrapper .btn:focus{
     outline:none;
 }
+
+.chosen-img {
+    width: 40%;
+    margin:0 2%;
+    transition: box-shadow 0.5s;
+}
+
+.chosen-img.active {
+    box-shadow: 0 0 50px rgba(81, 203, 238, 1);
+}

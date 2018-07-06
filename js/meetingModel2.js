@@ -76,7 +76,7 @@ var meeting = new Vue({
             }
             else if (today <date6) {
                 this.cur_state = 6;
-                return '<span style="color: #980061;">会议中</span>';
+                return '<span style="color: #ffc82e;">会议中</span>';
             }
             else {
                 this.cur_state = 7;

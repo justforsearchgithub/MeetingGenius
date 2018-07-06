@@ -158,7 +158,7 @@ function AddConference() {
     var conference_due = $('#conference_due').val();
     var paper_template = $('#PaperExample')[0].files[0];
     var activities = JSON.stringify(myActivities);
-    var template_no = 1;
+    var template_no = $('img.active').attr('id');
     formdata.append('title', title);
     if(title==""){
         $('#Title_Warning').removeClass("hidden");
@@ -289,3 +289,8 @@ $(document).ready(function(){
     $('input[role=listen]').attr("onchange","CancelWarning()");
     $('textarea[role=listen]').attr("onchange","CancelWarning()");
 });
+
+function choose_img(img_id) {
+    $("img.chosen-img").removeClass('active');
+    $("img[id="+ img_id +"]").addClass('active');
+}
