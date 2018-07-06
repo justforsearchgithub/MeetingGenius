@@ -73,6 +73,9 @@
         </div>
         <div id="LocationWarning" style="margin-left:120px;color:#ff4c27" class="hidden">Warning</div>
         <div id="FindCity"></div>
+
+
+
         <div id="allmap" class="hidden" style="margin-top:20px;margin-left:120px;width:80%;height:400px"></div>
 
     </div>
@@ -160,7 +163,7 @@
         </div>
         <label class="input-label" style="width:200px;float:none;margin-left:20%">审核结果通知日期</label>
         <div class="input-group" style="display: inline-block">
-            <input role="listen"  type="text" value="" class="form_datetime">
+            <input role="listen"  id="modify_due" type="text" value="" class="form_datetime">
         </div>
     </div>
 
@@ -207,7 +210,7 @@
         <label class="input-label">论文模板</label>
         <div class="input-group" style="width:80%">
             <label for="PaperExample" class=" btn btn-default">选择文件</label>
-            <input role="listen" id="PaperExample" accept="application/pdf" onchange="PaperExample()" type="file"
+            <input id="PaperExample" accept="application/pdf" onchange="PaperExample()" type="file"
                    style="display:none">
             <div id="PaperExampleFileName">请选择论文模版pdf文件！</div>
         </div>

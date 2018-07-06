@@ -237,11 +237,13 @@ function join_register() {
         'reservation': reservation,
         'information': information
     };
+    var test = [temp_json];
     var formData = new FormData();
     formData.append('listen_only', listen_only);
     formData.append('paper_id', paper_id);
-    formData.append('participants', JSON.stringify(temp_json));
-    console.log(temp_json);
+    formData.append('participants', JSON.stringify(test));
+    console.log(JSON.stringify(test));
+    // console.log(temp_json);
     formData.append('pay_voucher', pay_voucher);
     var settings = {
         "async": false,
