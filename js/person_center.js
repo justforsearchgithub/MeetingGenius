@@ -1,4 +1,152 @@
 var url='http://139.199.24.235:80/';
+var check_status='N';
+var currentpaperindex;
+function triggerfile_paper() {
+    var file = $('#paper_up').val();
+    var pos = file.lastIndexOf("\\");
+    var filename = file.substring(pos+1);
+    if(filename.length != 0) {
+        $('#label_paper_up').html(filename);
+    }
+    else {
+        $('#label_paper_up').html('选择文件');
+    }
+}
+
+var author_num = 1;
+
+function add_author() {
+    author_num ++;
+    $('button[id="delAuthor"]').removeClass('hidden');
+    $('#author-' + author_num).removeClass('hidden');
+    if(author_num === 5){
+        $('button[id="addAuthor"]').addClass('hidden');
+    }
+}
+
+function del_author() {
+    $('button[id="addAuthor"]').removeClass('hidden');
+    $('#author-' + author_num).addClass('hidden');
+    $('#author-'+author_num+ ' input').val('');
+    author_num --;
+    if(author_num === 1){
+        $('button[id="delAuthor"]').addClass('hidden');
+    }
+}
+
+function paper_upload() {
+    var paper_name = $("input[id='paper_title']").val();
+    var paper_abstract = $("textarea[id='paper_outline']").val();
+    var paper = $('#paper_up')[0].files[0];
+    var authors = [];
+    var orgs = [];
+    var authorsJSON = [];
+
+    authors .push($("input[id='author-com']").val());
+    authors.push($("input[id='author1']").val());
+    authors.push($("input[id='author2']").val());
+    authors.push($("input[id='author3']").val());
+    authors.push($("input[id='author4']").val());
+    authors.push($("input[id='author5']").val());
+
+    orgs.push($("input[id='org-com']").val());
+    orgs.push($("input[id='org1']").val());
+    orgs.push($("input[id='org2']").val());
+    orgs.push($("input[id='org3']").val());
+    orgs.push($("input[id='org4']").val());
+    orgs.push($("input[id='org5']").val());
+
+    if (paper_name === '' || paper_abstract === ''){
+        alert('信息填写不完全');
+        return;
+    }
+    else if(paper === null || paper === undefined){
+        alert('未上传论文');
+        return;
+    }
+    else{
+        for(var i=0; i<=author_num; i++){
+            if(authors[i] === ''||orgs[i] === ''){
+                alert('信息填写不完全');
+                return;
+            }
+            else {
+                if(i===0){
+                    authorsJSON.push({'CA': {'name': authors[i], 'institute': orgs[i]}});
+                }
+                else{
+                    var tempJSON = {};
+                    tempJSON['A'+i]= {'name': authors[i], 'institute': orgs[i]};
+                    authorsJSON.push(tempJSON);
+                }
+            }
+        }
+    }
+    var formData = new FormData();
+    //todo:add author and org
+    formData.append('authors', JSON.stringify(authorsJSON));
+    formData.append('institute', 'default');
+    formData.append('paper_name', paper_name);
+    formData.append('paper_abstract', paper_abstract);
+    formData.append('paper' ,paper);
+    var settings = {
+        "async": false,
+        "crossDomain": true,
+        "url": url + "conference/conference/" + conference_id + "/paper_submit/",
+        "method": "POST",
+        "headers": {},
+        "processData": false,
+        "contentType": false,
+        "mimeType": "multipart/form-data",
+        "data": formData
+    };
+    $.ajax(settings).done(function (response) {
+        console.log(response.message);
+        if(response.message === 'multiple submission'){
+            alert('您已经提交过论文了');
+        }
+        else if (response.message === 'success'){
+            alert('论文提交成功！');
+        }
+        else{
+            alert('提交失败，请联系网站管理员解决');
+        }
+    });
+}
+
+function GetCurrentUser(){
+    var user;
+    var type;
+    $.ajax({
+        type: 'GET',
+        async:false,
+        url: url + 'account/username/',
+        //headers:{'X-CSRFToken',Token},
+        success: function (data) {
+            console.log(data);
+            user = data.username;
+            if(user =="anonymous user"){
+                console.log(0);
+                type =0;
+                $('#NavText1').attr('href','userRegister.html');
+                $('#NavText1').text('免费注册');
+                $('#NavText2').remove('onclick','LogOut()');
+                $('#NavText2').attr('href','login.html');
+                $('#NavText2').text('登录');
+            }
+            else{
+                console.log(1);
+                type = 1;
+                $('#NavText1').attr('href','person_center.html');
+                $('#NavText2').removeAttr('href');
+                $('#NavText1').text ('个人中心');
+                $('#NavText2').text('登出');
+                $('#NavText2').attr('onclick','LogOut()');
+            }
+        }
+    });
+    return type;
+}
 var myActivities = [
     {
         start_time:'1',
@@ -64,9 +212,19 @@ function stringchange (str){
     sub_str+=sub_str2;
     return sub_str;
 }
+function check_pass() {
+    ckeck_status='P';
+}
+function check_not_pass() {
+    ckeck_status='R';
+}
+function check_modify() {
+    ckeck_status='M';
+}
+
 $(document).ready(function () {
     var paper_template;
-
+    GetCurrentUser();
     $(".form_datetime").datetimepicker({
         format: 'yyyy-mm-dd hh:ii'
     });
@@ -90,7 +248,7 @@ $(document).ready(function () {
         '环境科学、安全科学','政治、法律','航空、航天',
         '生物科学','社会科学总论','历史','地理','自然科学总论','语言、文字','哲学、宗教','艺术','文学','军事'
     ];
-
+    var chack_advice;
     $.ajax({
         type: 'GET',
         async:false,
@@ -102,8 +260,6 @@ $(document).ready(function () {
         }
     });
     console.log(username);
-
-
     var vm = new Vue({
         el: '#per_info',
         data: {
@@ -124,11 +280,7 @@ $(document).ready(function () {
 
             //用户提交的论文信息
             user_papers:[
-                {
-                    name:'用户论文题目',
-                    author:'用户论文作者',
-                    status:'论文审核状态'
-                }
+
             ],
             // 下拉框 会议学科
             Subjects:subjects,
@@ -174,11 +326,7 @@ $(document).ready(function () {
             ],
             //子账户标识信息
             childaccounts:[
-                {
-                    id:'1',
-                    name:'2',
 
-                }
             ],
             //会议详细信息
             meetings:[
@@ -191,22 +339,26 @@ $(document).ready(function () {
             Activities:myActivities,
             //论文信息
             papers:[
+            ],
+            paper_detail:[],
+            authors:[
                 {
-                    submission_id:'1',
-                    paper_name:'123',
-                    paper_url:'456',
-                    state:'good',
-                    submitter:'789'
-
+                    name:'1',
+                    inst:'2'
                 }
             ],
+            //显示作者信息
+            au2:false,
+            au3:false,
+            au4:false,
+            au5:false,
             //注册会议人员信息
             meeting_users:[
-                {
+                /*{
                     name:'注册会议人员名字',
                     gender:'性别出错',
                     reservation:'是否'
-                }
+                }*/
             ]
         },
         methods:{
@@ -273,6 +425,9 @@ $(document).ready(function () {
                 document.getElementById("div_meeting_user_info").style.display="none";
             },
             click_childaccount: function (event) {
+                vm.$data.childaccounts.length=0;
+                console.log('#2');
+                console.log(vm.$data.childaccounts);
                 $.ajax({
                     type: 'GET',
                     url: url + 'display/my_subusers/',
@@ -283,7 +438,7 @@ $(document).ready(function () {
                     success: function (data) {
                         console.log(data);
                         if (data.message == "success") {
-                            vm.$data.childaccounts.length=0;
+
                             if(data.data.length!=0)
                             {
                                 for(var ptr=0;ptr<data.data.length;ptr++)
@@ -369,16 +524,47 @@ $(document).ready(function () {
                 document.getElementById("div_meeting_user_info").style.display="none";
                 },
             click_paper: function (event) {
+                $.ajax({
+                    type: 'GET',
+                    url: url + 'display/my_submission/',
+                    contentType: false,
+                    async: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        if (data.message == "success") {
+                            console.log(data);
+                            vm.$data.user_papers.length=0;
+                            for(var ptr=0;ptr<data.data.length;ptr++)
+                            {
+                                var abc={
+                                    paper_name:data.data[ptr].paper_name,
+                                    conference_title:data.data[ptr].conference_title,
+                                    state:data.data[ptr].state
+                                };
+                                console.log(abc);
+                                vm.$data.user_papers.push(abc);
+                            }
+                        }
+                    }
+                });
+
                 document.getElementById("div_account").style.display="none";
                 document.getElementById("div_collection").style.display="none";
                 document.getElementById("div_childaccount").style.display="none";
                 document.getElementById("div_meeting").style.display="none";
                 document.getElementById("div_password").style.display="none";
-                document.getElementById("div_paper").style.display="block";
+                document.getElementById("div_paper").style.display='block';
 
                 document.getElementById("div_meeting_info").style.display="none";
                 document.getElementById("div_paper_info").style.display="none";
                 document.getElementById("div_meeting_user_info").style.display="none";
+            },
+            click_modify:function (no) {
+              currentpaperindex=no;
+                $('#myModal7').modal({backdrop: 'static', keyboard: true});
+                $('#myModal7').modal('show');
+
             },
 
             //修改会议信息
@@ -456,7 +642,7 @@ $(document).ready(function () {
 
             //论文审核信息
             click_paper_info: function (no) {
-                    currentindex=no;
+                currentindex=no;
                 $.ajax({
                     type: 'GET',
                     url: url + 'display/conference/'+this.$data.meetings[no].id+'/papers/',
@@ -465,18 +651,24 @@ $(document).ready(function () {
                     cache: false,
                     processData: false,
                     success: function (data) {
+                        console.log('#3');
+                            console.log(data);
                         if (data.message == "success") {
-                            paper_id.length=0;
+                           vm.$data.papers.length=0;
+
                             for(var ptr=0;ptr<data.data.length;ptr++)
                             {
                                 var abc={
-                                    submission_id:data.data[ptr].submitter_id,
+                                    submission_id:data.data[ptr].submission_id,
                                     paper_name:data.data[ptr].paper_name,
-                                    paper_url:data.data[ptr].paper_uer,
+                                    paper_url:data.data[ptr].paper_url,
                                     state:data.data[ptr].state,
                                     submitter:data.data[ptr].submitter
                                 };
+                                console.log(abc);
                                 vm.$data.papers.push(abc);
+
+                                console.log(vm.$data.papers);
                                 //paper_id[ptr].id=data.data[ptr].submitter_id;
                                 //console.log('paper'+paper_id[ptr].id);
                             }
@@ -484,37 +676,74 @@ $(document).ready(function () {
                         }
                     }
                 });
-                vm.$data.papers.length=0;
-                for(var ptr=0;ptr<paper_id.length;ptr++)
-                {
-
-                    $.ajax({
-                        type: 'GET',
-                        url: url + 'conference/submission/'+paper_id[ptr]+'/',
-                        contentType: false,
-                        async: false,
-                        cache: false,
-                        processData: false,
-                        success: function (data) {
-                            if (data.message == "success") {
-                                    var abc={
-                                        id:data.data[ptr].submitter_id,
-                                        name:data.data[ptr].paper_name,
-                                        author:data.data[ptr].authors,
-                                        status:data.data[ptr].state
-
-                                    }
-                                    vm.$data.papers.push(abc);
-
-                                }
-
-                        }
-                    });
-                }
 
                 document.getElementById("div_meeting").style.display="none";
                 document.getElementById("div_paper_info").style.display="block";
                 document.getElementById("div_meeting_user_info").style.display="none";
+            },
+            click_paper_check: function (no) {
+                console.log(this.$data.papers[no].submission_id);
+                currentpaperindex=no;
+                $.ajax({
+                    type: 'GET',
+                    url: url + 'conference/submission/'+this.$data.papers[no].submission_id+'/',
+                    contentType: false,
+                    async: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        console.log('#3');
+                        console.log(data);
+                        if (data.message == "success") {
+                            vm.$data.paper_detail.length=0;
+                            var abc={
+                                paper_name:data.data.paper_name,
+                                state:data.data.state,
+                                paper_abstract:data.data.paper_abstract
+                                //paper_id[ptr].id=data.data[ptr].submitter_id;
+                                //console.log('paper'+paper_id[ptr].id);
+                            };
+                            vm.$data.paper_detail.push(abc);
+                            console.log(data.data.authors);
+                            $('#author11').val(data.data.authors[1]["A1"].name);
+                            $('#org11').val(data.data.authors[1]["A1"].institute);
+                            $('#author-com1').val(data.data.authors[0]["CA"].name);
+                            $('#org-com1').val(data.data.authors[0]["CA"].institute);
+                            $('#paper_title1').val(data.data.paper_name);
+                            $('#paper_abstract1').val(data.data.paper_abstract);
+                            if(data.data.authors[2]!=undefined)
+                            {
+                                $('#author12').val(data.data.authors[2]["A2"].name);
+                                $('#org12').val(data.data.authors[2]["A2"].institute);
+                                $('#author-12').removeClass('hidden');
+                            }
+                            if(data.data.authors[3]!=undefined)
+                            {
+                                $('#author13').val(data.data.authors[3]["A3"].name);
+                                $('#org13').val(data.data.authors[3]["A3"].institute);
+                                $('#author-13').removeClass('hidden');
+                            }
+                            if(data.data.authors[4]!=undefined)
+                            {
+                                $('#author14').val(data.data.authors[4]["A4"].name);
+                                $('#org14').val(data.data.authors[4]["A4"].institute);
+                                $('#author-14').removeClass('hidden');
+                            }
+                            if(data.data.authors[5]!=undefined)
+                            {
+                                $('#author15').val(data.data.authors[5]["A5"].name);
+                                $('#org15').val(data.data.authors[5]["A5"].institute);
+                                $('#author-15').removeClass('hidden');
+                            }
+                        }
+                    }
+                });
+                for(var ptr=2;ptr<vm.$data.authors.length;ptr++)
+                {
+                    $('#author-1' + ptr).removeClass('hidden');
+                }
+                $('#myModal6').modal({backdrop: 'static', keyboard: true});
+                $('#myModal6').modal('show');
             },
             //修改会议信息取消
             click_meeting_cancal: function (event) {
@@ -566,9 +795,10 @@ $(document).ready(function () {
             },
             //查看注册会议人员信息
             click_meeting_user_info: function (no) {
+                currentindex=no;
                 $.ajax({
                     type: 'GET',
-                    url: url + '',
+                    url: url + 'display/conference/'+this.$data.meetings[currentindex].id+'/registrations/',
                     contentType: false,
                     async: false,
                     cache: false,
@@ -582,7 +812,8 @@ $(document).ready(function () {
                                 for(var ptr=0;ptr<data.data.length;ptr++)
                                 {
                                     var de;
-                                    if(data.data[ptr].reservation)
+                                    console.log(data.data.participants);
+                                    if(data.data.participants[ptr].reservation)
                                     {
                                         de='是';
                                     }
@@ -591,13 +822,12 @@ $(document).ready(function () {
                                         de='否';
                                     }
                                     var abc={
-                                        name:data.data[ptr].name,
-                                        gender:data.data[ptr].gender,
+                                        name:data.data.participants[ptr].name,
+                                        gender:data.data.participants[ptr].gender,
                                         reservation:de
                                     }
+                                    console.log(abc);
                                     vm.$data.meeting_users.push(abc);
-
-
                                 }
 
                             }
@@ -609,11 +839,49 @@ $(document).ready(function () {
                         }
                     }
                 });
+                document.getElementById("div_account").style.display="none";
+                document.getElementById("div_collection").style.display="none";
+                document.getElementById("div_childaccount").style.display="none";
+                document.getElementById("div_meeting").style.display="none";
+                document.getElementById("div_password").style.display="none";
+                document.getElementById("div_paper").style.display="none";
+
+                document.getElementById("div_meeting_info").style.display="none";
+                document.getElementById("div_paper_info").style.display="none";
+                document.getElementById("div_meeting_user_info").style.display="block";
 
             },
             click_meeting_user_end: function (event) {
                 document.getElementById("div_meeting").style.display="block";
                 document.getElementById("div_meeting_user_info").style.display="none";
+            },
+            click_check_add: function () {
+                vm.$data.papers[currentpaperindex].state=check_status;
+                Vue.set(vm.$data.meetings, currentindex, vm.$data.meetings[currentindex]);
+                var formdata = new FormData();
+                formdata.append('state_choice', check_status);
+                if(check_status==='M')
+                {
+                    formdata.append('advice',$('#check_advice').val());
+                    vm.$data.papers[currentpaperindex].advice=$('#check_advice').val();
+                }
+                Vue.set(vm.$data.papers, currentpaperindex, vm.$data.papers[currentpaperindex]);
+                $.ajax({
+                    type: 'POST',
+                    url: url + 'conference/submission/'+this.$data.papers[currentpaperindex].submission_id+'/review/',
+                    data: formdata,
+                    contentType: false,
+                    async: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        console.log(data);
+                    }
+                });
+
+            },
+            click_download:function (no) {
+                window.open(url+this.$data.papers[no].paper_url);
             },
             //添加子账户
             addChildAccount:function (event) {
@@ -623,6 +891,7 @@ $(document).ready(function () {
                 $('#myModal2').modal({backdrop: 'static', keyboard: true});
             },
             addChildAccount3: function (event) {
+                console.log('点击添加');
                 var formData = new FormData();
                 formData.append("username", this.$data.addchildaccount_name);
                 formData.append("password", this.$data.addchildaccount_password);
@@ -636,9 +905,10 @@ $(document).ready(function () {
                     cache: false,
                     processData: false,
                     success: function (data) {
+                        console.log(data);
                         if (data.message == "success") {
                             alert("添加成功");
-
+                            this.$options.methods.click_childaccount();
                         }
                     }
                 });
@@ -727,7 +997,7 @@ $(document).ready(function () {
                     processData: false,
                     success: function (data) {
                         if (data.message == "success") {
-                            删除成功
+                            alert('删除成功');
 
                         }
                     }
@@ -775,6 +1045,89 @@ $(document).ready(function () {
                 }
 
             },
+
+            //
+
+    paper_upload:function(event) {
+        var paper_name = $("input[id='paper_title']").val();
+        var paper_abstract = $("textarea[id='paper_outline']").val();
+        var paper = $('#paper_up')[0].files[0];
+        var authors = [];
+        var orgs = [];
+        var authorsJSON = [];
+
+        authors .push($("input[id='author-com']").val());
+        authors.push($("input[id='author1']").val());
+        authors.push($("input[id='author2']").val());
+        authors.push($("input[id='author3']").val());
+        authors.push($("input[id='author4']").val());
+        authors.push($("input[id='author5']").val());
+
+        orgs.push($("input[id='org-com']").val());
+        orgs.push($("input[id='org1']").val());
+        orgs.push($("input[id='org2']").val());
+        orgs.push($("input[id='org3']").val());
+        orgs.push($("input[id='org4']").val());
+        orgs.push($("input[id='org5']").val());
+
+        if (paper_name === '' || paper_abstract === ''){
+            alert('信息填写不完全');
+            return;
+        }
+        else if(paper === null || paper === undefined){
+            alert('未上传论文');
+            return;
+        }
+        else{
+            for(var i=0; i<=author_num; i++){
+                if(authors[i] === ''||orgs[i] === ''){
+                    alert('信息填写不完全');
+                    return;
+                }
+                else {
+                    if(i===0){
+                        authorsJSON.push({'CA': {'name': authors[i], 'institute': orgs[i]}});
+                    }
+                    else{
+                        var tempJSON = {};
+                        tempJSON['A'+i]= {'name': authors[i], 'institute': orgs[i]};
+                        authorsJSON.push(tempJSON);
+                    }
+                }
+            }
+        }
+        var formData = new FormData();
+        //todo:add author and org
+        formData.append('authors', JSON.stringify(authorsJSON));
+        formData.append('institute', 'default');
+        formData.append('paper_name', paper_name);
+        formData.append('paper_abstract', paper_abstract);
+        formData.append('paper' ,paper);
+        var settings = {
+            "async": false,
+            "crossDomain": true,
+            "url": url + "conference/conference/" + conference_id + "/paper_submit/",
+            "method": "POST",
+            "headers": {},
+            "processData": false,
+            "contentType": false,
+            "mimeType": "multipart/form-data",
+            "data": formData
+        };
+        $.ajax(settings).done(function (response) {
+            console.log(response.message);
+            if(response.message === 'multiple submission'){
+                alert('您已经提交过论文了');
+            }
+            else if (response.message === 'success'){
+                alert('论文提交成功！');
+            }
+            else{
+                alert('提交失败，请联系网站管理员解决');
+            }
+        });
+    },
+
             //修改密码确认
             complete_password: function (event) {
                 if(this.$data.temp_password===this.$data.temp_password2)

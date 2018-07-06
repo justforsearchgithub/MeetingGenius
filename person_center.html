@@ -33,7 +33,7 @@
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav" style="float:none;">
 
-                    <li><a href="#">Home</a></li>
+                    <li><a href="index.html">Home</a></li>
 
                     <li class="pull-right" ><a id="NavText1" href="userRegister.html">免费注册</a></li>
                     <li class="pull-right" ><a id="NavText2" href="login.html">登录</a></li>
@@ -447,9 +447,9 @@
                     </div>
                     <div class="panel-body" >
                         <ul class="list-group" v-for="(paper,index) in papers" >
-                            <li class="list-group-item">论文题目：{{paper.paper_name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文提交者：{{paper.submitter}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{paper.status}}
-                                <button type="button" class="btn btn-primary" v-on:click="click_meeting_info(index)">填写审核意见</button>
-                                <button type="button" class="btn btn-success" v-on:click="click_paper_info(index)">下载</button>
+                            <li class="list-group-item">论文题目：{{paper.paper_name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文提交者：{{paper.submitter}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{paper.state}}
+                                <button type="button" class="btn btn-primary" v-on:click="click_paper_check(index)">填写审核意见</button>
+                                <button type="button" class="btn btn-success" v-on:click="click_download(index)"  >下载</button>
                             </li>
                         </ul>
                     </div>
@@ -526,13 +526,12 @@
                     </div>
                     <div class="panel-body" >
                         <ul class="list-group" v-for="(user_paper,index) in user_papers" >
-                            <li class="list-group-item">论文题目：{{user_paper.name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文作者：{{user_paper.author}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{user_paper.status}}
+                            <li class="list-group-item">论文题目：{{user_paper.paper_name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文作者：{{user_paper.conference_title}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{user_paper.state}}
+                                <button type="button" class="btn btn-primary" v-on:click="click_modify(index)">修改后提交</button>
                             </li>
+
                         </ul>
                     </div>
-                </div>
-                <div align="center">
-                    <button type="button" class="btn btn-primary" v-on:click="click_paper_end">返回</button>
                 </div>
             </div>
         </div>
@@ -575,7 +574,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" v-on:click="addChildAccount4">关闭
+                    <button type="button" class="btn btn-default" data-dismiss="modal" >关闭
                     </button>
                     <button type="button" class="btn btn-primary" v-on:click="addChildAccount3">
                         提交添加
@@ -690,6 +689,223 @@
 
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
+
+    <!--填写审核信息-->
+
+
+
+    <!--论文详细信息及审核-->
+    <div class="modal fade" id="myModal6"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">论文投稿</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box-line">
+                        <span class="line-left"></span><span class="text">作者信息</span><span class="line-right"></span>
+                    </div>
+                    <div class="form-group input-sm-left">
+                        <label>第一作者</label>
+                        <input readonly="readonly" type="text" class="form-control" id="author11">
+                    </div>
+                    <div class="form-group input-sm-right">
+                        <label>单位</label>
+                        <input readonly="readonly" type="text" class="form-control" id="org11">
+                    </div>
+                    <div style="clear: both"></div>
+                    <div id="author-12" class="hidden">
+                        <div class="form-group input-sm-left">
+                            <label>第二作者</label>
+                            <input readonly="readonly" type="text" class="form-control" id="author12">
+                        </div>
+                        <div class="form-group input-sm-right">
+                            <label>单位</label>
+                            <input readonly="readonly" type="text" class="form-control" id="org12">
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div id="author-13" class="hidden">
+                        <div class="form-group input-sm-left">
+                            <label>第三作者</label>
+                            <input readonly="readonly" type="text" class="form-control" id="author13">
+                        </div>
+                        <div class="form-group input-sm-right">
+                            <label>单位</label>
+                            <input readonly="readonly" type="text" class="form-control" id="org13">
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div id="author-14" class="hidden">
+                        <div class="form-group input-sm-left">
+                            <label>第四作者</label>
+                            <input readonly="readonly" type="text" class="form-control" id="author14">
+                        </div>
+                        <div class="form-group input-sm-right">
+                            <label>单位</label>
+                            <input readonly="readonly" type="text" class="form-control" id="org14">
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div id="author-15" class="hidden">
+                        <div class="form-group input-sm-left">
+                            <label>第五作者</label>
+                            <input readonly="readonly" type="text" class="form-control" id="author15">
+                        </div>
+                        <div class="form-group input-sm-right">
+                            <label>单位</label>
+                            <input readonly="readonly" type="text" class="form-control" id="org15">
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div class="form-group input-sm-left">
+                        <label>通讯作者</label>
+                        <input readonly="readonly" type="text" class="form-control" id="author-com1">
+                    </div>
+                    <div class="form-group input-sm-right">
+                        <label>单位</label>
+                        <input readonly="readonly" type="text" class="form-control" id="org-com1">
+                    </div>
+                    <div style="clear: both"></div>
+                    <div class="box-line">
+                        <span class="line-left"></span><span class="text">论文信息</span><span class="line-right"></span>
+                    </div>
+                    <div class="form-group" style="margin-top: 5px">
+                        <label>论文标题</label>
+                        <input type="text" class="form-control" id="paper_title1">
+                    </div>
+                    <div class="form-group" style="margin-top: 5px">
+                        <label>论文摘要</label>
+                        <textarea class="form-control" rows="8" id="paper_abstract1"></textarea>
+                    </div>
+                    <div style="margin-top:30px">
+                        <label class="input-label" style="width:150px;">审核意见 </label>
+                        <div class="input-group" style="display: inline-block">
+                            <input id="check_advice" type="text" value=""
+                                   class="form-control form_datetimeTimeLine">
+                        </div>
+                    </div>
+
+                    <div style="margin-top:30px">
+                        <label class="input-label" style="width:150px;">是否通过</label>
+                        <div class="input-group" style="display: inline-block">
+                            <button type="button" class="btn btn-primary" onclick="check_pass()">通过</button>
+
+                            <button type="button" class="btn btn-success" onclick="check_not_pass()">不通过</button>
+
+                            <button type="button" class="btn btn-info"  onclick="check_modify()">建议修改</button>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="click_check_add">提交</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <div class="modal fade" id="myModal7"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">论文投稿</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box-line">
+                        <span class="line-left"></span><span class="text">作者信息</span><span class="line-right"></span>
+                    </div>
+                    <div class="form-group input-sm-left">
+                        <label>第一作者</label>
+                        <input type="text" class="form-control" id="author1">
+                    </div>
+                    <div class="form-group input-sm-right">
+                        <label>单位</label>
+                        <input type="text" class="form-control" id="org1">
+                    </div>
+                    <div style="clear: both"></div>
+                    <div id="author-2" class="hidden">
+                        <div class="form-group input-sm-left">
+                            <label>第二作者</label>
+                            <input type="text" class="form-control" id="author2">
+                        </div>
+                        <div class="form-group input-sm-right">
+                            <label>单位</label>
+                            <input type="text" class="form-control" id="org2">
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div id="author-3" class="hidden">
+                        <div class="form-group input-sm-left">
+                            <label>第三作者</label>
+                            <input type="text" class="form-control" id="author3">
+                        </div>
+                        <div class="form-group input-sm-right">
+                            <label>单位</label>
+                            <input type="text" class="form-control" id="org3">
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div id="author-4" class="hidden">
+                        <div class="form-group input-sm-left">
+                            <label>第四作者</label>
+                            <input type="text" class="form-control" id="author4">
+                        </div>
+                        <div class="form-group input-sm-right">
+                            <label>单位</label>
+                            <input type="text" class="form-control" id="org4">
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div id="author-5" class="hidden">
+                        <div class="form-group input-sm-left">
+                            <label>第五作者</label>
+                            <input type="text" class="form-control" id="author5">
+                        </div>
+                        <div class="form-group input-sm-right">
+                            <label>单位</label>
+                            <input type="text" class="form-control" id="org5">
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div class="form-group input-sm-left">
+                        <label>通讯作者</label>
+                        <input type="text" class="form-control" id="author-com">
+                    </div>
+                    <div class="form-group input-sm-right">
+                        <label>单位</label>
+                        <input type="text" class="form-control" id="org-com">
+                    </div>
+                    <div style="clear: both"></div>
+                    <div style="text-align: center">
+                        <button id="addAuthor" class="btn btn-primary ml-5 mr-5" onclick="add_author()">添加作者</button>
+                        <button id="delAuthor" class="btn btn-primary ml-5 mr-5 hidden" onclick="del_author()">删除作者</button>
+                    </div>
+                    <div class="box-line">
+                        <span class="line-left"></span><span class="text">论文信息</span><span class="line-right"></span>
+                    </div>
+                    <div class="form-group" style="margin-top: 5px">
+                        <label>上传论文</label>
+                        <input id="paper_up" type="file" class="file" accept="application/pdf" onchange="triggerfile_paper()"/>
+                        <label id="label_paper_up" for="paper_up" style="font-size: 14px">选择文件</label>
+                    </div>
+                    <div class="form-group" style="margin-top: 5px">
+                        <label>论文标题</label>
+                        <input type="text" class="form-control" id="paper_title">
+                    </div>
+                    <div class="form-group" style="margin-top: 5px">
+                        <label>论文摘要</label>
+                        <textarea id="paper_outline" class="form-control" rows="8"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="paper_upload()">提交</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
 
     <!-- /#page-content-wrapper -->
 
