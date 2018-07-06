@@ -34,85 +34,7 @@ function del_author() {
     }
 }
 
-function paper_upload() {
-    var paper_name = $("input[id='paper_title']").val();
-    var paper_abstract = $("textarea[id='paper_outline']").val();
-    var paper = $('#paper_up')[0].files[0];
-    var authors = [];
-    var orgs = [];
-    var authorsJSON = [];
 
-    authors .push($("input[id='author-com']").val());
-    authors.push($("input[id='author1']").val());
-    authors.push($("input[id='author2']").val());
-    authors.push($("input[id='author3']").val());
-    authors.push($("input[id='author4']").val());
-    authors.push($("input[id='author5']").val());
-
-    orgs.push($("input[id='org-com']").val());
-    orgs.push($("input[id='org1']").val());
-    orgs.push($("input[id='org2']").val());
-    orgs.push($("input[id='org3']").val());
-    orgs.push($("input[id='org4']").val());
-    orgs.push($("input[id='org5']").val());
-
-    if (paper_name === '' || paper_abstract === ''){
-        alert('信息填写不完全');
-        return;
-    }
-    else if(paper === null || paper === undefined){
-        alert('未上传论文');
-        return;
-    }
-    else{
-        for(var i=0; i<=author_num; i++){
-            if(authors[i] === ''||orgs[i] === ''){
-                alert('信息填写不完全');
-                return;
-            }
-            else {
-                if(i===0){
-                    authorsJSON.push({'CA': {'name': authors[i], 'institute': orgs[i]}});
-                }
-                else{
-                    var tempJSON = {};
-                    tempJSON['A'+i]= {'name': authors[i], 'institute': orgs[i]};
-                    authorsJSON.push(tempJSON);
-                }
-            }
-        }
-    }
-    var formData = new FormData();
-    //todo:add author and org
-    formData.append('authors', JSON.stringify(authorsJSON));
-    formData.append('institute', 'default');
-    formData.append('paper_name', paper_name);
-    formData.append('paper_abstract', paper_abstract);
-    formData.append('paper' ,paper);
-    var settings = {
-        "async": false,
-        "crossDomain": true,
-        "url": url + "conference/conference/" + conference_id + "/paper_submit/",
-        "method": "POST",
-        "headers": {},
-        "processData": false,
-        "contentType": false,
-        "mimeType": "multipart/form-data",
-        "data": formData
-    };
-    $.ajax(settings).done(function (response) {
-        console.log(response.message);
-        if(response.message === 'multiple submission'){
-            alert('您已经提交过论文了');
-        }
-        else if (response.message === 'success'){
-            alert('论文提交成功！');
-        }
-        else{
-            alert('提交失败，请联系网站管理员解决');
-        }
-    });
-}
 
 function GetCurrentUser(){
     var user;
@@ -213,13 +135,13 @@ function stringchange (str){
     return sub_str;
 }
 function check_pass() {
-    ckeck_status='P';
+    check_status='P';
 }
 function check_not_pass() {
-    ckeck_status='R';
+    check_status='R';
 }
 function check_modify() {
-    ckeck_status='M';
+    check_status='M';
 }
 
 $(document).ready(function () {
@@ -537,10 +459,21 @@ $(document).ready(function () {
                             vm.$data.user_papers.length=0;
                             for(var ptr=0;ptr<data.data.length;ptr++)
                             {
+                                var a;
+                                if(data.data[ptr].state==='P')
+                                    a='通过';
+                                if(data.data[ptr].state==='S')
+                                    a='未审核';
+                                if(data.data[ptr].state==='M')
+                                    a='需要修改';
+                                if(data.data[ptr].state==='R')
+                                    a='未通过';
                                 var abc={
+                                    submission_id:data.data[ptr].submission_id,
                                     paper_name:data.data[ptr].paper_name,
                                     conference_title:data.data[ptr].conference_title,
-                                    state:data.data[ptr].state
+                                    state:data.data[ptr].state,
+                                    status:a
                                 };
                                 console.log(abc);
                                 vm.$data.user_papers.push(abc);
@@ -658,12 +591,23 @@ $(document).ready(function () {
 
                             for(var ptr=0;ptr<data.data.length;ptr++)
                             {
+                                var a;
+                                if(data.data[ptr].state==='P')
+                                    a='通过';
+                                if(data.data[ptr].state==='S')
+                                    a='未审核';
+                                if(data.data[ptr].state==='M')
+                                    a='需要修改';
+                                if(data.data[ptr].state==='R')
+                                    a='未通过';
+
                                 var abc={
                                     submission_id:data.data[ptr].submission_id,
                                     paper_name:data.data[ptr].paper_name,
                                     paper_url:data.data[ptr].paper_url,
                                     state:data.data[ptr].state,
-                                    submitter:data.data[ptr].submitter
+                                    submitter:data.data[ptr].submitter,
+                                    status:a
                                 };
                                 console.log(abc);
                                 vm.$data.papers.push(abc);
@@ -812,8 +756,9 @@ $(document).ready(function () {
                                 for(var ptr=0;ptr<data.data.length;ptr++)
                                 {
                                     var de;
-                                    console.log(data.data.participants);
-                                    if(data.data.participants[ptr].reservation)
+                                    console.log(data.data[ptr].participants);
+                                    console.log(data.data[ptr].participants.name);
+                                    if(JSON.parse(data.data[ptr].participants)[2].reservation)
                                     {
                                         de='是';
                                     }
@@ -822,8 +767,8 @@ $(document).ready(function () {
                                         de='否';
                                     }
                                     var abc={
-                                        name:data.data.participants[ptr].name,
-                                        gender:data.data.participants[ptr].gender,
+                                        name:JSON.parse(data.data[ptr].participants)[0].name,
+                                        gender:JSON.parse(data.data[ptr].participants)[1].gender,
                                         reservation:de
                                     }
                                     console.log(abc);
@@ -1048,7 +993,7 @@ $(document).ready(function () {
 
             //
 
-    paper_upload:function(event) {
+      paper_upload:function(event) {
         var paper_name = $("input[id='paper_title']").val();
         var paper_abstract = $("textarea[id='paper_outline']").val();
         var paper = $('#paper_up')[0].files[0];
@@ -1106,7 +1051,7 @@ $(document).ready(function () {
         var settings = {
             "async": false,
             "crossDomain": true,
-            "url": url + "conference/conference/" + conference_id + "/paper_submit/",
+            "url": url + "conference/submission/"+this.$data.user_papers[currentpaperindex].submission_id+"/submit_after_modification/",
             "method": "POST",
             "headers": {},
             "processData": false,
