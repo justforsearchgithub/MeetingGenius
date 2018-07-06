@@ -447,7 +447,7 @@
                     </div>
                     <div class="panel-body" >
                         <ul class="list-group" v-for="(paper,index) in papers" >
-                            <li class="list-group-item">论文题目：{{paper.paper_name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文提交者：{{paper.submitter}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{paper.state}}
+                            <li class="list-group-item">论文题目：{{paper.paper_name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文提交者：{{paper.submitter}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{paper.status}}
                                 <button type="button" class="btn btn-primary" v-on:click="click_paper_check(index)">填写审核意见</button>
                                 <button type="button" class="btn btn-success" v-on:click="click_download(index)"  >下载</button>
                             </li>
@@ -472,7 +472,7 @@
                     </div>
                     <div class="panel-body" >
                         <ul class="list-group" v-for="(meeting_user in meeting_users" >
-                            <li class="list-group-item">姓名：{meeting_user.name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 性别：{{meeting_user.gender}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;是否预定住宿:{meeting_user.reservation}}
+                            <li class="list-group-item">姓名：{{meeting_user.name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 性别：{{meeting_user.gender}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;是否预定住宿:{{meeting_user.reservation}}
                             </li>
                         </ul>
                     </div>
@@ -526,8 +526,8 @@
                     </div>
                     <div class="panel-body" >
                         <ul class="list-group" v-for="(user_paper,index) in user_papers" >
-                            <li class="list-group-item">论文题目：{{user_paper.paper_name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文作者：{{user_paper.conference_title}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{user_paper.state}}
-                                <button type="button" class="btn btn-primary" v-on:click="click_modify(index)">修改后提交</button>
+                            <li class="list-group-item">论文题目：{{user_paper.paper_name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文作者：{{user_paper.conference_title}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{user_paper.status}}
+                                <button type="button" class="btn btn-primary hidden" v-if="user_paper.state==='M'" v-on:click="click_modify(index)" >修改后提交</button>
                             </li>
 
                         </ul>
