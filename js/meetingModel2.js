@@ -21,6 +21,7 @@ var meeting = new Vue({
         register_due: '2018-10-20 12:00:00',
         conference_start: '2018-10-25 12:00:00',
         conference_due: '2018-10-30 12:00:00',
+        cur_state: 0,
         activities: [
             {
                 start_time: '2018-10-25 12:00:00',
@@ -53,20 +54,34 @@ var meeting = new Vue({
             var date4 = new Date(this.register_due);
             var date5 = new Date(this.conference_start);
             var date6 = new Date(this.conference_due);
-            if (today < date0)
-                return '<span style="color: #000000;">投稿未开始</span>';
-            else if (today < date1)
-                return '<span style="color: #3000d2;">投稿中</span>';
-            else if (today <date3)
+            if (today < date0) {
+                this.cur_state = 0;
+                return '<span style="color: #000000;">征稿未开始</span>';
+            }
+            else if (today < date1) {
+                this.cur_state = 1;
+                return '<span style="color: #3000d2;">征稿中</span>';
+            }
+            else if (today <date3) {
+                this.cur_state = 3;
                 return '<span style="color: #b44400;">已截稿</span>';
-            else if (today <date4)
+            }
+            else if (today <date4) {
+                this.cur_state = 4;
                 return '<span style="color: #07ae00;">注册中</span>';
-            else if (today <date5)
+            }
+            else if (today <date5) {
+                this.cur_state = 5;
                 return '<span style="color: #b5351d;">注册截止</span>';
-            else if (today <date6)
+            }
+            else if (today <date6) {
+                this.cur_state = 6;
                 return '<span style="color: #980061;">会议中</span>';
-            else
+            }
+            else {
+                this.cur_state = 7;
                 return '<span style="color: #464646;">会议结束</span>';
+            }
         }
     }
 });
@@ -279,7 +294,7 @@ function join_register() {
 
 function checkState_r() {
     if(usertype != 'anonymous user' && usertype != null && usertype != undefined){
-        if(meeting.state != '注册中'){
+        if(meeting.cur_state != 4){
             alert('现在不在注册期间！');
         }
         else{
@@ -293,7 +308,7 @@ function checkState_r() {
 
 function checkState_p() {
     if(usertype != 'anonymous user' && usertype != null && usertype != undefined){
-        if(meeting.state != '征稿中'){
+        if(meeting.cur_state != 1){
             alert('现在不在投稿期间！');
         }
         else{

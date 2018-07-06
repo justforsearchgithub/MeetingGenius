@@ -22,6 +22,7 @@ var meeting = new Vue({
         register_due: '2018-10-20 12:00:00',
         conference_start: '2018-10-25 12:00:00',
         conference_due: '2018-10-30 12:00:00',
+        cur_state: 0,
         activities: [
             {
                 start_time: '2018-10-25 12:00:00',
@@ -72,20 +73,34 @@ var meeting = new Vue({
             var date4 = new Date(this.register_due);
             var date5 = new Date(this.conference_start);
             var date6 = new Date(this.conference_due);
-            if (today < date0)
-                return '<span style="color: #000000;">投稿未开始</span>';
-            else if (today < date1)
-                return '<span style="color: #54f0ff;">投稿中</span>';
-            else if (today <date3)
-                return '<span style="color: #ff4c27;">已截稿</span>';
-            else if (today <date4)
-                return '<span style="color: #00ff64;">注册中</span>';
-            else if (today <date5)
-                return '<span style="color: #ff4c27;">注册截止</span>';
-            else if (today <date6)
-                return '<span style="color: #ffff00;">会议中</span>';
-            else
-                return '<span style="color: #aaaaaa;">会议结束</span>';
+            if (today < date0) {
+                this.cur_state = 0;
+                return '<span style="color: #000000;">征稿未开始</span>';
+            }
+            else if (today < date1) {
+                this.cur_state = 1;
+                return '<span style="color: #3000d2;">征稿中</span>';
+            }
+            else if (today <date3) {
+                this.cur_state = 3;
+                return '<span style="color: #b44400;">已截稿</span>';
+            }
+            else if (today <date4) {
+                this.cur_state = 4;
+                return '<span style="color: #07ae00;">注册中</span>';
+            }
+            else if (today <date5) {
+                this.cur_state = 5;
+                return '<span style="color: #b5351d;">注册截止</span>';
+            }
+            else if (today <date6) {
+                this.cur_state = 6;
+                return '<span style="color: #980061;">会议中</span>';
+            }
+            else {
+                this.cur_state = 7;
+                return '<span style="color: #464646;">会议结束</span>';
+            }
         }
     },
     methods: {
@@ -218,72 +233,9 @@ function file_upload(id) {
     $('#'+id).click();
 }
 
-function join_register() {
-    var name =  $("input[id='person_name']").val();
-    var gender = $("input[name='sex']:checked").val();
-    var reservation = $("input[name='hotel']:checked").val();
-    var information = $("textarea[id='extra_info']").val();
-    var paper_id = $("input[id='paper_num']").val();
-    var pay_voucher = $('#fee_upload')[0].files[0];
-    var listen_only = false;
-    if (name === null || name === ''){
-        alert('请填写姓名');
-        return;
-    }
-    else if (pay_voucher === null || pay_voucher === undefined){
-        alert('请上传缴费凭证图');
-        return;
-    }
-    if (paper_id === null || paper_id === ""){
-        listen_only = true;
-    }
-    var temp_json = {
-        'name': name,
-        'gender': gender,
-        'reservation': reservation,
-        'information': information
-    };
-    var formData = new FormData();
-    formData.append('listen_only', listen_only);
-    formData.append('paper_id', paper_id);
-    formData.append('participants', JSON.stringify(temp_json));
-    formData.append('pay_voucher', pay_voucher);
-    var settings = {
-        "async": false,
-        "crossDomain": true,
-        "url": url + "conference/conference/" + conference_id + "/register/",
-        "method": "POST",
-        "headers": {},
-        "processData": false,
-        "contentType": false,
-        "mimeType": "multipart/form-data",
-        "data": formData
-    };
-    $.ajax(settings).done(function (response) {
-        console.log(response);
-        if(response.message === 'success'){
-            alert('注册成功');
-        }
-        else if (response.message === 'reduplicate register'){
-            alert('您已经注册了该会议');
-        }
-        else{
-            alert('注册失败：错误的论文编号');
-        }
-    });
-    /*
-    url: conference/<会议的主键id>/conference_register
-    post: listen_only  仅仅聆听会议  传字符串 true 或者 false 就好
-    paper_id 参与会议的paper的id（如果），participants 与会者的信息（考虑到这些信息只需要在展示时使用，
-    能读即可，不想为其建立单独数据库表，希望前端用序列化的json传递过来，格式为：
-        [{'name': <str>, 'gender': <男or女>, 'reservation' /*是否预定住宿//: <bool>}, ...]  ）
-    pay_voucher 缴费凭证的照片或者pdf文件
-    */
-}
-
 function checkState_r() {
     if(usertype != 'anonymous user' && usertype != null && usertype != undefined){
-        if(meeting.state != '注册中'){
+        if(meeting.cur_state != 4){
             alert('现在不在注册期间！');
         }
         else{
@@ -297,7 +249,7 @@ function checkState_r() {
 
 function checkState_p() {
     if(usertype != 'anonymous user' && usertype != null && usertype != undefined){
-        if(meeting.state != '征稿中'){
+        if(meeting.cur_state != 1){
             alert('现在不在投稿期间！');
         }
         else{
