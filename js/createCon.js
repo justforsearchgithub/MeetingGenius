@@ -145,13 +145,15 @@ function AddConference() {
     var formdata = new FormData();
     var location_id = document.getElementById('province').selectedIndex;
     var city_id = document.getElementById('city').selectedIndex;
-    var location = $('#province')+'_'+location_id+'&'+$('#city')+'_'+city_id+'&'+$('#Location');
+    var location = $('#province').val()+'_'+location_id+'&'+$('#city').val()+'_'+city_id+'&'+$('#Location').val();
+    console.log(location);
     var title = $('#title').val();
     var introduction = $('#Description').val();
     var subject = AlreadySelectedSubjects[0];
     var register_requirement = $('#RegRequirment').val();
     var soliciting_requirement = $('#UploadRequirment').val();
     var accept_due = $('#accept_due').val();
+    var modify_due = $('#modify_due').val();
     var register_start = $('#register_start').val();
     var register_due = $('#register_due').val();
     var conference_start = $('#conference_start').val();
@@ -210,6 +212,7 @@ function AddConference() {
     formdata.append('register_start', register_start);
     console.log(register_start);
     formdata.append('register_due', register_due);
+    formdata.append('modify_due',modify_due);
     console.log(register_due);
     formdata.append('conference_start', conference_start);
     console.log(conference_start);
@@ -267,11 +270,13 @@ function AddMap(){
     }
     console.log(city);
     var map = new BMap.Map("allmap");
+
     var point = new BMap.Point(116.331398,39.897445);
     map.centerAndZoom(point,12);
     map.addControl(new BMap.NavigationControl());
     map.addControl(new BMap.ScaleControl());
     map.addControl(new BMap.OverviewMapControl());
+
     // 创建地址解析器实例
     var myGeo = new BMap.Geocoder();
     // 将地址解析结果显示在地图上,并调整地图视野
