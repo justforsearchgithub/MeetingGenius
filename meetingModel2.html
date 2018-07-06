@@ -164,23 +164,88 @@
                 <h4 class="modal-title">注册参加会议</h4>
             </div>
             <div class="modal-body">
-                <div class="form-group" style="margin-top: 5px">
-                    <label>姓名</label>
-                    <input type="text" class="form-control" id="person_name" placeholder="请输入姓名">
+                <div id="part-1" class="form-group" style="margin-top: 5px">
+                    <label>参会人员信息</label>
+                    <div class="clear: both"></div>
+                    <input style="width: 50%; float: left" type="text" class="form-control" id="person_name1" placeholder="请输入姓名">
+                    <select id="person_sex1" style="width: 15%;margin-left: 5%; float: left; height: 42px" class="form-control">
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+                    <select id="person_hotel1" style="width: 25%; float: right; height: 42px" class="form-control">
+                        <option value="是">预订住宿</option>
+                        <option value="否">不预定住宿</option>
+                    </select>
+                    <div style="clear: both"></div>
                 </div>
-                <div class="form-group" style="margin-top: 5px">
-                    <label>性别</label>
-                    <div style="height: 46px;font-size: 18px; padding-top: 8px">
-                        <input type="radio" name="sex" id="person_gender_m" value="男" checked> 男
-                        <input type="radio" name="sex" id="person_gender_f" value="女"> 女
-                    </div>
+                <div id="part-2" class="form-group hidden" style="margin-top: 5px">
+                    <div class="clear: both"></div>
+                    <input style="width: 50%; float: left" type="text" class="form-control" id="person_name2" placeholder="请输入姓名">
+                    <select id="person_sex2" style="width: 15%;margin-left: 5%; float: left; height: 42px" class="form-control">
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+                    <select id="person_hotel2" style="width: 25%; float: right; height: 42px" class="form-control">
+                        <option value="是">预订住宿</option>
+                        <option value="否">不预定住宿</option>
+                    </select>
+                    <div style="clear: both"></div>
                 </div>
-                <div class="form-group" style="margin-top: 5px">
-                    <label>是否预订住宿</label>
-                    <div style="height: 46px;font-size: 18px; padding-top: 8px">
-                        <input type="radio" name="hotel" id="hotel_y" value=true checked> 是
-                        <input type="radio" name="hotel" id="hotel_n" value=false> 否
-                    </div>
+                <div id="part-3" class="form-group hidden" style="margin-top: 5px">
+                    <div class="clear: both"></div>
+                    <input style="width: 50%; float: left" type="text" class="form-control" id="person_name3" placeholder="请输入姓名">
+                    <select id="person_sex3" style="width: 15%;margin-left: 5%; float: left; height: 42px" class="form-control">
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+                    <select id="person_hotel3" style="width: 25%; float: right; height: 42px" class="form-control">
+                        <option value="是">预订住宿</option>
+                        <option value="否">不预定住宿</option>
+                    </select>
+                    <div style="clear: both"></div>
+                </div>
+                <div id="part-4" class="form-group hidden" style="margin-top: 5px">
+                    <div class="clear: both"></div>
+                    <input style="width: 50%; float: left" type="text" class="form-control" id="person_name4" placeholder="请输入姓名">
+                    <select id="person_sex4" style="width: 15%;margin-left: 5%; float: left; height: 42px" class="form-control">
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+                    <select id="person_hotel4" style="width: 25%; float: right; height: 42px" class="form-control">
+                        <option value="是">预订住宿</option>
+                        <option value="否">不预定住宿</option>
+                    </select>
+                    <div style="clear: both"></div>
+                </div>
+                <div id="part-5" class="form-group hidden" style="margin-top: 5px">
+                    <div class="clear: both"></div>
+                    <input style="width: 50%; float: left" type="text" class="form-control" id="person_name5" placeholder="请输入姓名">
+                    <select id="person_sex5" style="width: 15%;margin-left: 5%; float: left; height: 42px" class="form-control">
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+                    <select id="person_hotel5" style="width: 25%; float: right; height: 42px" class="form-control">
+                        <option value="是">预订住宿</option>
+                        <option value="否">不预定住宿</option>
+                    </select>
+                    <div style="clear: both"></div>
+                </div>
+                <div id="part-6" class="form-group hidden" style="margin-top: 5px">
+                    <div class="clear: both"></div>
+                    <input style="width: 50%; float: left" type="text" class="form-control" id="person_name6" placeholder="请输入姓名">
+                    <select id="person_sex6" style="width: 15%;margin-left: 5%; float: left; height: 42px" class="form-control">
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+                    <select id="person_hotel6" style="width: 25%; float: right; height: 42px" class="form-control">
+                        <option value="是">预订住宿</option>
+                        <option value="否">不预定住宿</option>
+                    </select>
+                    <div style="clear: both"></div>
+                </div>
+                <div style="text-align: center">
+                    <button id="addPart" class="btn btn-primary ml-5 mr-5" onclick="add_part()">添加作者</button>
+                    <button id="delPart" class="btn btn-primary ml-5 mr-5 hidden" onclick="del_part()">删除作者</button>
                 </div>
                 <div class="form-group" style="margin-top: 5px">
                     <label>论文编号</label>
@@ -191,10 +256,6 @@
                     <input id="fee_upload" type="file" class="file" accept="image/*" onchange="triggerfile_fee()"/>
                     <label id="label_fee_upload" for="fee_upload" style="font-size: 14px">选择图片</label>
                     <a href="javascript:file_upload('fee_upload')"><img style="max-width: 568px" class="hidden" src="" alt="图片上传失败" id="img_fee_upload"></a>
-                </div>
-                <div class="form-group" style="margin-top: 5px">
-                    <label>补充说明</label>
-                    <textarea id="extra_info" class="form-control" rows="8"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -367,6 +428,7 @@
 <script type="text/javascript" src="js/jquery.eeyellow.Timeline.js"></script>
 <script src="js/leftTime.min.js" ></script>
 <script src="js/addAuthor.js"></script>
+<script src="js/addPart.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         $('.VivaTimeline').vivaTimeline({
