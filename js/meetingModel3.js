@@ -2,6 +2,7 @@ var url = 'http://139.199.24.235:80/';
 var conference_id = 0;
 var usertype = 'anonymous user';
 var is_collected = false;
+var map_location = '北京市_1&北京市辖区_1&天安门';
 var meeting = new Vue({
     el: '#info',
     data: {
@@ -26,6 +27,24 @@ var meeting = new Vue({
                 end_time: '2018-10-25 18:00:00',
                 place: '地点A',
                 activity_name: '会议开始'
+            },
+            {
+                start_time: '2018-10-27 12:00:00',
+                end_time: '2018-10-27 18:00:00',
+                place: '地点B',
+                activity_name: '会议进行'
+            },
+            {
+                start_time: '2018-10-27 12:00:00',
+                end_time: '2018-10-27 18:00:00',
+                place: '地点B',
+                activity_name: '会议进行'
+            },
+            {
+                start_time: '2018-10-27 12:00:00',
+                end_time: '2018-10-27 18:00:00',
+                place: '地点B',
+                activity_name: '会议进行'
             },
             {
                 start_time: '2018-10-27 12:00:00',
@@ -65,6 +84,15 @@ var meeting = new Vue({
                 return '会议中';
             else
                 return '会议完成';
+        }
+    },
+    methods: {
+        time_line: function (i) {
+            var time = this.activities[i].start_time;
+            time = time.split(' ', 1);
+            time = time.split('-').reverse().join('/');
+            console.log(time);
+            return time;
         }
     }
 });
@@ -135,6 +163,7 @@ $(document).ready(function () {
             meeting.contact = response.data.organization.contacts;
             meeting.phonenum = response.data.organization.phone_number;
             meeting.email = response.data.organization.email;
+            map_location = response.data.venue;
         });
         //取活动
         var activity_settings = {
@@ -150,31 +179,7 @@ $(document).ready(function () {
         });
     }
     favorite_state();
-    //日期倒计时
-    $(function(){
-        var today = new Date();
-        var flag = true;
-        var start = new Date(meeting.conference_start);
-        if(today >= start)
-            flag = false;
-        $.leftTime(meeting.conference_start, function(d){
-            if(d.status || flag){
-                var $dateShow1=$("#dateShow1");
-                $dateShow1.find(".d").html(d.d);
-                $dateShow1.find(".h").html(d.h);
-                $dateShow1.find(".m").html(d.m);
-                $dateShow1.find(".s").html(d.s);
-            }
-            else
-            {
-                var $dateShow1=$("#dateShow1");
-                $dateShow1.find(".d").html('0');
-                $dateShow1.find(".h").html('0');
-                $dateShow1.find(".m").html('0');
-                $dateShow1.find(".s").html('0');
-            }
-        });
-    });
+    AddMap();
 });
 
 function triggerfile_fee() {
@@ -239,7 +244,6 @@ function join_register() {
     formData.append('listen_only', listen_only);
     formData.append('paper_id', paper_id);
     formData.append('participants', JSON.stringify(temp_json));
-    console.log(temp_json);
     formData.append('pay_voucher', pay_voucher);
     var settings = {
         "async": false,
@@ -253,12 +257,11 @@ function join_register() {
         "data": formData
     };
     $.ajax(settings).done(function (response) {
-        var data = JSON.parse(response);
-        console.log(data);
-        if(data.message === 'success'){
+        console.log(response);
+        if(response.message === 'success'){
             alert('注册成功');
         }
-        else if (data.message === 'reduplicate register'){
+        else if (response.message === 'reduplicate register'){
             alert('您已经注册了该会议');
         }
         else{
@@ -304,8 +307,8 @@ function checkState_p() {
 }
 
 function downloadPaper() {
-    console.log(url + meeting.paper_template);
     window.open(url + meeting.paper_template);
+    console.log(url + meeting.paper_template);
 }
 
 var getParam = function (name) {
@@ -374,19 +377,19 @@ function add_favorite() {
                 "contentType": false
             };
             $.ajax(settings).done(function (response) {
-               console.log(response.message);
-               if(response.message === 'susccess'){
-                   is_collected = false;
-                   $('#favorite').text('❤收藏会议');
-                   $('#favorite').hover(function () {
-                       $('#favorite').text('❤收藏会议');
-                   }, function () {
-                       $('#favorite').text('❤收藏会议');
-                   });
-               }
-               else {
-                   alert('取消收藏失败，用户没有权限');
-               }
+                console.log(response.message);
+                if(response.message === 'susccess'){
+                    is_collected = false;
+                    $('#favorite').text('❤收藏会议');
+                    $('#favorite').hover(function () {
+                        $('#favorite').text('❤收藏会议');
+                    }, function () {
+                        $('#favorite').text('❤收藏会议');
+                    });
+                }
+                else {
+                    alert('取消收藏失败，用户没有权限');
+                }
             });
         }
         else{
@@ -416,6 +419,9 @@ function add_favorite() {
             });
         }
     }
+    else{
+        alert('请先登录！');
+    }
 }
 
 function LogOut(){
@@ -443,3 +449,69 @@ function format_time(date) {
     return str;
 }
 
+function SecToCon() {
+    var today = new Date();
+    var start = new Date(meeting.conference_start);
+    if(start > today)
+        return (start - today)/1000;
+    return 0;
+}
+
+$(function() {
+    var timeLength = $('.time-box-ex li').length,
+        timeliWidth = $('.time-box-ex li').outerWidth();
+
+    var index = 0;
+
+    $('.time-box-ex ul').width(timeLength * timeliWidth);
+
+    function slideOne(i) {
+        var scrollVal = i * timeliWidth; //每次切换的数量
+        $('.time-box-ex').stop().animate({
+            scrollLeft: scrollVal
+        }, 300);
+    }
+
+    $('.right-btn').click(function() {
+        index = index >= (timeLength-4) ? 0 : index + 1;
+        slideOne(index);
+    })
+
+    $('.left-btn').click(function() {
+        index = index <= 0 ? (timeLength-4) : index - 1;
+        slideOne(index);
+    })
+});
+
+function AddMap(){
+    var map = new BMap.Map("allmap");
+    var point = new BMap.Point(116.331398,39.897445);
+    map.centerAndZoom(point,12);
+    map.addControl(new BMap.NavigationControl());
+    map.addControl(new BMap.ScaleControl());
+    map.addControl(new BMap.OverviewMapControl());
+    // 创建地址解析器实例
+    var myGeo = new BMap.Geocoder();
+    // 将地址解析结果显示在地图上,并调整地图视野
+    myGeo.getPoint(getLoaction(map_location), function(point){
+        if (point) {
+            map.centerAndZoom(point, 16);
+            map.addOverlay(new BMap.Marker(point));
+        }else{
+            console.log('map error');
+        }
+    },getCity(map_location));
+};
+
+function getCity(str) {
+    if(str.indexOf('&')>-1) {
+        var city = str.split('&')[1].substring(0, 3);
+        return city;
+    }
+};
+
+function getLoaction(str) {
+    if(str.indexOf('&')>-1) {
+        return str.split('&')[2];
+    }
+};

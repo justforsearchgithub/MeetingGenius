@@ -74,7 +74,6 @@ function paper_upload() {
     }
 
     var formData = new FormData();
-    //todo:add author and org
     console.log(authorsJSON);
 
     formData.append('authors', JSON.stringify(authorsJSON));
