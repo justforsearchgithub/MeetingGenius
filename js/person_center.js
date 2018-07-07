@@ -950,6 +950,20 @@ $(document).ready(function () {
                         processData: false,
                         success: function (data) {
                             console.log(data);
+                            if(data.message=='success')
+                            {
+                                alert('审核成功');
+                                $('#myModal6').modal('hide');
+                            }
+                            else if(data.message=='not in modification period')
+                            {
+                                alert('不在审核时间内');
+                                $('#myModal6').modal('hide');
+                            }
+                            else
+                            {
+                                alert('格式有误！');
+                            }
                         }
                     });
 
@@ -1017,6 +1031,7 @@ $(document).ready(function () {
                 {
                     alert('添加成功');
                     this.$options.methods.click_childaccount();
+                    $('#myModal2').modal('hide');
                 }
             },
             addChildAccount4: function(event){
@@ -1080,6 +1095,7 @@ $(document).ready(function () {
                           success: function (data) {
                               if (data.message == "success") {
                                   alert('修改成功');
+                                  $('#myModal3').modal('hide');
                               }
                           }
                       });
@@ -1136,6 +1152,7 @@ $(document).ready(function () {
                             console.log(data);
                             if (data.message ==="success") {
                                 alert('修改成功');
+                                window.location.href='login.html';
                                 //this.$data.setaccount_password=' ';
                                 //this.$data.temp_password=' ';
                                 //this.$data.temp_password2=' ';
@@ -1236,12 +1253,15 @@ $(document).ready(function () {
             console.log(response);
             if(response.message === 'multiple submission'){
                 alert('您已经提交过论文了');
+                $('#myModal7').modal('hide');
             }
             else if (response.message === 'success'){
                 alert('论文提交成功！');
+                $('#myModal7').modal('hide');
             }
             else{
-                alert('提交失败，请联系网站管理员解决');
+                alert('不在提交时间范围内');
+                $('#myModal7').modal('hide');
             }
         });
     },
@@ -1336,6 +1356,10 @@ $(document).ready(function () {
                     vm.$data.is_nomal=false;
                     vm.$data.is_unit=false;
                     vm.$data.not_normal=true;
+                }
+                else
+                {
+                    window.location.href='http://139.199.24.235';
                 }
             }
             else
