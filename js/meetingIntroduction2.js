@@ -136,7 +136,7 @@ $(document).ready(function () {
             meeting.meetingName = response.data.title;
             meeting.subject = response.data.subject;
             meeting.meetingIntroduction = response.data.introduction;
-            meeting.registerRequest = response.data.registerRequest;
+            meeting.registerRequest = response.data.register_requirement;
             meeting.solicitInformation = response.data.soliciting_requirement;
             meeting.paper_template = response.data.paper_template;
             meeting.firstAuditNoticeDate = format_time(response.data.accept_start);
