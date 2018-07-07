@@ -194,6 +194,7 @@ $(document).ready(function () {
             addchildaccount_name:'',
             addchildaccount_password:'',
             setaccount_password:'',
+            modified:true,
             //临时存储的账户名，密码
             temp_name:'',
             temp_password:'',
@@ -687,7 +688,11 @@ $(document).ready(function () {
                             vm.$data.paper_detail.length=0;
                             var b=true;
                             if(data.data.modified===true)
+                            {
+                                vm.$data.modified=false;
                                 b=false;
+                            }
+
                             var abc={
                                 paper_name:data.data.paper_name,
                                 state:data.data.state,
@@ -697,6 +702,7 @@ $(document).ready(function () {
                                 //console.log('paper'+paper_id[ptr].id);
                             };
                             vm.$data.paper_detail.push(abc);
+                            console.log(vm.$data.paper_detail);
                             console.log(data.data.authors);
                             $('#author11').val(data.data.authors["A1"].name);
                             $('#org11').val(data.data.authors["A1"].institute);
