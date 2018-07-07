@@ -154,6 +154,7 @@ $(document).ready(function () {
         format: 'yyyy-mm-dd hh:ii'
     });
     console.log('goodend');
+    var old_paper=[];
     var username;
     var oldpassword;
     var currentindex;
@@ -282,7 +283,8 @@ $(document).ready(function () {
                     gender:'性别出错',
                     reservation:'是否'
                 }*/
-            ]
+            ],
+            sum:0
         },
         methods:{
             //点击侧边栏相应标题
@@ -621,6 +623,7 @@ $(document).ready(function () {
                         if (data.message == "success") {
                            vm.$data.papers.length=0;
                            var flag=0;
+                           old_paper.length=0;
                             for(var ptr=0;ptr<data.data.length;ptr++)
                             {
                                 var a;
@@ -666,12 +669,16 @@ $(document).ready(function () {
                                 else
                                 {
                                     var abc1={
+                                        paper_index:ptr,
                                         paper_name:data.data[ptr].paper_name_old,
                                         paper_url:data.data[ptr].paper_old,
+                                        submitter:data.data[ptr].submitter,
                                         status:'已审核',
                                         seen:false
                                     }
-                                    vm.$data.papers.push(abc1);
+                                    console.log(data.data[ptr].paper_name_old);
+                                    console.log(abc1);
+                                    old_paper.push(abc1);
                                 }
                                 //paper_id[ptr].id=data.data[ptr].submitter_id;
                                 //console.log('paper'+paper_id[ptr].id);
@@ -711,7 +718,8 @@ $(document).ready(function () {
                                 paper_name:data.data.paper_name,
                                 state:data.data.state,
                                 paper_abstract:data.data.paper_abstract,
-                                modified:b
+                                modified:b,
+                                paper:data.data.paper
                                 //paper_id[ptr].id=data.data[ptr].submitter_id;
                                 //console.log('paper'+paper_id[ptr].id);
                             };
@@ -1282,7 +1290,18 @@ $(document).ready(function () {
 
             },
 
+        },
+        updated: function () {
+            console.log('sum'+this.$data.sum);
+            this.$data.sum++;
+            for(var ptr=0;ptr<old_paper.length;ptr++)
+            {
+                $("#PaperID_"+old_paper[ptr].paper_index).append("<li  class=\"list-group-item\">论文题目："+old_paper[ptr].paper_name+" &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文提交者："+old_paper[ptr].submitter+ "&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:已审核\n" +
+                    "                                <button type=\"button\" class=\"btn btn-success\" ><a style=\"color:#ffffff;text-decoration:none;\"  download=\"123\" href=\'"+url+old_paper[ptr].paper_url+"\'>下载</a></button>\n" +
+                    "                            </li>");
+            }
         }
+
     });
 
     $.ajax({

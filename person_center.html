@@ -453,10 +453,11 @@
                         </h3>
                     </div>
                     <div class="panel-body" >
-                        <ul class="list-group" v-for="(paper,index) in papers" >
-                            <li class="list-group-item">论文题目：{{paper.paper_name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文提交者：{{paper.submitter}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{paper.status}}
+                        <ul  :id="['PaperID_'+index]" class="list-group" v-for="(paper,index) in papers" >
+
+                            <li  class="list-group-item">论文题目：{{paper.paper_name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文提交者：{{paper.submitter}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{paper.status}}
                                 <button type="button" class="btn btn-primary"  v-if="paper.seen" v-on:click="click_paper_check(index)">填写审核意见</button>
-                                <button type="button" class="btn btn-success" v-on:click="click_download(index)"  >下载</button>
+                                <button type="button" class="btn btn-success"   ><a style='color:#ffffff;text-decoration:none;'  download='123' href='url+paper[ptr].paper'>下载</a></button>
                             </li>
                         </ul>
                     </div>
