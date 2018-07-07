@@ -1,91 +1,74 @@
 var url = 'http://139.199.24.235:80/';
-var conference_id = '0';
+var conference_id = 0;
 var usertype = 'anonymous user';
 var is_collected = false;
-var meeting = new Vue({
-    el: '#info',
-    data: {
-        title: '会议模板（这里是标题）',
-        subject: '这里是学科',
-        organization: '会议主办方XXX',
-        contact: '联系人ABC',
-        phonenum: '1234567890',
-        email: '123456@789.com',
-        introduction: '这里是会议简介部分',
-        soliciting_requirement: '这里是投稿要求',
-        register_requirement: '这里是注册会议要求',
-        accept_start: '2018-05-15 12:00:00',
-        accept_due: '2018-10-01 12:00:00',
-        modify_due: '2018-10-05 12:00:00',
-        register_start: '2018-10-10 12:00:00',
-        register_due: '2018-10-20 12:00:00',
-        conference_start: '2018-10-25 12:00:00',
-        conference_due: '2018-10-30 12:00:00',
-        cur_state: 0,
-        activities: [
-            {
-                start_time: '2018-10-25 12:00:00',
-                end_time: '2018-10-25 18:00:00',
-                place: '地点A',
-                activity_name: '会议开始'
-            },
-            {
-                start_time: '2018-10-27 12:00:00',
-                end_time: '2018-10-27 18:00:00',
-                place: '地点B',
-                activity_name: '会议进行'
-            },
-            {
-                start_time: '2018-12-30 12:00:00',
-                end_time: '2018-12-30 18:00:00',
-                place: '地点C',
-                activity_name: '会议结束'
-            }
-        ],
-        paper_template: null
-    },
-    computed: {
-        state: function() {
-            var today = new Date();
-            var date0 = new Date(this.accept_start);
-            var date1 = new Date(this.accept_due);
-            var date2 = new Date(this.modify_due);
-            var date3 = new Date(this.register_start);
-            var date4 = new Date(this.register_due);
-            var date5 = new Date(this.conference_start);
-            var date6 = new Date(this.conference_due);
-            if (today < date0) {
-                this.cur_state = 0;
-                return '<span style="color: #000000;">征稿未开始</span>';
-            }
-            else if (today < date1) {
-                this.cur_state = 1;
-                return '<span style="color: #3000d2;">征稿中</span>';
-            }
-            else if (today <date3) {
-                this.cur_state = 3;
-                return '<span style="color: #b44400;">已截稿</span>';
-            }
-            else if (today <date4) {
-                this.cur_state = 4;
-                return '<span style="color: #07ae00;">注册中</span>';
-            }
-            else if (today <date5) {
-                this.cur_state = 5;
-                return '<span style="color: #b5351d;">注册截止</span>';
-            }
-            else if (today <date6) {
-                this.cur_state = 6;
-                return '<span style="color: #ffc82e;">会议中</span>';
-            }
-            else {
-                this.cur_state = 7;
-                return '<span style="color: #464646;">会议结束</span>';
+var meeting = new Vue(
+    {
+        el: '#meeting',
+        data: {
+            meetingName: '这里是会议名称',
+            subject:'这里是学科',
+            meetingIntroduction: '这里是会议简介',
+            firstAuditNoticeDate: '2018-11-20 12:00:00',
+            closeDate: '2018-11-25 12:00:00',
+            registerOpenDate: '2018-10-25 12:00:00',
+            registerEndDate: '2018-12-27 12:00:00',
+            meetingStartDate: '2018-12-25 12:00:00',
+            meetingEndDate:'2018-12-25 12:00:00',
+            paper_template: null,
+            registerRequest: '这里是注册要求',
+            solicitInformation: '这里是投稿要求',
+            organizationName: '这里是组织名称',
+            contactName: '这里是联系人姓名',
+            contactPhone: '这里是联系人电话',
+            email: '这里是联系人邮箱',
+            activities: [
+                {
+                    start_time: '2018-12-25 12:00:00',
+                    end_time: '2018-12-25 18:00:00',
+                    place: '地点A',
+                    activity: '会议开始'
+                },
+                {
+                    start_time: '2018-12-27 12:00:00',
+                    end_time: '2018-12-27 18:00:00',
+                    place: '地点B',
+                    activity: '会议进行'
+                },
+                {
+                    start_time: '2018-12-30 12:00:00',
+                    end_time: '2018-12-30 18:00:00',
+                    place: '地点C',
+                    activity: '会议结束'
+                }
+            ],
+        },
+        computed: {
+            state: function() {
+                var today = new Date();
+                var date0 = new Date(this.firstAuditNoticeDate);
+                var date1 = new Date(this.closeDate);
+                var date2 = new Date(this.registerOpenDate);
+                var date3 = new Date(this.registerEndDate);
+                var date4 = new Date(this.meetingStartDate);
+                var date5 = new Date(this.meetingEndDate);
+                if (today < date0)
+                    return '征稿未开始';
+                else if (today < date1)
+                    return '征稿中';
+                else if (today <date2)
+                    return '已截稿';
+                else if (today <date3)
+                    return '注册中';
+                else if (today <date4)
+                    return '截止注册';
+                else if (today <date5)
+                    return '会议中';
+                else
+                    return '会议完成';
             }
         }
-    }
-});
-
+    })
 function GetCurrentUser(){
     $.ajax({
         type: 'GET',
@@ -102,12 +85,12 @@ function GetCurrentUser(){
                 $('#NavText2').text('登录');
             }
             else{
+                //TODO: check favorite
                 usertype = data.data.user_type;
                 if(usertype === 'organization_user' || usertype === 'organization_sub_user'){
                     $('#join_meeting').addClass('hidden');
                     $('#paper_upload').addClass('hidden');
                     $('#favorite').addClass('hidden');
-                    $('button[id="favorite"]').addClass('hidden');
                 }
                 $('#NavText1').attr('href','person_center.html');
                 $('#NavText2').removeAttr('href');
@@ -118,15 +101,11 @@ function GetCurrentUser(){
         }
     });
 }
-
 $(document).ready(function () {
-    conference_id = getParam('id');
+    var id = getParam('id');
     GetCurrentUser();
-    if(conference_id === '0' || conference_id === null || conference_id === undefined)
+    if(conference_id != 0 && conference_id != null && conference_id != undefined)
     {
-        $('button').attr("disabled",true);
-    }
-    else {
         var conference_settings = {
             "async": false,
             "crossDomain": true,
@@ -136,28 +115,23 @@ $(document).ready(function () {
         };
         $.ajax(conference_settings).done(function (response) {
             console.log(response.message);
-            if(response.data.template_no != '1'){
-                window.location.href = url + "static/meetingModel3.html?id=" + conference_id;
-                return;
-            }
-            meeting.organization = response.data.organization.org_name;
-            meeting.title = response.data.title;
+            meeting.meetingName = response.data.title;
             meeting.subject = response.data.subject;
-            meeting.introduction = response.data.introduction;
-            meeting.soliciting_requirement = response.data.soliciting_requirement;
+            meeting.meetingIntroduction = response.data.introduction;
+            meeting.registerRequest = response.data.registerRequest;
+            meeting.solicitInformation = response.data.soliciting_requirement;
             meeting.paper_template = response.data.paper_template;
-            meeting.register_requirement = response.data.register_requirement;
-            meeting.accept_start = format_time(response.data.accept_start);
-            meeting.accept_due = format_time(response.data.accept_due);
-            meeting.modify_due = format_time(response.data.modify_due);
-            meeting.register_start = format_time(response.data.register_start);
-            meeting.register_due = format_time(response.data.register_due);
-            meeting.conference_start = format_time(response.data.conference_start);
-            meeting.conference_due = format_time(response.data.conference_due);
-            meeting.contact = response.data.organization.contacts;
-            meeting.phonenum = response.data.organization.phone_number;
+            meeting.firstAuditNoticeDate = response.data.accept_start;
+            meeting.closeDate = response.data.accept_due;
+            meeting.registerOpenDate = response.data.register_start;
+            meeting.registerEndDate = response.data.register_due;
+            meeting.meetingStartDate = response.data.conference_start;
+            meeting.meetingEndDate = response.data.conference_due;
+            meeting.organizationName = response.data.organization.org_name;
+            meeting.contactName = response.data.organization.contacts;
+            meeting.contactPhone = response.data.organization.phone_number;
             meeting.email = response.data.organization.email;
-        });
+        })
         //取活动
         var activity_settings = {
             "async": false,
@@ -176,10 +150,10 @@ $(document).ready(function () {
     $(function(){
         var today = new Date();
         var flag = true;
-        var start = new Date(meeting.conference_start);
+        var start = new Date(meeting.meetingStartDate);
         if(today >= start)
             flag = false;
-        $.leftTime(meeting.conference_start, function(d){
+        $.leftTime(meeting.meetingStartDate, function(d){
             if(d.status || flag){
                 var $dateShow1=$("#dateShow1");
                 $dateShow1.find(".d").html(d.d);
@@ -197,7 +171,9 @@ $(document).ready(function () {
             }
         });
     });
-});
+
+
+})
 
 function triggerfile_fee() {
     var file = $('#fee_upload').val();
@@ -237,32 +213,30 @@ function join_register() {
     var reservation = $("input[name='hotel']:checked").val();
     var information = $("textarea[id='extra_info']").val();
     var paper_id = $("input[id='paper_num']").val();
-    var pay_voucher = $('#fee_upload')[0].files[0];
+    var pay_vouvher = $('#fee_upload')[0].files[0];
     var listen_only = false;
     if (name === null || name === ''){
         alert('请填写姓名');
         return;
     }
-    else if (pay_voucher === null || pay_voucher === undefined){
+    else if (pay_vouvher === null || pay_vouvher === undefined){
         alert('请上传缴费凭证图');
         return;
     }
     if (paper_id === null || paper_id === ""){
         listen_only = true;
     }
-    var temp_json = {
-        'name': name,
-        'gender': gender,
-        'reservation': reservation,
-        'information': information
-    };
-    var test = [temp_json];
+    /*TODO:ajax with file*/
+    var temp_json = [
+        {'name': name},
+        {'gender': gender},
+        {'reservation': reservation},
+        {'information': information}
+    ];
     var formData = new FormData();
     formData.append('listen_only', listen_only);
     formData.append('paper_id', paper_id);
-    formData.append('participants', JSON.stringify(test));
-    console.log(JSON.stringify(test));
-    // console.log(temp_json);
+    formData.append('participants', temp_json);
     formData.append('pay_voucher', pay_voucher);
     var settings = {
         "async": false,
@@ -276,17 +250,8 @@ function join_register() {
         "data": formData
     };
     $.ajax(settings).done(function (response) {
-        var data = JSON.parse(response);
-        console.log(data);
-        if(data.message === 'success'){
-            alert('注册成功');
-        }
-        else if (data.message === 'reduplicate register'){
-            alert('您已经注册了该会议');
-        }
-        else{
-            alert('注册失败：错误的论文编号');
-        }
+        console.log(response);
+        alert(response);
     });
     /*
     url: conference/<会议的主键id>/conference_register
@@ -298,9 +263,53 @@ function join_register() {
     */
 }
 
+function paper_upload() {
+    var paper_name = $("input[id='paper_title']").val();
+    var authors = $("input[id='paper_author']").val();
+    var institute = $("input[id='paper_organization']").val();
+    var paper_abstract = $("textarea[id='paper_outline']").val();
+    var paper = $('#paper_up')[0].files[0];
+    if (paper_name === '' || authors === '' || institute === '' || paper_abstract === ''){
+        alert('信息填写不完全');
+        return;
+    }
+    else if(paper === null || paper === undefined){
+        alert('未上传论文');
+        return;
+    }
+    /*TODO:ajax with file*/
+    var formData = new FormData();
+    formData.append('authors', authors);
+    formData.append('institute', institute);
+    formData.append('paper_name', paper_name);
+    formData.append('paper_abstract', paper_abstract);
+    formData.append('paper' ,paper);
+    var settings = {
+        "async": false,
+        "crossDomain": true,
+        "url": url + "conference/conference/" + conference_id + "/paper_submit/",
+        "method": "POST",
+        "headers": {},
+        "processData": false,
+        "contentType": false,
+        "mimeType": "multipart/form-data",
+        "data": formData
+    };
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+        alert(response);
+    });
+    /*
+url: conference/<会议的主键id>/paper_submit
+说明：普通用户提交论文
+from 前端：
+    post: authors 作者们 institute 机构  paper_name paper_abstract  paper 上传的论文文件
+    */
+}
+
 function checkState_r() {
     if(usertype != 'anonymous user' && usertype != null && usertype != undefined){
-        if(meeting.cur_state != 4){
+        if(meeting.state != '注册中'){
             alert('现在不在注册期间！');
         }
         else{
@@ -314,7 +323,7 @@ function checkState_r() {
 
 function checkState_p() {
     if(usertype != 'anonymous user' && usertype != null && usertype != undefined){
-        if(meeting.cur_state != 1){
+        if(meeting.state != '征稿中'){
             alert('现在不在投稿期间！');
         }
         else{
@@ -325,10 +334,8 @@ function checkState_p() {
         alert('请先登录！');
     }
 }
-
 function downloadPaper() {
-    console.log(url + meeting.paper_template);
-    window.open(url + meeting.paper_template);
+    window.open('http://www.baidu.com');
 }
 
 var getParam = function (name) {
@@ -361,7 +368,7 @@ function favorite_state() {
         };
         $.ajax(settings).done(function (response) {
             console.log(response);
-            if(response.message === 'susccess'){
+            if(response.message === 'success'){
                 is_collected = response.data.collected;
                 if(is_collected == true){
                     $('#favorite').text('✔已收藏');
@@ -397,19 +404,18 @@ function add_favorite() {
                 "contentType": false
             };
             $.ajax(settings).done(function (response) {
-               console.log(response.message);
-               if(response.message === 'susccess'){
-                   is_collected = false;
-                   $('#favorite').text('❤收藏会议');
-                   $('#favorite').hover(function () {
-                       $('#favorite').text('❤收藏会议');
-                   }, function () {
-                       $('#favorite').text('❤收藏会议');
-                   });
-               }
-               else {
-                   alert('取消收藏失败，用户没有权限');
-               }
+                console.log(response.message);
+                if(response.message === 'success'){
+                    $('#favorite').text('❤收藏会议');
+                    $('#favorite').hover(function () {
+                        $('#favorite').text('❤收藏会议');
+                    }, function () {
+                        $('#favorite').text('❤收藏会议');
+                    });
+                }
+                else {
+                    alert('取消收藏失败，用户没有权限');
+                }
             });
         }
         else{
@@ -424,8 +430,7 @@ function add_favorite() {
             };
             $.ajax(settings).done(function (response) {
                 console.log(response.message);
-                if(response.message === 'susccess'){
-                    is_collected = true;
+                if(response.message === 'success'){
                     $('#favorite').text('✔已收藏');
                     $('#favorite').hover(function () {
                         $('#favorite').text('取消收藏');
@@ -465,4 +470,3 @@ function format_time(date) {
     str = str.replace('T', ' ');
     return str;
 }
-
