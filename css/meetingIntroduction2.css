@@ -1,0 +1,100 @@
+
+.panel-title{
+    background: url(../img/meetingPanel.png) center left no-repeat;
+    vertical-align:middle;
+    padding-left:10px;
+    font-size: 22px;
+    font-weight: bold;
+
+}
+
+#favorite {
+    width: 240px;
+    height: 60px;
+    line-height: 60px;
+    font-size: 30px;
+    color: #FFFFFF;
+    background: #00a0e3;
+    text-align: center;
+    margin-top: 120px;
+    margin-left: 1100px;
+    border-radius: 15px;
+    border: none;
+}
+
+#favorite:hover {
+    background: #fb2b4e;
+}
+.data-show-box{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.date-tiem-span{
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background: #000000;
+    border-style:solid;
+    border-width: thin thin thick thick;
+    border-color:#00ff00 #00ff00 #0000ff #0000ff;
+    border-radius: 4px;
+    text-align: center;
+    line-height: 50px;
+    padding-left: 0px;
+    color: #ff0000;
+    margin-left: 0px !important;
+}
+.panel-body-btn button{
+    display: inline-block;
+    width: 100px;
+    height: 30px;
+    line-height: 2px;
+    font-size: 18px;
+    color: #FFFFFF;
+    background: #00a0e3;
+    text-align: center;
+    padding-left: 5px;
+    margin: 5px 8px 5px 8px;
+    border: none;
+}
+.panel-body-btn button:hover{
+    background: #fb2b4e;
+}
+.file {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.file + label {
+    display: inline-block;
+    font-weight: 100;
+    border-radius: 4px;
+    padding: 10px;
+    border: 1px;
+    border-color: #cccccc;
+    border-style: solid;
+    width: 100%;
+    background-color: #ffffff;
+}
+
+.file + label:hover {
+    cursor: pointer;
+}
+
+.file:focus + label {
+    outline: 1px dotted #000;
+    outline: -webkit-focus-ring-color auto 5px;
+}
+
+.modal-body  label {
+    font-size: 20px;
+}
+
+.modal-body input {
+    height: 42px;
+}

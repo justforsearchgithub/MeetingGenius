@@ -1,4 +1,3 @@
-
 var url = 'http://139.199.24.235:80/';
 var conference_id = 0;
 var usertype = 'anonymous user';
@@ -25,22 +24,22 @@ var meeting = new Vue(
             email: '这里是联系人邮箱',
             activities: [
                 {
-                    start_time: '2018-12-25 12:00:00',
-                    end_time: '2018-12-25 18:00:00',
+                    start_time: '2018-10-25 12:00:00',
+                    end_time: '2018-10-25 18:00:00',
                     place: '地点A',
-                    activity: '会议开始'
+                    activity_name: '会议开始'
                 },
                 {
-                    start_time: '2018-12-27 12:00:00',
-                    end_time: '2018-12-27 18:00:00',
+                    start_time: '2018-10-27 12:00:00',
+                    end_time: '2018-10-27 18:00:00',
                     place: '地点B',
-                    activity: '会议进行'
+                    activity_name: '会议进行'
                 },
                 {
                     start_time: '2018-12-30 12:00:00',
                     end_time: '2018-12-30 18:00:00',
                     place: '地点C',
-                    activity: '会议结束'
+                    activity_name: '会议结束'
                 }
             ],
         },
@@ -175,22 +174,6 @@ $(document).ready(function () {
             }
         });
     });
-    $(function(){
-
-           // var ts = (new Date()).getTime() + meeting.meetingStartDate;
-
-        $('#countdown').countdown({
-            startTime: '99:12:12:00'
-            /*startTimeStr: '2017/01/11 00:00:00',//开始时间
-            endTimeStr: '2017/01/17 23:59:59',//结束时间
-            daySelector: ".day_num",
-            hourSelector: ".hour_num",
-            minSelector: ".min_num",
-            secSelector: ".sec_num"*/
-        });
-
-    });
-
 })
 
 function triggerfile_fee() {
@@ -224,6 +207,7 @@ function triggerfile_paper() {
 function file_upload(id) {
     $('#'+id).click();
 }
+
 function join_register() {
     var name =  $("input[id='person_name']").val();
     var gender = $("input[name='sex']:checked").val();
@@ -243,13 +227,12 @@ function join_register() {
     if (paper_id === null || paper_id === ""){
         listen_only = true;
     }
-    /*TODO:check ajax with file*/
-    var temp_json = [
-        {'name': name},
-        {'gender': gender},
-        {'reservation': reservation},
-        {'information': information}
-    ];
+    var temp_json = {
+        'name': name,
+        'gender': gender,
+        'reservation': reservation,
+        'information': information
+    };
     var formData = new FormData();
     formData.append('listen_only', listen_only);
     formData.append('paper_id', paper_id);
@@ -280,11 +263,19 @@ function join_register() {
             alert('注册失败：错误的论文编号');
         }
     });
+    /*
+    url: conference/<会议的主键id>/conference_register
+    post: listen_only  仅仅聆听会议  传字符串 true 或者 false 就好
+    paper_id 参与会议的paper的id（如果），participants 与会者的信息（考虑到这些信息只需要在展示时使用，
+    能读即可，不想为其建立单独数据库表，希望前端用序列化的json传递过来，格式为：
+        [{'name': <str>, 'gender': <男or女>, 'reservation' /*是否预定住宿//: <bool>}, ...]  ）
+    pay_voucher 缴费凭证的照片或者pdf文件
+    */
 }
 
 function checkState_r() {
     if(usertype != 'anonymous user' && usertype != null && usertype != undefined){
-        if(meeting.state != '注册中'){
+        if(meeting.cur_state != 4){
             alert('现在不在注册期间！');
         }
         else{
@@ -298,7 +289,7 @@ function checkState_r() {
 
 function checkState_p() {
     if(usertype != 'anonymous user' && usertype != null && usertype != undefined){
-        if(meeting.state != '征稿中'){
+        if(meeting.cur_state != 1){
             alert('现在不在投稿期间！');
         }
         else{
@@ -311,8 +302,8 @@ function checkState_p() {
 }
 
 function downloadPaper() {
-    window.open(url + meeting.paper_template);
     console.log(url + meeting.paper_template);
+    window.open(url + meeting.paper_template);
 }
 
 var getParam = function (name) {
@@ -423,9 +414,6 @@ function add_favorite() {
             });
         }
     }
-    else{
-        alert('请先登录！');
-    }
 }
 
 function LogOut(){
@@ -452,6 +440,5 @@ function format_time(date) {
     str = str.replace('T', ' ');
     return str;
 }
-
 
 

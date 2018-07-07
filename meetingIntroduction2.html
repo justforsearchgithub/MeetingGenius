@@ -2,14 +2,12 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="css/meetingIntroduction.css">
+    <link rel="stylesheet" href="css/meetingIntroduction2.css">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-theme.css">
     <link rel="stylesheet" href="css/alter.css">
-    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.css">
     <link rel="stylesheet" type="text/css" href="css/jquery.eeyellow.Timeline.css"/>
-    <link rel="stylesheet" href="css/jquery.countdown.css" />
-
     <title>会议详情</title>
 </head>
 <body>
@@ -54,7 +52,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8">
-                <div class="panel">
+                <div class="panel" style="float: none">
                     <div class="panel-heading">
                         <h3 class="panel-title" id="schedulingProgram">日程安排</h3>
                     </div>
@@ -68,7 +66,7 @@
                                     <div class="events-body">
                                         <div class="row" style="display: block">
                                             <div class="events-desc timelineDe">
-                                                {{act.activity}}
+                                                {{act.activity_name}}
                                             </div>
                                         </div>
                                     </div>
@@ -95,7 +93,7 @@
                             <div class="panel-heading">
                                 <h3 class="panel-title" >状态</h3>
                             </div>
-                            <div class="panel-body" style="height:50px">
+                            <div class="panel-body" style="height:50px;color: #ff0000">
                                 <p>{{state}}</p>
                             </div>
                         </div>
@@ -142,7 +140,7 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">重要日期</h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body" style="color: #ff0000">
                         <span>注册开始日期</span></br>
                         <p>{{registerOpenDate}}</p>
                         <span>注册截止日期</span></br>
@@ -349,8 +347,6 @@
 </div>
 <!--paper child window end-->
 <script src="js/jquery-3.3.1.js"></script>
-<script src="js/jquery.countdown.js"></script>
-<script src="js/script.js"></script>
 <script src="js/bootstrap.js" ></script>
 <script src="js/bootstrap-datetimepicker.js"></script>
 <script type="text/javascript" src="js/jquery.eeyellow.Timeline.js"></script>
@@ -377,5 +373,3 @@
 </body>
 
 </html>
-
-
