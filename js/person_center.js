@@ -634,6 +634,7 @@ $(document).ready(function () {
                             console.log(data);
                         if (data.message == "success") {
                            vm.$data.papers.length=0;
+                           var flag=0;
                             for(var ptr=0;ptr<data.data.length;ptr++)
                             {
                                 var a;
@@ -671,8 +672,21 @@ $(document).ready(function () {
                                 };
                                 console.log(abc);
                                 vm.$data.papers.push(abc);
-
                                 console.log(vm.$data.papers);
+                                if(data.data[ptr].paper_name_old===null)
+                                {
+                                    console.log('无旧文件！');
+                                }
+                                else
+                                {
+                                    var abc1={
+                                        paper_name:data.data[ptr].paper_name_old,
+                                        paper_url:data.data[ptr].paper_old,
+                                        status:'已审核',
+                                        seen:false
+                                    }
+                                    vm.$data.papers.push(abc1);
+                                }
                                 //paper_id[ptr].id=data.data[ptr].submitter_id;
                                 //console.log('paper'+paper_id[ptr].id);
                             }
@@ -894,21 +908,21 @@ $(document).ready(function () {
                 }
                 else {
                     this.$data.papers[currentpaperindex].seen=false;
-                    var b=$("[name='options'][class='btn btn-primary active']").text();
-                    if(b==='通过')
+                    var bb=$("[name='options'][class='btn btn-primary active']").text();
+                    var b = bb.trim();
+                    if(b=='通过')
                         check_status='P';
-                    if(b==='不通过')
+                    if(b=='不通过')
                         check_status='R';
-                    if(b==='建议修改')
+                    if(b=='建议修改')
                         check_status='M';
+                    console.log(b);
+                    console.log(check_status);
                     vm.$data.papers[currentpaperindex].state = check_status;
                     var formdata = new FormData();
                     formdata.append('state_choice', check_status);
-                    if (check_status === 'M') {
-                        formdata.append('advice', $('#check_advice').val());
-
-                        vm.$data.papers[currentpaperindex].advice = $('#check_advice').val();
-                    }
+                    formdata.append('advice', $('#check_advice').val());
+                    vm.$data.papers[currentpaperindex].advice = $('#check_advice').val();
                     var a;
                     if (check_status === 'P')
                     {
@@ -1156,7 +1170,7 @@ $(document).ready(function () {
         var paper = $('#paper_up')[0].files[0];
         var authors = [];
         var orgs = [];
-        var authorsJSON = [];
+        var authorsJSON = {};
 
         authors .push($("input[id='author-com']").val());
         authors.push($("input[id='author1']").val());
@@ -1188,12 +1202,19 @@ $(document).ready(function () {
                 }
                 else {
                     if(i===0){
-                        authorsJSON.push({'CA': {'name': authors[i], 'institute': orgs[i]}});
+                        // authorsJSON.push({'CA': {'name': authors[i], 'institute': orgs[i]}});
+
+                        authorsJSON['CA']={'name': authors[i], 'institute': orgs[i]};
                     }
+
                     else{
                         var tempJSON = {};
-                        tempJSON['A'+i]= {'name': authors[i], 'institute': orgs[i]};
-                        authorsJSON.push(tempJSON);
+                        var str = 'A'+i;
+                        // tempJSON['A'+i]= {'name': authors[i], 'institute': orgs[i]};
+
+                        authorsJSON[str]={'name': authors[i], 'institute': orgs[i]};
+                        // authorsJSON.push(tempJSON);
+                        // authorsJSON.push(tempJSON);
                     }
                 }
             }
