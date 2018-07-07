@@ -213,6 +213,19 @@
                     </div>
 
                     <div style="margin-top:30px">
+                        <label class="input-label">会议地点</label>
+                        <div class="input-group" style="width:80%">
+                            <div data-toggle="distpicker" id="pickdist">
+                                <select id="province" data-province="---- 选择省 ----"></select>
+                                <select id="city" data-city="---- 选择市 ----"></select>
+                            </div>
+                            <input type="text" id = "Location" class="form-control" placeholder="会议地点"  aria-describedby="basic-addon1">
+
+                        </div>
+
+                    </div>
+
+                    <div style="margin-top:30px">
                         <label class="input-label">注册要求</label>
                         <div class="input-group" style="width:80%">
             <textarea style="height:70px; resize:none" class="form-control" placeholder="Username"
@@ -932,6 +945,7 @@
         });
     });
 </script>
-
+<script src="js/distpicker.data.min.js"></script>
+<script src="js/distpicker.min.js"></script>
 </body>
 </html>
