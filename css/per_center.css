@@ -308,8 +308,46 @@ body blockquote {
     color: rgba(255, 255, 255, 0.7);
 }
 body a {
-
     text-decoration: none;
 }
 body a:hover {
+    cursor: pointer;
 }
+
+.box-line {
+    height: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.box-line .line-left {
+    height: 2px;
+    flex-grow: 1;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0) , #0088cc);
+}
+
+.box-line .line-right {
+    height: 2px;
+    flex-grow: 1;
+    background: linear-gradient(to left, rgba(0, 0, 0, 0) , #0088cc);
+}
+
+.box-line .text {
+    margin: 0 5px;
+}
+
+.input-sm-left {
+    width: 48%;
+    float: left;
+    margin-top: 5px;
+}
+
+.input-sm-right {
+    width: 48%;
+    float: right;
+    margin-top: 5px;
+}
+

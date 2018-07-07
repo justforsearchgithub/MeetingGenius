@@ -148,16 +148,32 @@
                         </h3>
                     </div>
                     <div class="panel-body" align="center" >
-                        <ul class="list-group" v-for="(childaccount,index) in childaccounts" >
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th style="width: 79%">子账户名</th>
+                                <th style="width: 10%">修改</th>
+                                <th style="width: 10%">删除</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr  v-for="(childaccount,index) in childaccounts" style="height: 56px">
+                                <td style="line-height: 37px; width: 79%">{{childaccount.name}}</td>
+                                <td style="line-height: 37px; width: 10%;"><a class="material-icons" v-on:click="setcapassword(index)" style="cursor: pointer">build</a></td>
+                                <td style="line-height: 37px; width: 10%;"><a class="material-icons" v-on:click="deleteca(index)" style="width: 24px; cursor: pointer">delete_foreve</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!--ul class="list-group" v-for="(childaccount,index) in childaccounts" >
                             <li class="list-group-item">子账户名：{{childaccount.name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                                <a class="material-icons" v-on:click="setcapassword(index)" >build</a>     <!--model3-->
+                                <a class="material-icons" v-on:click="setcapassword(index)" >build</a>
                                 <a class="material-icons" v-on:click="deleteca(index)">delete_foreve</a>
                             </li>
-                        </ul>
+                        </ul-->
                     </div>
                 </div>
             </div>
-            <div class="addTimeLine" >
+            <div class="addTimeLine" style="width: 80%">
                 <button class="btn btn-primary btn-lg" v-on:click="addChildAccount2">添加子账户</button>
             </div>
         </div>
@@ -173,24 +189,41 @@
                         </h3>
                     </div>
                     <div class="panel-body" >
-                        <ul class="list-group" v-for="(meeting,index) in meetings" >
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>会议名称</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr  v-for="(meeting,index) in meetings" style="height: 56px">
+                                <td style="line-height: 37px">
+                                    <a :href="['jumpingPage.html?id='+meeting.id]">{{meeting.name}} </a>
+                                    <button style="float: right; margin-left: 10px" type="button" class="btn btn-primary" v-on:click="click_meeting_info(index)">修改会议信息</button>
+                                    <button style="float: right; margin-left: 10px" type="button" class="btn btn-success" v-on:click="click_paper_info(index)">投稿情况</button>
+                                    <button style="float: right; margin-left: 10px" type="button" class="btn btn-warning" v-on:click="click_meeting_user_info(index)">参会人员注册情况</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!--ul class="list-group" v-for="(meeting,index) in meetings" >
                             <li class="list-group-item"><a :href="['jumpingPage.html?id='+meeting.id]">会议名称：{{meeting.name}} </a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                                 <button type="button" class="btn btn-primary" v-on:click="click_meeting_info(index)">修改会议信息</button>
                                 <button type="button" class="btn btn-success" v-on:click="click_paper_info(index)">投稿情况</button>
                                 <button type="button" class="btn btn-warning" v-on:click="click_meeting_user_info(index)">参会人员注册情况</button>
                             </li>
-                        </ul>
+                        </ul-->
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="container" style="display:none" id="div_meeting_info">
-            <div class="row" style="width: 85%">
+            <div class="row">
                 <!--<div class="col-lg-8 col-lg-offset-2">-->
 
                 <div class="step-content">
-                    <h3>会议详细信息</h3>
+                    <h3 style="color: #000000">会议详细信息</h3>
                     <div class="step1-title">
                         <span class="num">1</span>修改会议信息
                     </div>
@@ -263,34 +296,34 @@
                         <span class="num">3</span>填写会议相关日期
                     </div>
                     <div style="margin-top:30px">
-                        <label class="input-label">截稿日期</label>
+                        <label class="input-label" style="width: 150px">截稿日期</label>
                         <div class="input-group" style="display: inline-block">
-                            <input size="10" v-model="temp.accept_due" type="text" value="" class="date form_datetime" >
+                            <input  style="width: 175px" size="10" v-model="temp.accept_due" type="text" value="" class="date form_datetime" >
                         </div>
                     </div>
 
 
                     <div style="margin-top:30px">
-                        <label class="input-label" style="width:200px">注册开始日期</label>
+                        <label class="input-label" style="width: 150px">注册开始日期</label>
                         <div class="input-group" style="display: inline-block">
-                            <input size="10" type="text" value="" class="form_datetime" v-model="temp.register_start">
+                            <input  style="width: 175px" size="10" type="text" value="" class="form_datetime" v-model="temp.register_start">
 
                         </div>
-                        <label class="input-label" style="width:250px;float:none;margin-left:20%">注册截止日期</label>
+                        <label class="input-label" style="width:150px;float:none;margin-left:20%">注册截止日期</label>
                         <div class="input-group" style="display: inline-block">
-                            <input size="10" type="text" value="" class="form_datetime" v-model="temp.register_due">
+                            <input  style="width: 175px" size="10" type="text" value="" class="form_datetime" v-model="temp.register_due">
                         </div>
                     </div>
 
                     <div style="margin-top:30px">
                         <label class="input-label" style="width:150px">会议开始时间</label>
                         <div class="input-group" style="display: inline-block">
-                            <input  type="text"  class="form_datetime" v-model="temp.conference_start">
+                            <input  style="width: 175px"  type="text"  class="form_datetime" v-model="temp.conference_start">
 
                         </div>
                         <label class="input-label" style="width:150px;float:none;margin-left:20%">会议结束日期</label>
                         <div class="input-group" style="display: inline-block">
-                            <input  type="text" id="conference_due" value="" class="form_datetime" v-model="temp.conference_due">
+                            <input  style="width: 175px"  type="text" id="conference_due" value="" class="form_datetime" v-model="temp.conference_due">
                         </div>
                     </div>
 
@@ -326,8 +359,8 @@
 
                     <div class="container" id="TimeLine">
                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="VivaTimeline">
+                            <div style="margin-left: -150px">
+                                <div class="VivaTimeline" style="transform: scale(0.8)">
                                     <dl>
                                         <dd  v-for="(activity,index) in Activities" class="clearfix" :class="{'pos-right':index%2 != 1}">
                                             <div class="circ"></div>
@@ -453,12 +486,50 @@
                         </h3>
                     </div>
                     <div class="panel-body" >
-                        <ul class="list-group" v-for="(paper,index) in papers" >
+                        <!--table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th style="width: 30%">论文题目</th>
+                                <th style="width: 30%">论文提交者</th>
+                                <th style="width: 15%">审核状态</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(paper,index) in papers" style="height: 56px">
+                                <td style="line-height: 37px; width: 30%">{{paper.paper_name}}</td>
+                                <td style="line-height: 37px; width: 30%;">{{paper.submitter}}</td>
+                                <td style="line-height: 37px; width: 15%;">{{paper.status}}</td>
+                                <button type="button" class="btn btn-primary"  v-if="paper.seen" v-on:click="click_paper_check(index)" style="float: right">填写审核意见</button>
+                                <button type="button" class="btn btn-success" v-on:click="click_download(index)"  style="float: right; margin-left: 10px">下载</button>
+                            </tr>
+                            </tbody>
+                        </table-->
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th style="width: 30%">论文题目</th>
+                                <th style="width: 30%">论文提交者</th>
+                                <th style="width: 40%">审核状态</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(paper,index) in papers" style="height: 56px">
+                                    <td style="line-height: 37px; width: 30%">{{paper.paper_name}}</td>
+                                    <td style="line-height: 37px; width: 30%;">{{paper.submitter}}</td>
+                                    <td style="line-height: 37px; width: 40%;">
+                                        {{paper.status}}
+                                        <button type="button" class="btn btn-primary"  v-if="paper.seen" v-on:click="click_paper_check(index)" style="float: right; margin-left: 10px">填写审核意见</button>
+                                        <button type="button" class="btn btn-success" v-on:click="click_download(index)"  style="float: right">下载</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--ul class="list-group" v-for="(paper,index) in papers" >
                             <li class="list-group-item">论文题目：{{paper.paper_name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文提交者：{{paper.submitter}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{paper.status}}
                                 <button type="button" class="btn btn-primary"  v-if="paper.seen" v-on:click="click_paper_check(index)">填写审核意见</button>
                                 <button type="button" class="btn btn-success" v-on:click="click_download(index)"  >下载</button>
                             </li>
-                        </ul>
+                        </ul-->
                     </div>
                 </div>
                 <div align="center">
@@ -479,10 +550,26 @@
                         </h3>
                     </div>
                     <div class="panel-body" >
-                        <ul class="list-group" v-for="(meeting_user in meeting_users" >
-                            <li class="list-group-item">姓名：{{meeting_user.name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 性别：{{meeting_user.gender}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;是否预定住宿:{{meeting_user.reservation}}
-                            </li>
-                        </ul>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th style="width: 49%">姓名</th>
+                                <th style="width: 25%">性别</th>
+                                <th style="width: 25%">是否预订住宿</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="meeting_user in meeting_users" style="height: 56px">
+                                <td style="line-height: 37px; width: 49%">{{meeting_user.name}}</td>
+                                <td style="line-height: 37px; width: 25%;">{{meeting_user.gender}}</td>
+                                <td style="line-height: 37px; width: 25%;">{{meeting_user.reservation}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!--<ul class="list-group" v-for="(meeting_user in meeting_users" >-->
+                            <!--<li class="list-group-item">姓名：{{meeting_user.name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 性别：{{meeting_user.gender}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;是否预定住宿:{{meeting_user.reservation}}-->
+                            <!--</li>-->
+                        <!--</ul>-->
                     </div>
                 </div>
                 <div align="center">
@@ -516,7 +603,7 @@
                             确认密码<input v-model="temp_password2" type="text" value=""
                                    class="form-control form_datetimeTimeLine" >
                         </div>
-                        <button type="button" class="btn btn-success" v-on:click="set_password">确定</button>
+                        <button type="button" class="btn btn-success" style="position: absolute;margin: 20px;" v-on:click="set_password">确定</button>
                     </div>
                 </div>
 
@@ -559,7 +646,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                         &times;
                     </button>
-                    <h4 class="modal-title" >
+                    <h4 class="modal-title" style="color: #000000">
                         添加一个子账户
                     </h4>
                 </div>
@@ -788,11 +875,11 @@
                         <label>论文摘要</label>
                         <textarea class="form-control" readonly="readonly" rows="8" id="paper_abstract1"></textarea>
                     </div>
-                    <div style="margin-top:30px">
+                    <div style="width: 100%">
                         <label class="input-label" style="width:150px;">审核意见 </label>
-                        <div class="input-group" style="display: inline-block">
-                            <input id="check_advice" type="text" value=""
-                                   class="form-control form_datetimeTimeLine">
+                        <div class="input-group" style="display: inline-block; width: 100%">
+                            <textarea class="form-control" rows="5" id="check_advice"></textarea>
+                            <!--<input id="check_advice" type="text" value="" class="form-control form_datetimeTimeLine">-->
                         </div>
                     </div>
 
