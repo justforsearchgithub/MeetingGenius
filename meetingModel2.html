@@ -70,7 +70,7 @@
         <div class="col-md-4  col-xs-12  fl mt-20" style="font-size: 20px">
             <div><label>主办方：</label>{{ organization }}</div>
             <div><label>学科：</label>{{ subject }}</div>
-            <div><label>状态：</label><span style="color: #ff0000">{{ state }}</span></div>
+            <div><label>状态：</label><span v-html="state"></span></div>
         </div>
         <div class="well" style="width: 65%; float: right; min-height: 200px">
             <p class="f-18 lh-36">&nbsp;&nbsp;&nbsp;&nbsp;{{ introduction }}</p>
@@ -84,8 +84,8 @@
     <div class="w-1200 auto">
     <h2>重要日期</h2>
         <dl>
-            <dt>投稿开始:<span>{{ accept_start }}</span></dt>
-            <dd>投稿截止:<span>{{ accept_due }}</span></dd>
+            <dt>投稿截止:<span>{{ accept_due }}</span></dt>
+            <dd>修改截止:<span>{{ modify_due }}</span></dd>
         </dl>
         <dl class="ml-30 mr-30">
             <dt>注册开始:<span>{{ register_start }}</span></dt>

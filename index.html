@@ -57,6 +57,12 @@
 <div class="Search-Wrapper">
     <div class="container" style="display: inline-block">
         <!--<h4>Search your Conference</h4>-->
+        <ul class="nav nav-tabs" style="padding-left:8%;">
+            <li role="presentation" onclick="changeSearchKey(this)" class="active"><a href="#">会议名称</a></li>
+            <li role="presentation" onclick="changeSearchKey(this)"><a href="#">机构</a></li>
+            <li role="presentation" onclick="changeSearchKey(this)"><a href="#">分类</a></li>
+        </ul>
+
         <input id="SearchBarText" type="text" class="SearchBar" placeholder="会议名称/机构/分类">
         <button type="button" class="btn SearchBarBtn" onclick="GoToSearch()">
             <i class="glyphicon glyphicon-search">
@@ -65,6 +71,11 @@
     </div>
 </div>
 
+<div style="text-align: center;width:100%;height:450px;">
+    <h2 style="font-weight:lighter">热点学科</h2>
+<div id="piechart" style="margin:auto;width:600px; height: 400px;">
+</div>
+</div>
 
 <div class="container" style="width:100%">
     <div style="width:60%;float:left">
@@ -75,7 +86,8 @@
             <ul class="list-group">
                 <li class="list-group-item" v-for="Con in HotSpotConferenceList">
                     <div>
-                        <span :id="['ConDetail_'+Con.pk]" style="display: inline-block"><h4><a style="color: #000000;" :href="['meetingModel2.html?id='+Con.pk]">{{Con.title}}</a></h4></span>
+                        <span :id="['ConDetail_'+Con.pk]" style="display: inline-block"><h4><a style="color: #000000;"
+                                                                                               :href="['meetingModel2.html?id='+Con.pk]">{{Con.title}}</a></h4></span>
                         <span style="float:right"><h5 style="display: inline-block">{{Con.conference_start}}</h5></span>
                     </div>
                 </li>
@@ -84,16 +96,18 @@
     </div>
     <div style="width:30%;float:right">
         <div style="width:100%;float:left">
-            <h2 style="font-weight: lighter;">已经入驻的机构</h2>
+            <h2 style="font-weight: lighter;">已经入驻的机构
+                <span style="cursor:pointer;font-size:small;float:right;margin-top:20px;margin-right:40px"
+                      class="glyphicon glyphicon-refresh" onclick="RefreshOrg()">换一批</span></h2>
         </div>
 
-        <div style="width:100%;padding-right:40px;float:right">
+        <div style="width:100%;padding-right:40px;float:right" id="RandomOrgList">
 
             <ul class="list-group">
 
-                <li class="list-group-item">
+                <li class="list-group-item" v-for="Org in RandomOrgList">
                     <div>
-                        <span style="display: inline-block"><h4>灵子转移机构</h4></span>
+                        <span style="display: inline-block;overflow:hidden;white-space: nowrap;text-overflow: ellipsis;"><h4>{{Org}}</h4></span>
 
                     </div>
                 </li>
@@ -103,10 +117,14 @@
     </div>
 </div>
 
-    <script src='js/jquery-3.3.1.js'></script>
-    <script src="js/bootstrap.js"></script>
-    <script src="js/vue.js"></script>
-    <script src="js/login.js"></script>
-    <script src="js/index.js"></script>
+<script src='js/jquery-3.3.1.js'></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/login.js"></script>
+<script src="js/index.js"></script>
+<script src="js/echarts.simple.min.js"></script>
+<script type="text/javascript">
+
+</script>
 </body>
 </html>

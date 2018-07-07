@@ -25,7 +25,7 @@ function GetCurrentUser(){
                 type = 1;
                 $('#NavText1').attr('href','person_center.html');
                 $('#NavText2').removeAttr('href');
-                $('#NavText1').text ('个人中心');
+                $('#NavText1').text (user);
                 $('#NavText2').text('登出');
                 $('#NavText2').attr('onclick','LogOut()');
                 var str = "";
@@ -154,6 +154,9 @@ function Login() {
                 }
                 else if (data.message === "username or password error"){
                     alert('登录失败，用户名或密码错误');
+                }
+                else if(data.message === "not active"){
+                    alert('该账号还未通过审核！')
                 }
                 else {
                     alert('登录失败，服务器错误，请联系网站管理员解决');
@@ -309,20 +312,24 @@ function enterprise_reg() {
             "data": formData
         };
         $.ajax(settings).done(function (response) {
+            response = JSON.parse(response);
             console.log(response);
-            alert(response);
-            if(response.message =="success"){
+            if(response.message =="success") {
                 alert('注册信息提交成功，请等待管理员审核，审核结果将通过邮件发送');
-                window.location.href='index.html';
+                window.location.href = 'index.html';
+                return;
             }
-            else if (data.message === "username error"){
+            else if (response.message == "username error"){
                 alert('注册失败，用户名重复');
+                return ;
             }
-            else if (data.message === "password error"){
+            else if (response.message == "password error"){
                 alert('注册失败，密码不一致');
+                return;
             }
             else {
                 alert('注册失败，服务器错误，请联系网站管理员解决');
+                return;
             }
         });
     }
@@ -361,7 +368,7 @@ function GoToCreateCon(){
         success: function (data) {
            console.log(data);
            console.log(data.data.user_type);
-           if(data.data.user_type == "organization_user"){
+           if(data.data.user_type == "organization_user" || data.data.user_type == "organization_sub_user"){
                window.location.href = "createCon.html";
            }
            else{

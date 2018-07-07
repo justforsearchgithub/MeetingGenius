@@ -56,19 +56,26 @@ function paper_upload() {
                 return;
             }
             else {
-                if(i===0){
+                console.log(i);
+                if(i==0){
+                    console.log(authors[i]);
                     authorsJSON.push({'CA': {'name': authors[i], 'institute': orgs[i]}});
+                    console.log(authorsJSON);
                 }
                 else{
                     var tempJSON = {};
+                    console.log(authors[i]);
                     tempJSON['A'+i]= {'name': authors[i], 'institute': orgs[i]};
                     authorsJSON.push(tempJSON);
+                    console.log(authorsJSON);
                 }
             }
         }
     }
+
     var formData = new FormData();
-    //todo:add author and org
+    console.log(authorsJSON);
+
     formData.append('authors', JSON.stringify(authorsJSON));
     formData.append('institute', 'default');
     formData.append('paper_name', paper_name);
@@ -86,11 +93,13 @@ function paper_upload() {
         "data": formData
     };
     $.ajax(settings).done(function (response) {
-        console.log(response.message);
-        if(response.message === 'multiple submission'){
+        var data;
+        data = JSON.parse(response);
+        console.log(data.message);
+        if(data.message === 'multiple submission'){
             alert('您已经提交过论文了');
         }
-        else if (response.message === 'success'){
+        else if (data.message === 'success'){
             alert('论文提交成功！');
         }
         else{
