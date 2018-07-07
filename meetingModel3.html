@@ -201,10 +201,10 @@
                             </li>
                             <li v-for="act in activities">
                                 <div class="point"></div>
-                                <h4>{{act.activity_name}}</h4>
-                                <p>{{act.start_time.split('T')[0]}}&nbsp;至</p>
-                                <p>{{act.end_time.split('T')[0]}}</p>
-                                <p>地点：{{act.place}}</p>
+                                <h4>{{act.place}}</h4>
+                                <p>{{act.start_time.split('T').join(' ')}}&nbsp;至</p>
+                                <p>{{act.end_time.split('T').join(' ')}}</p>
+                                <p>&emsp;&emsp;{{act.activity_name}}</p>
                             </li>
                             <li><div class="point"></div>
                                 <h4>会议结束</h4>

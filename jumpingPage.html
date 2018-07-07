@@ -47,11 +47,11 @@
             $.ajax(conference_settings).done(function (response) {
                 console.log(response.message);
                 var type = response.data.template_no;
-                if (type === '1') {
-                    window.location.href = url + "static/meetingModel2.html?id=" + conference_id;
+                if (type == '1') {
+                    window.location.href = "meetingModel3.html?id=" + conference_id;
                 }
-                else if (type === '2') {
-                    window.location.href = url + "static/meetingModel3.html?id=" + conference_id;
+                else if (type == '2') {
+                    window.location.href = "meetingModel2.html?id=" + conference_id;
                 }
             });
         }
