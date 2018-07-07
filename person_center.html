@@ -129,7 +129,7 @@
                     </div>
                     <div class="panel-body" >
                         <ul class="list-group" v-for="(collection_meeting,index) in collection_meetings" >
-                            <li class="list-group-item" style="align:center"><a :href="['meetingModel2.html?id='+collection_meeting.id]">会议名称：{{collection_meeting.name}} </a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                            <li class="list-group-item" style="align:center"><a :href="['jumpingPage.html?id='+collection_meeting.id]">会议名称：{{collection_meeting.name}} </a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                             </li>
                         </ul>
                     </div>
@@ -174,7 +174,7 @@
                     </div>
                     <div class="panel-body" >
                         <ul class="list-group" v-for="(meeting,index) in meetings" >
-                            <li class="list-group-item"><a :href="['meetingModel2.html?id='+meeting.id]">会议名称：{{meeting.name}} </a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                            <li class="list-group-item"><a :href="['jumpingPage.html?id='+meeting.id]">会议名称：{{meeting.name}} </a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                                 <button type="button" class="btn btn-primary" v-on:click="click_meeting_info(index)">修改会议信息</button>
                                 <button type="button" class="btn btn-success" v-on:click="click_paper_info(index)">投稿情况</button>
                                 <button type="button" class="btn btn-warning" v-on:click="click_meeting_user_info(index)">参会人员注册情况</button>
@@ -208,6 +208,19 @@
                         <div class="input-group" style="width:80%">
             <textarea style="height:100px; resize:none" class="form-control" placeholder="Username"
                       aria-describedby="basic-addon1" v-model="temp.introduction"></textarea>
+                        </div>
+
+                    </div>
+
+                    <div style="margin-top:30px">
+                        <label class="input-label">会议地点</label>
+                        <div class="input-group" style="width:80%">
+                            <div data-toggle="distpicker" id="pickdist">
+                                <select id="province" data-province="---- 选择省 ----"></select>
+                                <select id="city" data-city="---- 选择市 ----"></select>
+                            </div>
+                            <input type="text" id = "Location" class="form-control" placeholder="会议地点"  aria-describedby="basic-addon1">
+
                         </div>
 
                     </div>
@@ -252,7 +265,7 @@
                     <div style="margin-top:30px">
                         <label class="input-label">截稿日期</label>
                         <div class="input-group" style="display: inline-block">
-                            <input size="10" placeholder="yyyy-mm-dd hh:ii" type="text" value="" class="date form_datetime" >
+                            <input size="10" v-model="temp.accept_due" type="text" value="" class="date form_datetime" >
                         </div>
                     </div>
 
@@ -792,7 +805,7 @@
                             <label name="options"  class="btn btn-primary">
                                 <input type="radio"  id="option2">不通过
                             </label>
-                            <label name="options" v-if="!paper_detail.modified" class="btn btn-primary">
+                            <label name="options" v-if="paper_detail.modified" class="btn btn-primary">
                                 <input type="radio"  id="option3">建议修改
                             </label>
                         </div>
@@ -932,6 +945,7 @@
         });
     });
 </script>
-
+<script src="js/distpicker.data.min.js"></script>
+<script src="js/distpicker.min.js"></script>
 </body>
 </html>

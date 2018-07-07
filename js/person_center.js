@@ -252,10 +252,10 @@ $(document).ready(function () {
             ],
             //会议详细信息
             meetings:[
-                {
+                /*{
                     id:'1',
                     name:'测试'
-                }
+                }*/
             ],
             //会议的活动列表
             Activities:myActivities,
@@ -404,6 +404,7 @@ $(document).ready(function () {
                         if (data.message == "success") {
                             vm.$data.meetings.length=0;
                             console.log('end');
+                            console.log(data);
                             for(var ptr=0;ptr<data.data.length;ptr++)
                             {
                                 console.log('ptr'+ptr);
@@ -503,6 +504,7 @@ $(document).ready(function () {
             //修改会议信息
             click_meeting_info: function (no) {
                 currentindex=no;
+                console.log(this.$data.meetings[no].id);
                 $.ajax({
                     type: 'GET',
                     url: url + 'conference/conference/'+this.$data.meetings[no].id+'/information/',
@@ -520,6 +522,8 @@ $(document).ready(function () {
                             vm.$data.temp.soliciting_requirement=data.data. soliciting_requirement;
                             vm.$data.temp.accept_start=stringchange(data.data.accept_due);
                             vm.$data.temp.accept_due=stringchange(data.data.accept_due);
+                            vm.$data.temp.template_no=data.data.template_no;
+                            vm.$data.temp.venue=data.data.venue;
                             //vm.$data.temp.modify_due=stringchange(data.data.modify_due);
 
                             vm.$data.temp.register_start=stringchange(data.data.register_start);
@@ -533,7 +537,32 @@ $(document).ready(function () {
                         }
                     }
                 });
-
+                var str=vm.$data.temp.venue;
+                var a1=str.indexOf('_');
+                var p_str=str.slice(0,a1);
+                var b1=str.indexOf('&');
+                var b2=str.indexOf('_',b1);
+                var c_str=str.slice(b1+1,b2);
+                var c1=str.indexOf('&',b2);
+                var city=str.slice(c1+1);
+                console.log(str);
+                /*var str=vm.$data.temp.venue;
+                var str1=str.split('_');
+                var p_str=str1[0];
+                str2=str1[1].split('_');
+                var c_city=str2[0];
+                var str3=str2[1].split('&');
+                var city=str3[1];*/
+                /*var str=vm.$data.temp.venue;
+                console.log(str);
+                var p_str = str.split('&')[0].split('_')[0];
+                var c_str = str.split('&')[1].split('_')[0];
+                var city = str.split('&')[2];*/
+                $('#pickdist').distpicker({
+                    province: p_str,
+                    city: c_str,
+                });
+                document.getElementById("Location").value=city;
                 $.ajax({
                     type: 'GET',
                     url: url + 'display/conference/'+this.$data.meetings[no].id+'/activities/',
@@ -545,23 +574,24 @@ $(document).ready(function () {
                         if (data.message == "success") {
                             console.log('goodgood');
                             console.log(data);
-                            myActivities.length=0;
-                            vm.$data.Activities.length=0;
-                            for(var index=0;index<data.data.length;index++)
-                            {
-                                var temp_activity={
-                                    start_time:stringchange(data.data[index].start_time),
-                                    end_time:stringchange(data.data[index].end_time),
-                                    place:data.data[index].place,
-                                    activity:data.data[index].activity_name
-                                };
-                                console.log(temp_activity.start_time);
-                                console.log(temp_activity.end_time);
-                                myActivities.push(temp_activity);
-                               // vm.$data.Activities.push(temp_activity);
+                            myActivities.length = 0;
+                            vm.$data.Activities.length = 0;
+                            if (data.data.length != 0) {
+                                for (var index = 0; index < data.data.length; index++) {
+                                    var temp_activity = {
+                                        start_time: stringchange(data.data[index].start_time),
+                                        end_time: stringchange(data.data[index].end_time),
+                                        place: data.data[index].place,
+                                        activity: data.data[index].activity_name
+                                    };
+                                    console.log(temp_activity.start_time);
+                                    console.log(temp_activity.end_time);
+                                    myActivities.push(temp_activity);
+                                    // vm.$data.Activities.push(temp_activity);
+                                }
+                                console.log('endend');
+                                console.log(vm.$data.Activities[0].activity);
                             }
-                            console.log('endend');
-                            console.log(vm.$data.Activities[0].activity);
                         }
                     }
                 });
@@ -576,6 +606,7 @@ $(document).ready(function () {
             //论文审核信息
             click_paper_info: function (no) {
                 currentindex=no;
+                console.log(this.$data.meetings[no].id);
                 $.ajax({
                     type: 'GET',
                     url: url + 'display/conference/'+this.$data.meetings[no].id+'/papers/',
@@ -654,44 +685,47 @@ $(document).ready(function () {
                         console.log(data);
                         if (data.message == "success") {
                             vm.$data.paper_detail.length=0;
+                            var b=true;
+                            if(data.data.modified===true)
+                                b=false;
                             var abc={
                                 paper_name:data.data.paper_name,
                                 state:data.data.state,
                                 paper_abstract:data.data.paper_abstract,
-                                modified:data.data.modified
+                                modified:b
                                 //paper_id[ptr].id=data.data[ptr].submitter_id;
                                 //console.log('paper'+paper_id[ptr].id);
                             };
                             vm.$data.paper_detail.push(abc);
                             console.log(data.data.authors);
-                            $('#author11').val(data.data.authors[1]["A1"].name);
-                            $('#org11').val(data.data.authors[1]["A1"].institute);
-                            $('#author-com1').val(data.data.authors[0]["CA"].name);
-                            $('#org-com1').val(data.data.authors[0]["CA"].institute);
+                            $('#author11').val(data.data.authors["A1"].name);
+                            $('#org11').val(data.data.authors["A1"].institute);
+                            $('#author-com1').val(data.data.authors["CA"].name);
+                            $('#org-com1').val(data.data.authors["CA"].institute);
                             $('#paper_title1').val(data.data.paper_name);
                             $('#paper_abstract1').val(data.data.paper_abstract);
-                            if(data.data.authors[2]!=undefined)
+                            if(data.data.authors["A2"]!=undefined)
                             {
-                                $('#author12').val(data.data.authors[2]["A2"].name);
-                                $('#org12').val(data.data.authors[2]["A2"].institute);
+                                $('#author12').val(data.data.authors["A2"].name);
+                                $('#org12').val(data.data.authors["A2"].institute);
                                 $('#author-12').removeClass('hidden');
                             }
-                            if(data.data.authors[3]!=undefined)
+                            if(data.data.authors["A4"]!=undefined)
                             {
-                                $('#author13').val(data.data.authors[3]["A3"].name);
-                                $('#org13').val(data.data.authors[3]["A3"].institute);
+                                $('#author13').val(data.data.authors["A3"].name);
+                                $('#org13').val(data.data.authors["A3"].institute);
                                 $('#author-13').removeClass('hidden');
                             }
-                            if(data.data.authors[4]!=undefined)
+                            if(data.data.authors["A4"]!=undefined)
                             {
-                                $('#author14').val(data.data.authors[4]["A4"].name);
-                                $('#org14').val(data.data.authors[4]["A4"].institute);
+                                $('#author14').val(data.data.authors["A4"].name);
+                                $('#org14').val(data.data.authors["A4"].institute);
                                 $('#author-14').removeClass('hidden');
                             }
-                            if(data.data.authors[5]!=undefined)
+                            if(data.data.authors["A5"]!=undefined)
                             {
-                                $('#author15').val(data.data.authors[5]["A5"].name);
-                                $('#org15').val(data.data.authors[5]["A5"].institute);
+                                $('#author15').val(data.data.authors["A5"].name);
+                                $('#org15').val(data.data.authors["A5"].institute);
                                 $('#author-15').removeClass('hidden');
                             }
                         }
@@ -716,6 +750,14 @@ $(document).ready(function () {
                 Vue.set(vm.$data.meetings, currentindex, vm.$data.meetings[currentindex]);
                 var activities = JSON.stringify(myActivities);
                 var formdata = new FormData();
+                if(paper_template!=undefined)
+                {
+                    formdata.append('paper_template', paper_template);
+                }
+                var location_id = document.getElementById('province').selectedIndex;
+                var city_id = document.getElementById('city').selectedIndex;
+                var location = $('#province').val()+'_'+location_id+'&'+$('#city').val()+'_'+city_id+'&'+$('#Location').val();
+                formdata.append('venue',location);
                 formdata.append('title', vm.$data.temp.title);
                 formdata.append('introduction', vm.$data.temp.introduction);
                 formdata.append('subject', vm.$data.temp.subject);
@@ -726,10 +768,8 @@ $(document).ready(function () {
                 formdata.append('register_due', vm.$data.temp.register_due);
                 formdata.append('conference_start', vm.$data.temp.conference_start);
                 formdata.append('conference_due', vm.$data.temp.conference_due);
-                formdata.append('paper_template', vm.$data.temp.paper_template);
                 formdata.append('activities',activities);
-                formdata.append('template_no', 1);
-                formdata.append('venue','123');
+                formdata.append('template_no', vm.$data.temp.template_no);
                 $.ajax({
                     type: 'POST',
                     url: url + 'conference/edit_conference/'+this.$data.meetings[currentindex].id+'/',
@@ -926,6 +966,7 @@ $(document).ready(function () {
                 $('#myModal2').modal({backdrop: 'static', keyboard: true});
             },
             addChildAccount3: function (event) {
+                var message;
                 console.log('点击添加');
                 var formData = new FormData();
                 formData.append("username", this.$data.addchildaccount_name);
@@ -941,12 +982,14 @@ $(document).ready(function () {
                     processData: false,
                     success: function (data) {
                         console.log(data);
-                        if (data.message == "success") {
-                            alert("添加成功");
-                            this.$options.methods.click_childaccount();
-                        }
+                        message=data.message;
                     }
                 });
+                if(message==='success')
+                {
+                    alert('添加成功');
+                    this.$options.methods.click_childaccount();
+                }
             },
             addChildAccount4: function(event){
                 $.ajax({
@@ -1062,9 +1105,13 @@ $(document).ready(function () {
                         cache: false,
                         processData: false,
                         success: function (data) {
-                            if (data.message == "success") {
+                            console.log(data);
+                            if (data.message ==="success") {
                                 alert('修改成功');
-
+                                //this.$data.setaccount_password=' ';
+                                //this.$data.temp_password=' ';
+                                //this.$data.temp_password2=' ';
+                                //console.log(this.$data.setaccount_password);
                             }
                             else if(data.message==="old_password error")
                             {
@@ -1183,7 +1230,7 @@ $(document).ready(function () {
                         processData: false,
                         success: function (data) {
                             if (data.message == "success") {
-                                alert('修改成功');
+                                alert('修改成功123');
 
                             }
                         }
