@@ -252,10 +252,10 @@ $(document).ready(function () {
             ],
             //会议详细信息
             meetings:[
-                {
+                /*{
                     id:'1',
                     name:'测试'
-                }
+                }*/
             ],
             //会议的活动列表
             Activities:myActivities,
@@ -404,6 +404,7 @@ $(document).ready(function () {
                         if (data.message == "success") {
                             vm.$data.meetings.length=0;
                             console.log('end');
+                            console.log(data);
                             for(var ptr=0;ptr<data.data.length;ptr++)
                             {
                                 console.log('ptr'+ptr);
@@ -503,6 +504,7 @@ $(document).ready(function () {
             //修改会议信息
             click_meeting_info: function (no) {
                 currentindex=no;
+                console.log(this.$data.meetings[no].id);
                 $.ajax({
                     type: 'GET',
                     url: url + 'conference/conference/'+this.$data.meetings[no].id+'/information/',
@@ -520,6 +522,8 @@ $(document).ready(function () {
                             vm.$data.temp.soliciting_requirement=data.data. soliciting_requirement;
                             vm.$data.temp.accept_start=stringchange(data.data.accept_due);
                             vm.$data.temp.accept_due=stringchange(data.data.accept_due);
+                            vm.$data.temp.template_no=data.data.template_no;
+                            vm.$data.temp.venue=data.data.venue;
                             //vm.$data.temp.modify_due=stringchange(data.data.modify_due);
 
                             vm.$data.temp.register_start=stringchange(data.data.register_start);
@@ -576,6 +580,7 @@ $(document).ready(function () {
             //论文审核信息
             click_paper_info: function (no) {
                 currentindex=no;
+                console.log(this.$data.meetings[no].id);
                 $.ajax({
                     type: 'GET',
                     url: url + 'display/conference/'+this.$data.meetings[no].id+'/papers/',
@@ -654,11 +659,14 @@ $(document).ready(function () {
                         console.log(data);
                         if (data.message == "success") {
                             vm.$data.paper_detail.length=0;
+                            var b=true;
+                            if(data.data.modified===true)
+                                b=false;
                             var abc={
                                 paper_name:data.data.paper_name,
                                 state:data.data.state,
                                 paper_abstract:data.data.paper_abstract,
-                                modified:data.data.modified
+                                modified:b
                                 //paper_id[ptr].id=data.data[ptr].submitter_id;
                                 //console.log('paper'+paper_id[ptr].id);
                             };
@@ -716,6 +724,10 @@ $(document).ready(function () {
                 Vue.set(vm.$data.meetings, currentindex, vm.$data.meetings[currentindex]);
                 var activities = JSON.stringify(myActivities);
                 var formdata = new FormData();
+                if(paper_template!=undefined)
+                {
+                    formdata.append('paper_template', paper_template);
+                }
                 formdata.append('title', vm.$data.temp.title);
                 formdata.append('introduction', vm.$data.temp.introduction);
                 formdata.append('subject', vm.$data.temp.subject);
@@ -726,10 +738,9 @@ $(document).ready(function () {
                 formdata.append('register_due', vm.$data.temp.register_due);
                 formdata.append('conference_start', vm.$data.temp.conference_start);
                 formdata.append('conference_due', vm.$data.temp.conference_due);
-                formdata.append('paper_template', vm.$data.temp.paper_template);
                 formdata.append('activities',activities);
-                formdata.append('template_no', 1);
-                formdata.append('venue','123');
+                formdata.append('template_no', vm.$data.temp.template_no);
+                formdata.append('venue',vm.$data.temp.venue);
                 $.ajax({
                     type: 'POST',
                     url: url + 'conference/edit_conference/'+this.$data.meetings[currentindex].id+'/',
@@ -926,6 +937,7 @@ $(document).ready(function () {
                 $('#myModal2').modal({backdrop: 'static', keyboard: true});
             },
             addChildAccount3: function (event) {
+                var message;
                 console.log('点击添加');
                 var formData = new FormData();
                 formData.append("username", this.$data.addchildaccount_name);
@@ -941,12 +953,14 @@ $(document).ready(function () {
                     processData: false,
                     success: function (data) {
                         console.log(data);
-                        if (data.message == "success") {
-                            alert("添加成功");
-                            this.$options.methods.click_childaccount();
-                        }
+                        message=data.message;
                     }
                 });
+                if(message==='success')
+                {
+                    alert('添加成功');
+                    this.$options.methods.click_childaccount();
+                }
             },
             addChildAccount4: function(event){
                 $.ajax({
@@ -1062,9 +1076,13 @@ $(document).ready(function () {
                         cache: false,
                         processData: false,
                         success: function (data) {
-                            if (data.message == "success") {
+                            console.log(data);
+                            if (data.message ==="success") {
                                 alert('修改成功');
-
+                                //this.$data.setaccount_password=' ';
+                                //this.$data.temp_password=' ';
+                                //this.$data.temp_password2=' ';
+                                //console.log(this.$data.setaccount_password);
                             }
                             else if(data.message==="old_password error")
                             {
@@ -1183,7 +1201,7 @@ $(document).ready(function () {
                         processData: false,
                         success: function (data) {
                             if (data.message == "success") {
-                                alert('修改成功');
+                                alert('修改成功123');
 
                             }
                         }
