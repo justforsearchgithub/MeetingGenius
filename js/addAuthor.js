@@ -25,7 +25,7 @@ function paper_upload() {
     var paper = $('#paper_up')[0].files[0];
     var authors = [];
     var orgs = [];
-    var authorsJSON = [];
+    var authorsJSON = {};
 
     authors .push($("input[id='author-com']").val());
     authors.push($("input[id='author1']").val());
@@ -59,14 +59,16 @@ function paper_upload() {
                 console.log(i);
                 if(i==0){
                     console.log(authors[i]);
-                    authorsJSON.push({'CA': {'name': authors[i], 'institute': orgs[i]}});
+                    authorsJSON['CA'] ={'name':authors[i],'institute':orgs[i]};
+                    // authorsJSON.push({'CA': {'name': authors[i], 'institute': orgs[i]}});
                     console.log(authorsJSON);
                 }
                 else{
                     var tempJSON = {};
                     console.log(authors[i]);
-                    tempJSON['A'+i]= {'name': authors[i], 'institute': orgs[i]};
-                    authorsJSON.push(tempJSON);
+                    var str = 'A'+i;
+                    // tempJSON['A'+i]= {'name': authors[i], 'institute': orgs[i]};
+                    authorsJSON[str] = {'name':authors[i],'institute':orgs[i]};
                     console.log(authorsJSON);
                 }
             }
@@ -75,8 +77,10 @@ function paper_upload() {
 
     var formData = new FormData();
     console.log(authorsJSON);
-
-    formData.append('authors', JSON.stringify(authorsJSON));
+    var finalstr = JSON.stringify(authorsJSON);
+    finalstr.replace('[','');
+    finalstr.replace(']','');
+    formData.append('authors', finalstr);
     formData.append('institute', 'default');
     formData.append('paper_name', paper_name);
     formData.append('paper_abstract', paper_abstract);

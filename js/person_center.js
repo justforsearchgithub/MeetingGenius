@@ -12,7 +12,21 @@ function triggerfile_paper() {
         $('#label_paper_up').html('选择文件');
     }
 }
-
+function LogOut(){
+    $.ajax({
+        type: 'GET',
+        async:false,
+        url: url + 'account/logout/',
+        //headers:{'X-CSRFToken',Token},
+        success: function (data) {
+            console.log(data);
+            if(data.message=='success'){
+                alert('登出成功');
+                window.location.href="index.html";
+            }
+        }
+    });
+}
 var author_num = 1;
 
 function add_author() {

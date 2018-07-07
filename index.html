@@ -86,8 +86,8 @@
             <ul class="list-group">
                 <li class="list-group-item" v-for="Con in HotSpotConferenceList">
                     <div>
-                        <span :id="['ConDetail_'+Con.pk]" style="display: inline-block"><h4><a style="color: #000000;"
-                                                                                               :href="['meetingModel2.html?id='+Con.pk]">{{Con.title}}</a></h4></span>
+                        <span :id="['ConDetail_'+Con.pk]" style="display: inline-block"><h4><a style="color: #000000;" :href="['jumpingPage.html?id='+Con.pk]">{{Con.title
+}}</a></h4></span>
                         <span style="float:right"><h5 style="display: inline-block">{{Con.conference_start}}</h5></span>
                     </div>
                 </li>

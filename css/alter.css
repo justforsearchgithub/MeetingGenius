@@ -267,3 +267,8 @@ body a:hover {
 .chosen-img.active {
     box-shadow: 0 0 50px rgba(81, 203, 238, 1);
 }
+
+.noticetag{
+    font-size: 20px;
+    font-weight: lighter;
+}

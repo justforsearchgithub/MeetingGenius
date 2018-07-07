@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/bootstrap.css">
@@ -36,27 +36,92 @@
 <div class="Search-Wrapper" style="margin-top:40px">
     <div class="container" style="display: inline-block">
         <!--<h4>Search your Conference</h4>-->
+        <ul class="nav nav-tabs" style="padding-left:8%;border-bottom:0px">
+            <li id="sel_1" role="presentation" onclick="changeSearchKey(this)" class="active"><a href="#">会议名称</a></li>
+            <li id="sel_2" role="presentation" onclick="changeSearchKey(this)"><a href="#">机构</a></li>
+            <li id="sel_3" role="presentation" onclick="changeSearchKey(this)"><a href="#">分类</a></li>
+        </ul>
+
+
         <input id="SearchResultText" type="text" class="SearchBar" placeholder="会议名称/机构/分类">
-        <button type="button" class="btn SearchBarBtn">
+        <button type="button" onclick="GoToSearch()" class="btn SearchBarBtn">
             <i class="glyphicon glyphicon-search">
             </i>
         </button>
     </div>
 </div>
 <div class="step-content">
-    <h1>搜索结果</h1>
+    <div style="display:inline-block">
+        <div style="width:25%;">
+    <span style="float:left">
+        <div style="font-size:50px;font-weight: lighter;">搜索结果</div>
+        </span>
+    </div>
+
+        <div class="input-group" style="width:65%;margin-top:20px">
+            <div class="input-group-btn">
+
+                <button type="button" class="btn btn-default
+                        dropdown-toggle" data-toggle="dropdown" id="StateSelectText">下拉菜单
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+
+                    <li>
+                        <a href="#" onclick="SelectState(this)">选择筛选状态</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#" onclick="SelectState(this)">征稿中</a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="SelectState(this)">投稿结束</a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="SelectState(this)">评审中</a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="SelectState(this)">注册中</a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="SelectState(this)">注册结束</a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="SelectState(this)">会议开始</a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="SelectState(this)">会议结束</a>
+                    </li>
+
+                </ul>
+            </div><!-- /btn-group -->
+        </div><!-- /input-group -->
+    </div>
+
+
+    <ul class="list-group" id="ConSearch">
+        <!--<li class="list-group-item">-->
+        <li class="list-group-item" v-for="Con in ConSearchList">
+            <div>
+                <span :id="['ConDetail_'+Con.pk]" style="display: inline-block">
+                    <h4><a style="color: #000000;" :href="['jumpingPage.html?id='+Con.pk]">{{Con.title}}</a></h4>
+                </span>
+                <span style="float:right">
+                    <span :style="Con.color" class="label label-info noticetag">{{Con.statue}}</span>
+                    <h5 style="display: inline-block">会议开始日期:{{Con.time}}</h5>
+                </span>
+            </div>
+        </li>
+
+    </ul>
+
 </div>
-
-
-
-
 
 
 <script src='js/jquery-3.3.1.js'></script>
 <script src="js/bootstrap.js"></script>
 <script src="js/vue.js"></script>
 <script src="js/login.js"></script>
-<script src="js/index.js"></script>
 <script src="js/SearchList.js"></script>
 </body>
 </html>

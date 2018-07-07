@@ -114,8 +114,25 @@ function GetRandomOrg(){
     })
 }
 function GoToSearch(){
-    var Keyword = $("#SearchBarText").val();
-    window.location.href = "SearchResult.html?Keyword="+Keyword;
+    var Searchword = $("#SearchBarText").val();
+    Searchword = encodeURI(Searchword);
+    console.log(Searchword);
+
+    var SearchType = $("[role='presentation'][class='active']").text();
+    console.log(SearchType);
+    var SearchUrl = "";
+    switch(SearchType) {
+        case '会议名称':
+            SearchUrl = 'keywords';
+            break;
+        case '机构':
+            SearchUrl = 'organization';
+            break;
+        case '分类':
+            SearchUrl = 'subject';
+            break;
+    }
+    window.location.href = "SearchResult.html?type="+SearchUrl+'&keyword='+Searchword;
 }
 function RefreshOrg(){
     for(var i =0;i<6;i++){
@@ -131,6 +148,8 @@ function changeSearchKey(e) {
     })*/
     $(e).addClass("active");
 }
+
+var myChart = null;
 
 function AddChart(){
     //指定图标的配置和数据
@@ -178,6 +197,10 @@ function AddChart(){
                     normal: {
                         textStyle: {
                             color: 'rgba(0, 0, 0, 0.8)'
+                        },
+                        formatter(v) {
+                            console.log(v.name)
+                            return v.name+' '+v.data.value+'个会议'
                         }
                     }
                 },
@@ -194,7 +217,7 @@ function AddChart(){
                 itemStyle: {
                     normal: {
                         color: '#65ffa4',
-                        shadowBlur: 500,
+                        shadowBlur: 200,
                         shadowColor: 'rgba(20, 20, 0, 0.5)'
                     }
                 },
@@ -209,22 +232,52 @@ function AddChart(){
     };
 
     //初始化echarts实例
-    var myChart = echarts.init(document.getElementById('piechart'));
+    myChart = echarts.init(document.getElementById('piechart'));
 
     //使用制定的配置项和数据显示图表
     myChart.setOption(option);
 
     myChart.on('click', function(param) {
         console.log(param["data"].name);//重要的参数都在这里！
+        window.location.href = "SearchResult.html?type=subject&keyword="+param["data"].name;
     });
-}
 
+}
+var SubjectCountList = [];
+function SubjectCount(){
+    $.ajax({
+        type:'GET',
+        async:'false',
+        url:url+'conference/count_conferences_for_all_subjects/',
+        success:function(data){
+            for(sub in data.data){
+
+                var _value = data.data[sub];
+                var _name = sub;
+
+                if(_value!=0) {
+                    SubjectCountList.push({'value': _value, 'name': _name});
+                }
+            }
+            myChart.setOption({
+
+                series: [{
+
+                    data: SubjectCountList
+                }]
+            })
+
+        }
+    })
+}
 $(document).ready(function () {
         AddChart();
         GetRandomOrg();
         GetUserType();
         GetActiveConferenceNum();
         GetHotConferenceList();
+        SubjectCount();
+
         if (user_type != "normal_user") {
             $("#CreateConButton").removeClass("hidden");
         }
