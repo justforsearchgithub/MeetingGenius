@@ -1,4 +1,23 @@
-
+.banner{
+    background:#2C3E50;
+    background-size: 470px 470px, 970px 970px, 410px 410px, 610px 610px, 530px 530px, 730px 730px, 100% 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    min-height: 500px;
+    max-height: 500px;
+}
+.banner-info {
+    text-align: center;
+    padding-top: 140px;
+    color: #ffffff;
+}
+.panel-body{
+    background: url(../img/xxxxx.png)no-repeat center center;
+    background-size:cover;
+    background-attachment:fixed;
+    background-color:#CCCCCC;
+}
 .panel-title{
     background: url(../img/meetingPanel.png) center left no-repeat;
     vertical-align:middle;
@@ -16,7 +35,7 @@
     color: #FFFFFF;
     background: #00a0e3;
     text-align: center;
-    margin-top: 120px;
+    margin-top: 220px;
     margin-left: 1100px;
     border-radius: 15px;
     border: none;

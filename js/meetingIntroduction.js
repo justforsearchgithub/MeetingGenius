@@ -52,20 +52,34 @@ var meeting = new Vue(
                 var date3 = new Date(this.registerEndDate);
                 var date4 = new Date(this.meetingStartDate);
                 var date5 = new Date(this.meetingEndDate);
-                if (today <date0)
+                if (today <date0) {
+                    this.cur_state = 0;
                     return '征稿未开始';
-                else if (today < date1)
+                }
+                else if (today < date1) {
+                    this.cur_state = 1;
                     return '征稿中';
-                else if (today <date2)
+                }
+                else if (today <date2) {
+                    this.cur_state = 2;
                     return '已截稿';
-                else if (today <date3)
+                }
+                else if (today <date3) {
+                    this.cur_state = 3;
                     return '注册中';
-                else if (today <date4)
+                }
+                else if (today <date4) {
+                    this.cur_state = 4;
                     return '截止注册';
-                else if (today <date5)
+                }
+                else if (today <date5) {
+                    this.cur_state = 5;
                     return '会议中';
-                else
+                }
+                else {
+                    this.cur_state = 6;
                     return '会议完成';
+                }
             }
         }
     })
@@ -275,7 +289,7 @@ function join_register() {
 
 function checkState_r() {
     if(usertype != 'anonymous user' && usertype != null && usertype != undefined){
-        if(meeting.cur_state != 4){
+        if(meeting.cur_state != 3){
             alert('现在不在注册期间！');
         }
         else{

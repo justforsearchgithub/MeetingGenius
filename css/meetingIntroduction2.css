@@ -1,13 +1,38 @@
 
+.banner{
+    background:#2C3E50;
+    background-size: 470px 470px, 970px 970px, 410px 410px, 610px 610px, 530px 530px, 730px 730px, 100% 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    min-height: 400px;
+    max-height: 400px;
+}
+.banner-info {
+    text-align: center;
+    padding-top: 140px;
+    color: #ffffff;
+}
+
 .panel-title{
-    background: url(../img/meetingPanel.png) center left no-repeat;
+
     vertical-align:middle;
-    padding-left:10px;
-    font-size: 22px;
+    font-size: 30px;
     font-weight: bold;
 
 }
-
+.panel-body {
+    background-color: black;
+    background-image: radial-gradient(white, rgba(255, 255, 255, .2) 2px, transparent 40px),
+    radial-gradient(white, rgba(255, 255, 255, .15) 1px, transparent 30px),
+    radial-gradient(white, rgba(255, 255, 255, .1) 2px, transparent 40px),
+    radial-gradient(rgba(255, 255, 255, .4), rgba(255, 255, 255, .1) 2px, transparent 30px);
+    background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px;
+    background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
+}
+.VivaTimeline{
+    background:#2C3E50;
+}
 #favorite {
     width: 240px;
     height: 60px;
@@ -25,37 +50,23 @@
 #favorite:hover {
     background: #fb2b4e;
 }
-.data-show-box{
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.date-tiem-span{
-    display: inline-block;
-    width: 50px;
-    height: 50px;
-    background: #000000;
-    border-style:solid;
-    border-width: thin thin thick thick;
-    border-color:#00ff00 #00ff00 #0000ff #0000ff;
+.clock{
+    display: block;
     border-radius: 4px;
     text-align: center;
     line-height: 50px;
-    padding-left: 0px;
-    color: #ff0000;
-    margin-left: 0px !important;
 }
 .panel-body-btn button{
     display: inline-block;
-    width: 100px;
-    height: 30px;
-    line-height: 2px;
-    font-size: 18px;
+    width: 140px;
+    height: 60px;
+    line-height: 7px;
+    font-size: 24px;
     color: #FFFFFF;
     background: #00a0e3;
     text-align: center;
     padding-left: 5px;
-    margin: 5px 8px 5px 8px;
+    margin: 45px 14px 10px 14px;
     border: none;
 }
 .panel-body-btn button:hover{

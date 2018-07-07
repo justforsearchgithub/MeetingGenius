@@ -6,6 +6,7 @@ var meeting = new Vue(
     {
         el: '#meeting',
         data: {
+            cur_state: 0,
             meetingName: '这里是会议名称',
             subject:'这里是学科',
             meetingIntroduction: '这里是会议简介',
@@ -52,20 +53,34 @@ var meeting = new Vue(
                 var date3 = new Date(this.registerEndDate);
                 var date4 = new Date(this.meetingStartDate);
                 var date5 = new Date(this.meetingEndDate);
-                if (today <date0)
+                if (today <date0) {
+                    this.cur_state = 0;
                     return '征稿未开始';
-                else if (today < date1)
+                }
+                else if (today < date1) {
+                    this.cur_state = 1;
                     return '征稿中';
-                else if (today <date2)
+                }
+                else if (today <date2) {
+                    this.cur_state = 2;
                     return '已截稿';
-                else if (today <date3)
+                }
+                else if (today <date3) {
+                    this.cur_state = 3;
                     return '注册中';
-                else if (today <date4)
+                }
+                else if (today <date4) {
+                    this.cur_state = 4;
                     return '截止注册';
-                else if (today <date5)
+                }
+                else if (today <date5) {
+                    this.cur_state = 5;
                     return '会议中';
-                else
+                }
+                else {
+                    this.cur_state = 6;
                     return '会议完成';
+                }
             }
         }
     })
@@ -150,30 +165,21 @@ $(document).ready(function () {
     }
     favorite_state();
     //日期倒计时
-    $(function(){
-        var today = new Date();
-        var flag = true;
-        var start = new Date(meeting.meetingStartDate);
-        if(today >= start)
-            flag = false;
-        $.leftTime(meeting.meetingStartDate, function(d){
-            if(d.status || flag){
-                var $dateShow1=$("#dateShow1");
-                $dateShow1.find(".d").html(d.d);
-                $dateShow1.find(".h").html(d.h);
-                $dateShow1.find(".m").html(d.m);
-                $dateShow1.find(".s").html(d.s);
-            }
-            else
-            {
-                var $dateShow1=$("#dateShow1");
-                $dateShow1.find(".d").html('0');
-                $dateShow1.find(".h").html('0');
-                $dateShow1.find(".m").html('0');
-                $dateShow1.find(".s").html('0');
-            }
+    var clock;
+    $(document).ready(function() {
+
+        var currentDate = new Date();
+        var futureDate  = new Date(meeting.meetingStartDate);
+        if(futureDate>currentDate)
+        var diff = futureDate.getTime() / 1000 - currentDate.getTime() / 1000;
+
+        // Instantiate a coutdown FlipClock
+        clock = $('.clock').FlipClock(diff, {
+            clockFace: 'DailyCounter',
+            countdown: true
         });
     });
+
 })
 
 function triggerfile_fee() {
@@ -275,7 +281,7 @@ function join_register() {
 
 function checkState_r() {
     if(usertype != 'anonymous user' && usertype != null && usertype != undefined){
-        if(meeting.cur_state != 4){
+        if(meeting.cur_state != 3){
             alert('现在不在注册期间！');
         }
         else{

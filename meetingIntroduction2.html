@@ -5,9 +5,10 @@
     <link rel="stylesheet" href="css/meetingIntroduction2.css">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-theme.css">
-    <link rel="stylesheet" href="css/alter.css">
     <link rel="stylesheet" href="css/bootstrap-datetimepicker.css">
     <link rel="stylesheet" type="text/css" href="css/jquery.eeyellow.Timeline.css"/>
+    <link rel="stylesheet" href="css/flipclock.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.min.css"/>
     <title>会议详情</title>
 </head>
 <body>
@@ -42,39 +43,68 @@
         <div class="banner-info" style="margin-top:50px" id="meetingName">
             <h1>{{meetingName}}</h1>
         </div>
-        <div>
-            <div id="countdown"></div>
-            <p id="note"></p>
-        </div>
         <div><button id="favorite" onclick="add_favorite()">❤收藏会议</button></div>
     </div>
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-8">
-                <div class="panel" style="float: none">
+            <div class="col-md-7">
+                <div class="panel">
                     <div class="panel-heading">
-                        <h3 class="panel-title" id="schedulingProgram">日程安排</h3>
+                        <h3 class="panel-title">倒计时</h3>
                     </div>
-                    <div class="VivaTimeline">
-                        <dl>
-                            <dd  v-for="(act,index) in activities" class="clearfix" :class="{'pos-right':index%2 != 1}">
-                                <div class="circ"></div>
-                                <div class="time">{{act.start_time}}</div>
-                                <div class="events">
-                                    <div class="events-header">{{act.place}}</div>
-                                    <div class="events-body">
-                                        <div class="row" style="display: block">
-                                            <div class="events-desc timelineDe">
-                                                {{act.activity_name}}
-                                            </div>
+                    <div class="panel-body" style="text-align: center">
+                        <div class="clock" style="text-align: center"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">参会投稿</h3>
+                    </div>
+                    <div class="panel-body-btn" style="height:155px;text-align: center">
+                        <button id="paper_download" class="panel-body-btn"  onclick="downloadPaper()" >论文模板</button>
+                        <button id="join_meeting" class="panel-body-btn"  onclick="checkState_r()" data-target="#join-meeting">参加会议</button>
+                        <button id="paper_upload" class="panel-body-btn"  onclick="checkState_p()"  data-target="#paper-upload">我要投稿</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="panel" style="float: none">
+                <div class="panel-heading">
+                    <h3 class="panel-title" id="schedulingProgram">日程安排</h3>
+                </div>
+                <div class="VivaTimeline"style="color: #2C3E50">
+                    <dl>
+                        <dd  v-for="(act,index) in activities" class="clearfix" :class="{'pos-right':index%2 != 1}">
+                            <div class="circ"></div>
+                            <div class="time"style="color: #00CCFF">{{act.start_time}}</div>
+                            <div class="events">
+                                <div class="events-header"style="color: #D24D57">{{act.place}}</div>
+                                <div class="events-body">
+                                    <div class="row" style="display: block; color:  #EB7347">
+                                        <div class="events-desc timelineDe">
+                                            {{act.activity_name}}
                                         </div>
                                     </div>
                                 </div>
-                            </dd>
-                        </dl>
-                    </div>
+                            </div>
+                        </dd>
+                    </dl>
                 </div>
+            </div>
+
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-7">
+
 
                 <div class="row">
                     <div class="col-md-6">
@@ -82,10 +112,11 @@
                             <div class="panel-heading">
                                 <h3 class="panel-title" >学科</h3>
                             </div>
-                            <div class="panel-body" style="height:50px">
+                            <div class="panel-body" style="height:50px;color: #ff0000">
                                 <p>{{subject}}</p>
                             </div>
                         </div>
+
                     </div>
 
                     <div class="col-md-6">
@@ -94,9 +125,11 @@
                                 <h3 class="panel-title" >状态</h3>
                             </div>
                             <div class="panel-body" style="height:50px;color: #ff0000">
-                                <p>{{state}}</p>
+                                <span v-html="state"></span>
                             </div>
                         </div>
+
+
                     </div>
                 </div>
 
@@ -104,37 +137,36 @@
                     <div class="panel-heading">
                         <h3 class="panel-title" id="meetingIntroduction">会议简介</h3>
                     </div>
-                    <div class="panel-body" style="height:740px">
+                    <div class="panel-body" style="height:220px;color: #ff0000">
                         <p>{{meetingIntroduction}}</p>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-4">
-                <div class="panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">倒计时</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="data-show-box mt-40" id="dateShow1">
-                            <span class="date-tiem-span d"></span>&nbsp;&nbsp;天&nbsp;
-                            <span class="date-tiem-span h"></span>&nbsp;&nbsp;小时&nbsp;
-                            <span class="date-tiem-span m"></span>&nbsp;&nbsp;分&nbsp;
-                            <span class="date-s-span date-tiem-span s"></span>&nbsp;&nbsp;秒&nbsp;
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h3 class="panel-title" >注册要求</h3>
+                        </div>
+                        <div class="panel-body" style="height:230px;color: #ff0000">
+                            <p>{{registerRequest}}</p>
                         </div>
                     </div>
                 </div>
-
-                <div class="panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">参会投稿</h3>
-                    </div>
-                    <div class="panel-body-btn" style="height:40px;text-align: center">
-                        <button id="paper_download" class="panel-body-btn"  onclick="downloadPaper()" >论文模板</button>
-                        <button id="join_meeting" class="panel-body-btn"  onclick="checkState_r()" data-target="#join-meeting">参加会议</button>
-                        <button id="paper_upload" class="panel-body-btn"  onclick="checkState_p()"  data-target="#paper-upload">我要投稿</button>
+                <div class="col-md-6">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">投稿要求</h3>
+                        </div>
+                        <div class="panel-body" style="height:230px;color: #ff0000">
+                            <p>{{solicitInformation }}</p>
+                        </div>
                     </div>
                 </div>
+            </div>
+            </div>
+
+            <div class="col-md-5">
 
                 <div class="panel">
                     <div class="panel-heading">
@@ -158,27 +190,9 @@
 
                 <div class="panel">
                     <div class="panel-heading">
-                        <h3 class="panel-title" >注册要求</h3>
-                    </div>
-                    <div class="panel-body" style="height:100px">
-                        <p>{{registerRequest}}</p>
-                    </div>
-                </div>
-
-                <div class="panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">投稿要求</h3>
-                    </div>
-                    <div class="panel-body" style="height:100px">
-                        <p>{{solicitInformation }}</p>
-                    </div>
-                </div>
-
-                <div class="panel">
-                    <div class="panel-heading">
                         <h3 class="panel-title">主办单位</h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body"style="color: #ff0000">
                         <span>组织名称</span></br>
                         <p>{{organizationName }}</p>
                         <span>联系人姓名</span></br>
@@ -353,6 +367,7 @@
 <script src="js/leftTime.min.js" ></script>
 <script src="js/addAuthor.js"></script>
 <script src="js/meetingIntroduction2.js"></script>
+<script src="js/flipclock.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         $('.VivaTimeline').vivaTimeline({
