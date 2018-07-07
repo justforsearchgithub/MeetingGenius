@@ -535,7 +535,7 @@
                     </div>
                     <div class="panel-body" >
                         <ul class="list-group" v-for="(user_paper,index) in user_papers" >
-                            <li class="list-group-item">论文题目：{{user_paper.paper_name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 论文作者：{{user_paper.conference_title}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{user_paper.status}}
+                            <li class="list-group-item">论文题目：{{user_paper.paper_name}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 所投会议：{{user_paper.conference_title}} &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;审核状态:{{user_paper.status}}
                                 <button type="button" class="btn btn-primary" v-if="user_paper.state==='M'" v-on:click="click_modify(index)" >修改后提交</button>
                             </li>
 
@@ -805,7 +805,7 @@
                             <label name="options"  class="btn btn-primary">
                                 <input type="radio"  id="option2">不通过
                             </label>
-                            <label name="options" v-if="paper_detail.modified" class="btn btn-primary">
+                            <label name="options" v-if="modified" class="btn btn-primary">
                                 <input type="radio"  id="option3">建议修改
                             </label>
                         </div>
