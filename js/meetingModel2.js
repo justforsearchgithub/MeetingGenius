@@ -136,8 +136,8 @@ $(document).ready(function () {
         };
         $.ajax(conference_settings).done(function (response) {
             console.log(response.message);
-            if(response.data.template_no != '1'){
-                window.location.href = url + "static/meetingModel3.html?id=" + conference_id;
+            if(response.data.template_no == '1'){
+                window.location.href = "meetingModel3.html?id=" + conference_id;
                 return;
             }
             meeting.organization = response.data.organization.org_name;
